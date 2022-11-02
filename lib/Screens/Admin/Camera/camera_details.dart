@@ -9,6 +9,7 @@ import 'package:live_streaming/Store/store.dart';
 import 'package:live_streaming/widget/Camera/update_camera.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../Store/Admin/CameraDetails.dart';
 import '../../../widget/Camera/delete_camera.dart';
 
 class CameraDetails extends StatefulWidget {

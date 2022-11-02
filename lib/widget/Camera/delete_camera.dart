@@ -1,12 +1,10 @@
-// ignore_for_file: non_constant_identifier_names, sized_box_for_whitespace, unused_local_variable, unrelated_type_equality_checks
+// ignore_for_file: non_constant_identifier_names, sized_box_for_whitespace, unused_local_variable, unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Bloc/CameraDetailsBloc.dart';
-import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
-
+import 'package:live_streaming/widget/progress_indicator.dart';
 import '../../Api/camera_api.dart';
 import '../../Model/Admin/Camera/Camera.dart';
-import '../progress_dialogue.dart';
 import '../snack_bar.dart';
 
 Future<dynamic> delete_camera(
@@ -30,41 +28,33 @@ Future<dynamic> delete_camera(
               if (ip.text.isNotEmpty &&
                   lt.text.isNotEmpty &&
                   no.text.isNotEmpty) {
-                ProgressDialog pd = Progress_Dialogue(context, 'Deleting..');
-                await pd.show();
+                showLoaderDialog(context, 'Deleting');
                 try {
-                  if (pd.isShowing()) {
-                    Camera c = Camera(ip: ip.text, lt: lt.text, no: no.text);
-                    CameraApi api = CameraApi();
-                    String res = await api.delete(c);
-
-                    Future.delayed(const Duration(seconds: 1)).then((value) =>
-                        pd.hide().then((value) {
-                          if (res == "okay") {
-                            cameraDetailsBloc.eventsinkCameraDetails
-                                .add(CameraDetailsAction.Fetch);
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                snack_bar("Camera Deleted Successfully..."));
-                          } else {
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                snack_bar("Something Went Wrong..."));
-                          }
-                        }));
+                  Camera c = Camera(ip: ip.text, lt: lt.text, no: no.text);
+                  CameraApi api = CameraApi();
+                  String res = await api.delete(c);
+                  Navigator.pop(context);
+                  if (res == "okay") {
+                    cameraDetailsBloc.eventsinkCameraDetails
+                        .add(CameraDetailsAction.Fetch);
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        snack_bar("Camera Deleted Successfully...", true));
+                  } else {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        snack_bar("Something Went Wrong...", false));
                   }
                 } catch (e) {
-                  Future.delayed(const Duration(seconds: 1))
-                      .then((value) => pd.hide().then((value) {
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                snack_bar("Something Went Wrong..."));
-                          }));
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      snack_bar("Something Went Wrong...", false));
+                  Navigator.pop(context);
                 }
               } else {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context)
-                    .showSnackBar(snack_bar("Fill All Fields..."));
+                    .showSnackBar(snack_bar("Fill All Fields...", false));
               }
             },
             child: const Text(

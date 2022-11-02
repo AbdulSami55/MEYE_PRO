@@ -6,6 +6,7 @@ import 'package:live_streaming/Store/store.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'Model/Admin/ip.dart';
+import 'Screens/bottomnav.dart';
 
 void main() {
   Connect();
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var title = 'Live Streaming';
+    var title = 'MEYE PRO';
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -29,6 +30,6 @@ class MyApp extends StatelessWidget {
             primaryColor: Colors.orange,
             brightness: Brightness.dark),
         title: title,
-        home: LoginScreen());
+        home: const BottomNavBar());
   }
 }

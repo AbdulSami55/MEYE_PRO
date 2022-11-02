@@ -12,6 +12,12 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Upload images for screen background</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Upload image from camera for screen background</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Post videos to profile</string>
 	<key>CFBundleName</key>
 	<string>live_streaming</string>
 	<key>CFBundlePackageType</key>

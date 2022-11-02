@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:web_socket_channel/io.dart';
-
 class NetworkIP {
   static List<Stream> lst = [];
   static String base_url = 'http://192.168.43.192:8000/';
