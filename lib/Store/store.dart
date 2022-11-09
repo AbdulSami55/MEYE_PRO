@@ -2,11 +2,16 @@
 
 import 'dart:io';
 
+import 'package:live_streaming/Model/Admin/schedule.dart';
+import 'package:live_streaming/Model/Teacher/teacher.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../Model/Admin/Camera/Camera.dart';
+import '../Model/Admin/DVR/DVR.dart';
 
 class MyStore extends VxStore {
-  List<Camera>? lstcamera = [];
+  List<DVR>? lstDVR = [];
+  List<TeacherData>? lstteacher = [];
   File? image;
+  TeacherSchedule? teacherSchedule;
+  int? scheduleindex;
 }

@@ -1,8 +1,9 @@
 // ignore_for_file: unused_field, unused_element
 
 import 'package:flutter/material.dart';
-import 'package:live_streaming/Screens/Admin/Camera/camera_details.dart';
+import 'package:live_streaming/Screens/Admin/DVR/dvr_details.dart';
 import 'package:live_streaming/Screens/Admin/home.dart';
+import 'package:live_streaming/Screens/Admin/TeacherSchedule/teacherdata.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -13,7 +14,11 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
-  final List _screens = [const Home(), const CameraDetails()];
+  final List _screens = [
+    const Home(),
+    const CameraDetails(),
+    const Teacherdata()
+  ];
 
   void _updateIndex(int value) {
     setState(() {
@@ -43,7 +48,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             icon: Icon(Icons.camera),
           ),
           BottomNavigationBarItem(
-            label: "Categories",
+            label: "Schedule",
             icon: Icon(Icons.grid_view),
           ),
           BottomNavigationBarItem(

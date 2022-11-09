@@ -1,8 +1,8 @@
-// ignore_for_file: prefer_is_empty
+// ignore_for_file: prefer_is_empty, file_names
 
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../Bloc/CameraDetailsBloc.dart';
+import '../../Bloc/DVRDetailsBloc.dart';
 import '../store.dart';
 
 class SearchMutation extends VxMutation<MyStore> {
@@ -12,12 +12,12 @@ class SearchMutation extends VxMutation<MyStore> {
   @override
   perform() {
     if (query.length >= 1) {
-      store?.lstcamera = CameraDetailsBloc.lst
+      store?.lstDVR = DVRDetailsBloc.lst
           .where((element) =>
-              element.lt.toLowerCase().contains(query.toLowerCase()))
+              element.ip.toLowerCase().contains(query.toLowerCase()))
           .toList();
     } else {
-      store?.lstcamera = CameraDetailsBloc.lst;
+      store?.lstDVR = DVRDetailsBloc.lst;
     }
   }
 }

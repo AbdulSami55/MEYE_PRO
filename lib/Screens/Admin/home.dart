@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/Model/Admin/ip.dart';
 
-import '../../widget/Camera/add_camera.dart';
+import '../../widget/DVR/add_dvr.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,9 +20,9 @@ class _HomeState extends State<Home> {
   }
 
   TextEditingController ip = TextEditingController();
-  TextEditingController lt = TextEditingController();
-  TextEditingController no = TextEditingController();
-
+  TextEditingController host = TextEditingController();
+  TextEditingController channel = TextEditingController();
+  TextEditingController pass = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +142,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.orange,
         foregroundColor: Colors.white,
         onPressed: () {
-          add_camera(context, lt, ip, no);
+          add_dvr(context, host, ip, channel, pass);
         },
         child: const Icon(Icons.add_a_photo),
       ),

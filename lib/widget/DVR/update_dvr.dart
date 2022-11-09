@@ -1,33 +1,34 @@
 // ignore_for_file: non_constant_identifier_names, sized_box_for_whitespace, unused_local_variable, unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:live_streaming/Api/camera_api.dart';
-import 'package:live_streaming/Bloc/CameraDetailsBloc.dart';
-import 'package:live_streaming/Model/Admin/Camera/Camera.dart';
+import 'package:live_streaming/Api/dvr_api.dart';
+import 'package:live_streaming/Bloc/DVRDetailsBloc.dart';
+import 'package:live_streaming/Model/Admin/DVR/DVR.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-Future<dynamic> update_camera(
+Future<dynamic> update_dvr(
     BuildContext context,
-    TextEditingController lt,
+    TextEditingController host,
     TextEditingController ip,
-    TextEditingController no,
-    CameraDetailsBloc cameraDetailsBloc) {
+    TextEditingController channel,
+    TextEditingController pass,
+    DVRDetailsBloc dvrDetailsBloc) {
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text("Update Camera"),
+      title: const Text("Update DVR"),
       content: Container(
-        height: MediaQuery.of(context).size.height * 0.48,
+        height: MediaQuery.of(context).size.height * 0.60,
         child: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: VxTextField(
                   controller: ip,
-                  labelText: "Enter Camera IP",
-                  hint: "Enter Camera IP",
+                  labelText: "Enter  IP",
+                  hint: "Enter  IP",
                   labelStyle: const TextStyle(color: Colors.white),
                   borderType: VxTextFieldBorderType.roundLine,
                   borderRadius: 20.0),
@@ -38,9 +39,9 @@ Future<dynamic> update_camera(
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: VxTextField(
-                  controller: no,
-                  labelText: "Enter Camera Number",
-                  hint: "Enter Camera Number",
+                  controller: channel,
+                  labelText: "Enter  Channel",
+                  hint: "Enter  Channel",
                   labelStyle: const TextStyle(color: Colors.white),
                   borderType: VxTextFieldBorderType.roundLine,
                   borderRadius: 20.0),
@@ -51,9 +52,22 @@ Future<dynamic> update_camera(
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: VxTextField(
-                  controller: lt,
-                  labelText: "Enter LT/LAB Name",
-                  hint: "Enter LT/LAB Name",
+                  controller: host,
+                  labelText: "Enter Host",
+                  hint: "Enter Host",
+                  labelStyle: const TextStyle(color: Colors.white),
+                  borderType: VxTextFieldBorderType.roundLine,
+                  borderRadius: 20.0),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: VxTextField(
+                  controller: pass,
+                  labelText: "Enter Password",
+                  hint: "Enter Password",
                   labelStyle: const TextStyle(color: Colors.white),
                   borderType: VxTextFieldBorderType.roundLine,
                   borderRadius: 20.0),
@@ -64,12 +78,17 @@ Future<dynamic> update_camera(
             InkWell(
               onTap: () async {
                 if (ip.text.isNotEmpty &&
-                    lt.text.isNotEmpty &&
-                    no.text.isNotEmpty) {
+                    pass.text.isNotEmpty &&
+                    channel.text.isNotEmpty &&
+                    host.text.isNotEmpty) {
                   showLoaderDialog(context, 'Updating');
                   try {
-                    Camera c = Camera(ip: ip.text, lt: lt.text, no: no.text);
-                    CameraApi api = CameraApi();
+                    DVR c = DVR(
+                        ip: ip.text,
+                        host: host.text,
+                        channel: channel.text,
+                        password: pass.text);
+                    DVRApi api = DVRApi();
                     var res = await api.put(c);
 
                     if (res == "Something went wrong") {
@@ -79,9 +98,9 @@ Future<dynamic> update_camera(
                     } else {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                          snack_bar("Camera Updated Successfully...", true));
-                      cameraDetailsBloc.eventsinkCameraDetails
-                          .add(CameraDetailsAction.Fetch);
+                          snack_bar("DVR Updated Successfully...", true));
+                      dvrDetailsBloc.eventsinkDVRDetails
+                          .add(DVRDetailsAction.Fetch);
                     }
                     Navigator.pop(context);
                   } catch (e) {

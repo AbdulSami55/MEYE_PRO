@@ -14,7 +14,11 @@ void main() {
 }
 
 Connect() {
-  NetworkIP.Connect();
+  try {
+    NetworkIP.Connect();
+  } catch (e) {
+    print(e);
+  }
 }
 
 class MyApp extends StatelessWidget {
