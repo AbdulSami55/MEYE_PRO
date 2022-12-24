@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:live_streaming/Bloc/DVRDetailsBloc.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import '../../Api/dvr_api.dart';
-import '../../Model/Admin/DVR/DVR.dart';
+import '../../Model/Admin/DVR/dvr.dart';
 import '../snack_bar.dart';
 
 Future<dynamic> delete_dvr(
@@ -13,7 +13,9 @@ Future<dynamic> delete_dvr(
     TextEditingController ip,
     TextEditingController channel,
     TextEditingController pass,
-    DVRDetailsBloc dvrDetailsBloc) {
+    DVRDetailsBloc dvrDetailsBloc,
+    int id,
+    TextEditingController name) {
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -29,20 +31,22 @@ Future<dynamic> delete_dvr(
               if (ip.text.isNotEmpty &&
                   pass.text.isNotEmpty &&
                   host.text.isNotEmpty &&
-                  channel.text.isNotEmpty) {
+                  channel.text.isNotEmpty &&
+                  name.text.isNotEmpty) {
                 showLoaderDialog(context, 'Deleting');
                 try {
                   DVR c = DVR(
                       ip: ip.text,
                       host: host.text,
                       channel: channel.text,
-                      password: pass.text);
+                      password: pass.text,
+                      id: id,
+                      name: name.text);
                   DVRApi api = DVRApi();
                   String res = await api.delete(c);
                   Navigator.pop(context);
                   if (res == "okay") {
-                    dvrDetailsBloc.eventsinkDVRDetails
-                        .add(DVRDetailsAction.Fetch);
+                    dvrDetailsBloc.getData(context);
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                         snack_bar("DVR Deleted Successfully...", true));

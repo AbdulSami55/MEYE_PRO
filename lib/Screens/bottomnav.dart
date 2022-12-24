@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:live_streaming/Screens/Admin/DVR/dvr_details.dart';
 import 'package:live_streaming/Screens/Admin/home.dart';
 import 'package:live_streaming/Screens/Admin/TeacherSchedule/teacherdata.dart';
+import 'package:live_streaming/utilities/constants.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -14,11 +15,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
-  final List _screens = [
-    const Home(),
-    const CameraDetails(),
-    const Teacherdata()
-  ];
+  final List _screens = [const Home(), DVRDetails(), const Teacherdata()];
 
   void _updateIndex(int value) {
     setState(() {
@@ -34,7 +31,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: _updateIndex,
-        selectedItemColor: Colors.orange,
+        selectedItemColor: primaryColor,
         selectedFontSize: 13,
         unselectedFontSize: 13,
         iconSize: 30,
