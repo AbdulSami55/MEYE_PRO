@@ -3,13 +3,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:live_streaming/Api/dvr_api.dart';
-import 'package:live_streaming/Model/Admin/DVR/dvr.dart';
+import 'package:live_streaming/Model/Admin/dvr.dart';
+import 'package:live_streaming/repo/api_status.dart';
+import 'package:live_streaming/view_models/dvr_view_model.dart';
 import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
+import 'package:provider/provider.dart';
 
-import '../mytextfield.dart';
+import '../../../Model/user_error.dart';
+import '../../../repo/dvr_services.dart';
+import '../../../widget/mytextfield.dart';
 
 Future<dynamic> add_dvr(
     BuildContext context,
@@ -106,17 +110,19 @@ Future<dynamic> add_dvr(
                           channel: channel.text,
                           password: pass.text,
                           name: name.text);
-                      DVRApi api = DVRApi();
-                      String res = await api.post(c);
 
-                      if (res == "okay") {
+                      dynamic response = await DVRServices.post(c);
+                      if (response is Success) {
+                        Provider.of<DVRViewModel>(context, listen: false)
+                            .getDvrData();
                         Navigator.pop(context);
+
                         ScaffoldMessenger.of(context).showSnackBar(
                             snack_bar("DVR Added Successfully...", true));
-                      } else {
+                      } else if (response is Failure) {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                            snack_bar("Something Went Wrong...", false));
+                            snack_bar("${response.errorResponse}", false));
                       }
                       Navigator.pop(context);
                     } catch (e) {

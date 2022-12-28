@@ -4,11 +4,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:live_streaming/Controller/dvr.dart';
-import 'package:live_streaming/Model/Admin/Camera/camera.dart';
-import 'package:live_streaming/Model/Admin/ip.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
 import 'package:provider/provider.dart';
+
+import '../Model/Admin/camera.dart';
+import '../utilities/constants.dart';
+import '../view_models/dvr_view_model.dart';
 
 enum CameraDetailsAction { Fetch }
 
@@ -47,46 +48,44 @@ class CameraDetailsBloc {
 
   Future<List<Camera>> getData(int did, int index, BuildContext context) async {
     lst = [];
-    Provider.of<DVRController>(context, listen: false).cameralistEmpty();
+    Provider.of<DVRViewModel>(context, listen: false).cameralistEmpty();
     try {
       await http
-          .get(Uri.parse('${NetworkIP.base_url}api/camera-details/$did'))
+          .get(Uri.parse('$baseUrl/api/camera-details/$did'))
           .then((response) {
         if (response.statusCode == 200) {
           lst = [];
-          Provider.of<DVRController>(context, listen: false).channelEmpty();
-          Provider.of<DVRController>(context, listen: false).venueEmpty();
-          Provider.of<DVRController>(context, listen: false).venueidlistEmpty();
+          Provider.of<DVRViewModel>(context, listen: false).channelEmpty();
+          Provider.of<DVRViewModel>(context, listen: false).venueEmpty();
+          Provider.of<DVRViewModel>(context, listen: false).venueidlistEmpty();
           int count = int.parse(
-              Provider.of<DVRController>(context, listen: false)
+              Provider.of<DVRViewModel>(context, listen: false)
                   .lstDVR[index]
                   .channel!);
           for (int i = 1; i <= count; i++) {
-            Provider.of<DVRController>(context, listen: false)
+            Provider.of<DVRViewModel>(context, listen: false)
                 .lstchannel
                 .add(i.toString());
           }
           var data = json.decode(response.body);
           for (var i in data["data"]) {
             Camera c = Camera.fromJson(i);
-            Provider.of<DVRController>(context, listen: false)
+            Provider.of<DVRViewModel>(context, listen: false)
                 .lstchannel
                 .remove(c.no);
             lst.add(c);
-            Provider.of<DVRController>(context, listen: false).lstCamera.add(c);
+            Provider.of<DVRViewModel>(context, listen: false).lstCamera.add(c);
           }
         }
       });
 
-      await http
-          .get(Uri.parse('${NetworkIP.base_url}api/venue-details'))
-          .then((response) {
+      await http.get(Uri.parse('$baseUrl/api/venue-details')).then((response) {
         if (response.statusCode == 200) {
           var data = json.decode(response.body);
           for (var i in data["data"]) {
             Venue v = Venue.fromjson(i);
-            Provider.of<DVRController>(context, listen: false).lstvenue.add(v);
-            Provider.of<DVRController>(context, listen: false)
+            Provider.of<DVRViewModel>(context, listen: false).lstvenue.add(v);
+            Provider.of<DVRViewModel>(context, listen: false)
                 .lstvenueid
                 .add(v.id);
           }

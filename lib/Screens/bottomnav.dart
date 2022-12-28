@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Screens/Admin/DVR/dvr_details.dart';
 import 'package:live_streaming/Screens/Admin/home.dart';
-import 'package:live_streaming/Screens/Admin/TeacherSchedule/teacherdata.dart';
 import 'package:live_streaming/utilities/constants.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -15,7 +14,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
-  final List _screens = [const Home(), DVRDetails(), const Teacherdata()];
+  final List _screens = [const Home(), DVRDetails()];
 
   void _updateIndex(int value) {
     setState(() {

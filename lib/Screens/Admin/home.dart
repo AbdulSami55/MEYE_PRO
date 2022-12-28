@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/Model/Admin/ip.dart';
 import 'package:live_streaming/utilities/constants.dart';
 
-import '../../widget/DVR/add_dvr.dart';
+import 'DVR/add_dvr.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -38,11 +38,16 @@ class _HomeState extends State<Home> {
       resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: backgroundColor,
-        title: Text(
-          'Live Stream',
-          style: GoogleFonts.poppins(fontSize: 25, color: shadowColorDark),
+        title: Row(
+          children: [
+            Text(
+              'Live Stream',
+              style: GoogleFonts.poppins(fontSize: 25, color: shadowColorDark),
+            ),
+          ],
         ),
       ),
       body: RefreshIndicator(

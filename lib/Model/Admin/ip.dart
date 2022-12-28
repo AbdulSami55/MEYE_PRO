@@ -5,7 +5,6 @@ import 'package:web_socket_channel/io.dart';
 class NetworkIP {
   static List<Stream> lst = [];
   static List<IOWebSocketChannel> lstcam = [];
-  static String base_url = 'http://192.168.43.192:8000/';
 
   static Future<void> Connect() async {
     try {

@@ -2,14 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:live_streaming/Api/dvr_api.dart';
-import 'package:live_streaming/Bloc/DVRDetailsBloc.dart';
-import 'package:live_streaming/Model/Admin/DVR/dvr.dart';
+import 'package:live_streaming/Model/Admin/dvr.dart';
+import 'package:live_streaming/repo/api_status.dart';
+import 'package:live_streaming/view_models/dvr_view_model.dart';
 import 'package:live_streaming/widget/mytextfield.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 
-import '../mybutton.dart';
+import '../../../repo/dvr_services.dart';
+import '../../../widget/mybutton.dart';
 
 Future<dynamic> update_dvr(
     BuildContext context,
@@ -17,8 +18,8 @@ Future<dynamic> update_dvr(
     TextEditingController ip,
     TextEditingController channel,
     TextEditingController pass,
-    DVRDetailsBloc dvrDetailsBloc,
     int id,
+    DVRViewModel dvrViewModel,
     TextEditingController name) {
   return showGeneralDialog(
     context: context,
@@ -109,18 +110,19 @@ Future<dynamic> update_dvr(
                           password: pass.text,
                           id: id,
                           name: name.text);
-                      DVRApi api = DVRApi();
-                      var res = await api.put(c);
 
-                      if (res == "Something went wrong") {
+                      var res = await DVRServices.put(c);
+
+                      if (res is Failure) {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                            snack_bar("Something Went Wrong...", false));
-                      } else {
+                            snack_bar("${res.errorResponse}", false));
+                      } else if (res is Success) {
+                        dvrViewModel.getDvrData();
                         Navigator.pop(context);
+
                         ScaffoldMessenger.of(context).showSnackBar(
                             snack_bar("DVR Updated Successfully...", true));
-                        dvrDetailsBloc.getData(context);
                       }
                       Navigator.pop(context);
                     } catch (e) {

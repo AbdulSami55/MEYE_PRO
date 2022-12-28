@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../widget/mybutton.dart';
-import '../../../widget/mytextfield.dart';
+import '../../../../widget/mybutton.dart';
+import '../../../../widget/mytextfield.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({
@@ -35,7 +36,8 @@ class _SignInFormState extends State<SignInForm> {
           ),
         ),
         mytextfiled("assets/icons/pass.png", password, true),
-        mybutton(() {}, "Sign In", CupertinoIcons.arrow_right),
+        mybutton(() => context.go("/AdminHome"), "Sign In",
+            CupertinoIcons.arrow_right),
       ],
     );
   }

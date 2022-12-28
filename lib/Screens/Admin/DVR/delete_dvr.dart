@@ -1,11 +1,12 @@
 // ignore_for_file: non_constant_identifier_names, sized_box_for_whitespace, unused_local_variable, unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:live_streaming/Bloc/DVRDetailsBloc.dart';
+import 'package:live_streaming/repo/api_status.dart';
+import 'package:live_streaming/view_models/dvr_view_model.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
-import '../../Api/dvr_api.dart';
-import '../../Model/Admin/DVR/dvr.dart';
-import '../snack_bar.dart';
+import '../../../Model/Admin/dvr.dart';
+import '../../../repo/dvr_services.dart';
+import '../../../widget/snack_bar.dart';
 
 Future<dynamic> delete_dvr(
     BuildContext context,
@@ -13,9 +14,9 @@ Future<dynamic> delete_dvr(
     TextEditingController ip,
     TextEditingController channel,
     TextEditingController pass,
-    DVRDetailsBloc dvrDetailsBloc,
     int id,
-    TextEditingController name) {
+    TextEditingController name,
+    DVRViewModel dvrViewModel) {
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -42,18 +43,19 @@ Future<dynamic> delete_dvr(
                       password: pass.text,
                       id: id,
                       name: name.text);
-                  DVRApi api = DVRApi();
-                  String res = await api.delete(c);
+
+                  dynamic res = await DVRServices.delete(c);
                   Navigator.pop(context);
-                  if (res == "okay") {
-                    dvrDetailsBloc.getData(context);
-                    Navigator.pop(context);
+                  if (res is Success) {
+                    dvrViewModel.getDvrData();
+
                     ScaffoldMessenger.of(context).showSnackBar(
                         snack_bar("DVR Deleted Successfully...", true));
-                  } else {
                     Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        snack_bar("Something Went Wrong...", false));
+                  } else if (res is Failure) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(snack_bar("${res.errorResponse}", false));
                   }
                 } catch (e) {
                   Navigator.pop(context);

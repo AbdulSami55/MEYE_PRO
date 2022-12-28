@@ -2,31 +2,26 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:live_streaming/Api/camera_api.dart';
+import 'package:live_streaming/repo/camera_api.dart';
 import 'package:live_streaming/Bloc/CameraDetailsBloc.dart';
-import 'package:live_streaming/Controller/dvr.dart';
-import 'package:live_streaming/Model/Admin/Camera/camera.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
-import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:velocity_x/velocity_x.dart';
+import '../../../Model/Admin/camera.dart';
+import '../../../view_models/dvr_view_model.dart';
 
-Future<dynamic> update_camera(
+Future<dynamic> add_camera(
     BuildContext context,
-    int id,
     int did,
-    List<DropdownMenuItem<Venue>> venueItems,
+    List<DropdownMenuItem<Venue>> venue,
     List<DropdownMenuItem<String>> channelItems,
-    String no,
-    String value,
     CameraDetailsBloc cameraDetailsBloc) {
   return showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
-    barrierDismissible: false,
+    barrierDismissible: true,
     barrierColor: Colors.black.withOpacity(0.5),
     transitionDuration: const Duration(milliseconds: 400),
     pageBuilder: (_, __, ___) {
@@ -54,30 +49,15 @@ Future<dynamic> update_camera(
           child: Scaffold(
             body: ListView(
               children: [
-                Row(
-                  children: [
-                    Center(
-                      child: Text("Update Camera",
-                          style: GoogleFonts.bebasNeue(fontSize: 40)),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Provider.of<DVRController>(context, listen: false)
-                              .lstchannel
-                              .remove(value);
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.cancel)),
-                  ],
+                Center(
+                  child: Text("Add Camera",
+                      style: GoogleFonts.bebasNeue(fontSize: 40)),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                Consumer<DVRController>(
-                  builder: (context, controller, status) => Column(
+                Consumer<DVRViewModel>(
+                  builder: (context, controller, child) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
@@ -85,21 +65,23 @@ Future<dynamic> update_camera(
                       ),
                       DropdownButton<Venue>(
                         isExpanded: true,
-                        value: Provider.of<DVRController>(context).v,
-                        items: venueItems,
+                        value: Provider.of<DVRViewModel>(context).v,
+                        items: venue,
                         onChanged: (value) {
-                          controller.newvenueid(value!.id);
-                          controller.newVenue(value);
+                          Provider.of<DVRViewModel>(context, listen: false)
+                              .newvenueid(value!.id);
+                          Provider.of<DVRViewModel>(context, listen: false)
+                              .newVenue(value);
                         },
-                      ).pOnly(right: 20),
+                      ),
                     ],
-                  ).pOnly(left: 10),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                Consumer<DVRController>(
-                  builder: (context, controller, status) => Column(
+                Consumer<DVRViewModel>(
+                  builder: (context, controller, child) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
@@ -107,43 +89,45 @@ Future<dynamic> update_camera(
                       ),
                       DropdownButton(
                         isExpanded: true,
-                        value: controller.channel,
+                        value: Provider.of<DVRViewModel>(context).channel,
                         items: channelItems,
                         onChanged: (value) {
-                          controller.newchannel(value.toString());
+                          Provider.of<DVRViewModel>(context, listen: false)
+                              .newchannel(value!);
                         },
-                      ).pOnly(right: 20),
+                      ),
                     ],
-                  ).pOnly(left: 10),
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 mybutton(() async {
-                  showLoaderDialog(context, 'Updating');
+                  showLoaderDialog(context, 'Adding');
                   try {
                     Camera c = Camera(
-                      id,
-                      did,
-                      Provider.of<DVRController>(context, listen: false)
+                      id: 0,
+                      did: did,
+                      vid: Provider.of<DVRViewModel>(context, listen: false)
                           .venueid,
-                      Provider.of<DVRController>(context, listen: false)
+                      no: Provider.of<DVRViewModel>(context, listen: false)
                           .channel
                           .toString(),
                     );
                     CameraApi api = CameraApi();
-                    var res = await api.put(c);
+                    String res = await api.post(c);
 
-                    if (res == "Something went wrong") {
+                    if (res == "okay") {
                       Navigator.pop(context);
+                      cameraDetailsBloc.eventsinkCameraDetails
+                          .add(CameraDetailsAction.Fetch);
+
                       ScaffoldMessenger.of(context).showSnackBar(
-                          snack_bar("Something Went Wrong...", false));
+                          snack_bar("Camera Added Successfully...", true));
                     } else {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                          snack_bar("Camera Updated Successfully...", true));
-                      cameraDetailsBloc.eventsinkCameraDetails
-                          .add(CameraDetailsAction.Fetch);
+                          snack_bar("Something Went Wrong...", false));
                     }
                     Navigator.pop(context);
                   } catch (e) {
@@ -152,7 +136,7 @@ Future<dynamic> update_camera(
                         snack_bar("Something Went Wrong...", false));
                     Navigator.pop(context);
                   }
-                }, "Update", Icons.update)
+                }, "Add", Icons.add)
               ],
             ),
           ),
