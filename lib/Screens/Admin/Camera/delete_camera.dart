@@ -1,7 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, sized_box_for_whitespace, unused_local_variable, unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:live_streaming/repo/camera_api.dart';
+import 'package:live_streaming/repo/api_status.dart';
+import 'package:live_streaming/repo/camera_service.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import '../../../Model/Admin/camera.dart';
@@ -25,19 +26,19 @@ Future<dynamic> delete_camera(
               showLoaderDialog(context, 'Deleting');
               try {
                 Camera c = Camera(id: id, did: did, vid: vid, no: no);
-                CameraApi api = CameraApi();
-                String res = await api.delete(c);
+
+                var res = await CameraServies.delete(c);
                 Navigator.pop(context);
-                if (res == "okay") {
+                if (res is Success) {
                   Provider.of<CameraViewModel>(context, listen: false)
                       .getCameraData();
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                       snack_bar("DVR Deleted Successfully...", true));
-                } else {
+                } else if (res is Failure) {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                      snack_bar("Something Went Wrong...", false));
+                      snack_bar(res.errorResponse.toString(), false));
                 }
               } catch (e) {
                 Navigator.pop(context);

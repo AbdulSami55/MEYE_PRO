@@ -8,14 +8,8 @@ import 'package:live_streaming/repo/venue_service.dart';
 
 class VenueViewModel extends ChangeNotifier {
   bool _isloading = false;
-  var _lstchannel = <String>[];
   var _lstvenue = <Venue>[];
-  var _lstvenueid = <int>[];
-
-  String? channel;
-  String? venue;
   Venue? selectedvenue;
-  int? venueid;
   UserError? _userError;
   int? did;
   Venue _addvenue = Venue();
@@ -23,9 +17,7 @@ class VenueViewModel extends ChangeNotifier {
 
   bool get loading => _isloading;
   UserError? get userError => _userError;
-  List<String> get lstchannel => _lstchannel;
   List<Venue> get lstvenue => _lstvenue;
-  List<int> get lstvenueid => _lstvenueid;
   Venue get addvenue => _addvenue;
 
   VenueViewModel() {
@@ -73,11 +65,6 @@ class VenueViewModel extends ChangeNotifier {
     setloading(false);
   }
 
-  void newvenue(String v) {
-    venue = v;
-    notifyListeners();
-  }
-
   void newVenue(Venue v) {
     selectedvenue = v;
     notifyListeners();
@@ -88,23 +75,9 @@ class VenueViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void newvenueid(int v) {
-    venueid = v;
-    notifyListeners();
-  }
-
-  void channellist(List<String> channel) {
-    _lstchannel = channel;
-    notifyListeners();
-  }
-
   void venuelist(List<Venue> venue) {
     _lstvenue = venue;
     notifyListeners();
-  }
-
-  void channelEmpty() {
-    _lstchannel = [];
   }
 
   void venueEmpty() {
@@ -114,14 +87,5 @@ class VenueViewModel extends ChangeNotifier {
   void venueincrement(Venue venue) {
     _lstvenue.add(venue);
     notifyListeners();
-  }
-
-  void venueidlist(List<int> venue) {
-    _lstvenueid = venue;
-    notifyListeners();
-  }
-
-  void venueidlistEmpty() {
-    _lstvenueid = [];
   }
 }

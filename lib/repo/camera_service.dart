@@ -27,7 +27,7 @@ class CameraServies {
     }
   }
 
-  Future put(Camera c) async {
+  static Future<Object> put(Camera c) async {
     try {
       var response =
           await http.put(Uri.parse('$baseUrl/api/update-camera-details'),
@@ -49,7 +49,7 @@ class CameraServies {
     }
   }
 
-  Future delete(Camera c) async {
+  static Future<Object> delete(Camera c) async {
     try {
       var response =
           await http.delete(Uri.parse('$baseUrl/api/delete-camera-details'),

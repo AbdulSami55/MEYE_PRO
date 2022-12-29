@@ -12,14 +12,9 @@ import '../Model/Admin/dvr.dart';
 class CameraViewModel extends ChangeNotifier {
   bool _isloading = false;
   var _lstchannel = <String>[];
-  var _lstvenue = <Venue>[];
   var _lstvenueid = <int>[];
   var _lstCamera = <Camera>[];
 
-  String? venue;
-  Venue? v;
-  int? venueid;
-  Camera? oldcamera;
   UserError? _userError;
   int? did;
   Camera _addcamera = Camera();
@@ -28,7 +23,7 @@ class CameraViewModel extends ChangeNotifier {
   UserError? get userError => _userError;
   List<String> get lstchannel => _lstchannel;
   List<Camera> get lstCamera => _lstCamera;
-  List<Venue> get lstvenue => _lstvenue;
+
   List<int> get lstvenueid => _lstvenueid;
   Camera get addcamera => _addcamera;
 
@@ -92,79 +87,8 @@ class CameraViewModel extends ChangeNotifier {
     setloading(false);
   }
 
-  void oldCamera(Camera c) {
-    oldcamera = c;
-    notifyListeners();
-  }
-
-  void newvenue(String v) {
-    venue = v;
-    notifyListeners();
-  }
-
-  void newVenue(Venue v) {
-    this.v = v;
-    notifyListeners();
-  }
-
-  void newvenueid(int v) {
-    venueid = v;
-    notifyListeners();
-  }
-
   void channellist(List<String> channel) {
     _lstchannel = channel;
     notifyListeners();
-  }
-
-  void venuelist(List<Venue> venue) {
-    _lstvenue = venue;
-    notifyListeners();
-  }
-
-  void channelEmpty() {
-    _lstchannel = [];
-  }
-
-  void venueEmpty() {
-    _lstvenue = [];
-  }
-
-  void venueincrement(Venue venue) {
-    _lstvenue.add(venue);
-    notifyListeners();
-  }
-
-  void venueidlist(List<int> venue) {
-    _lstvenueid = venue;
-    notifyListeners();
-  }
-
-  void venueidlistEmpty() {
-    _lstvenueid = [];
-  }
-
-  void venueidincrement(int venue) {
-    _lstvenueid.add(venue);
-    notifyListeners();
-  }
-
-  void channelIncrement(String channel) {
-    _lstchannel.add(channel);
-    notifyListeners();
-  }
-
-  void cameraIncrement(Camera camera) {
-    _lstCamera.add(camera);
-    notifyListeners();
-  }
-
-  void cameralist(List<Camera> camera) {
-    _lstCamera = camera;
-    notifyListeners();
-  }
-
-  void cameralistEmpty() {
-    _lstCamera = [];
   }
 }

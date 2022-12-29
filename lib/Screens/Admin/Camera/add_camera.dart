@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:live_streaming/repo/camera_api.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
+import 'package:live_streaming/repo/api_status.dart';
+import 'package:live_streaming/repo/camera_service.dart';
 import 'package:live_streaming/view_models/camera_view_model.dart';
 import 'package:live_streaming/view_models/venue_view_model.dart';
 import 'package:live_streaming/widget/mybutton.dart';
@@ -111,20 +112,20 @@ Future<dynamic> add_camera(
                           .selectedchannel
                           .toString(),
                     );
-                    CameraApi api = CameraApi();
-                    String res = await api.post(c);
 
-                    if (res == "okay") {
+                    var res = await CameraServies.post(c);
+
+                    if (res is Success) {
                       Navigator.pop(context);
                       Provider.of<CameraViewModel>(context, listen: false)
                           .getCameraData();
 
                       ScaffoldMessenger.of(context).showSnackBar(
                           snack_bar("Camera Added Successfully...", true));
-                    } else {
+                    } else if (res is Failure) {
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
-                          snack_bar("Something Went Wrong...", false));
+                          snack_bar(res.errorResponse.toString(), false));
                     }
                     Navigator.pop(context);
                   } catch (e) {

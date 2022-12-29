@@ -25,56 +25,70 @@ class DVRDetails extends StatelessWidget {
     DVRViewModel dvrViewModel = context.watch<DVRViewModel>();
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            backgroundColor: backgroundColor,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Column(
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.width * 0.3,
-                        right: MediaQuery.of(context).size.width / 20,
-                        left: MediaQuery.of(context).size.width / 20,
-                      ),
-                      child: CupertinoSearchTextField(
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                        onChanged: (value) {
-                          // SearchMutation(value);
-                        },
-                        decoration: BoxDecoration(
-                          color: backgroundColorLight,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      )),
-                  const SizedBox(
-                    height: 10,
-                  )
+      body: DefaultTabController(
+        length: 3,
+        child: NestedScrollView(
+          physics: const BouncingScrollPhysics(),
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              backgroundColor: backgroundColor,
+              bottom: const TabBar(
+                tabs: [
+                  Tab(
+                    icon: Icon(Icons.dvr),
+                    text: "DVR",
+                  ),
+                  Tab(icon: Icon(Icons.person), text: "Teacher"),
+                  Tab(icon: Icon(Icons.video_collection), text: "Recordings"),
                 ],
               ),
+              expandedHeight: 130,
+              automaticallyImplyLeading: false,
+              snap: true,
+              pinned: true,
+              floating: true,
+              title: Row(
+                children: [
+                  Text(
+                    "DVR Details",
+                    style:
+                        GoogleFonts.poppins(fontSize: 30, color: Colors.black),
+                  ),
+                ],
+              ),
+              elevation: 0,
             ),
-            expandedHeight: 130,
-            automaticallyImplyLeading: false,
-            snap: true,
-            pinned: true,
-            floating: true,
-            title: Row(
-              children: [
-                Text(
-                  "DVR Details",
-                  style: GoogleFonts.poppins(fontSize: 30, color: Colors.black),
+          ],
+          body: TabBarView(children: [
+            CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),
+                  child: CupertinoSearchTextField(
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    onChanged: (value) {
+                      // SearchMutation(value);
+                    },
+                    decoration: BoxDecoration(
+                      color: backgroundColorLight,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            elevation: 0,
-          ),
-          SliverToBoxAdapter(
-              child: _ui(dvrViewModel, ip, host, channel, pass, name))
-        ],
+              ),
+              SliverToBoxAdapter(
+                child: _ui(dvrViewModel, ip, host, channel, pass, name),
+              ),
+            ]),
+            _ui(dvrViewModel, ip, host, channel, pass, name),
+            SliverToBoxAdapter(
+              child: _ui(dvrViewModel, ip, host, channel, pass, name),
+            )
+          ]),
+        ),
       ),
     );
   }
