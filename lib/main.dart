@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Screens/bottomnav.dart';
 import 'package:live_streaming/view_models/dvr_view_model.dart';
+import 'package:live_streaming/view_models/venue_view_model.dart';
 import 'package:provider/provider.dart';
 import 'Model/Admin/ip.dart';
 import 'Screens/Admin/onboding/onboding_screen.dart';
@@ -17,7 +18,7 @@ Connect() {
   try {
     NetworkIP.Connect();
   } catch (e) {
-    print(e);
+    //
   }
 }
 
@@ -47,7 +48,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var title = 'MEYE PRO';
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => DVRViewModel())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => DVRViewModel()),
+        ChangeNotifierProvider(create: (_) => VenueViewModel())
+      ],
       child: MaterialApp.router(
         routerConfig: _router,
         debugShowCheckedModeBanner: false,

@@ -8,466 +8,390 @@ import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/Screens/Admin/Camera/add_camera.dart';
 import 'package:live_streaming/Screens/Admin/Camera/delete_camera.dart';
 import 'package:live_streaming/Screens/Admin/Camera/update_camera.dart';
+import 'package:live_streaming/view_models/camera_view_model.dart';
+import 'package:live_streaming/view_models/venue_view_model.dart';
+import 'package:live_streaming/widget/components/apploading.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
-import '../../../Bloc/CameraDetailsBloc.dart';
-import '../../../Model/Admin/camera.dart';
 import '../../../view_models/dvr_view_model.dart';
+import '../../../widget/components/errormessage.dart';
 
-class CameraDetails extends StatefulWidget {
+class CameraDetails extends StatelessWidget {
   CameraDetails({super.key, required this.index});
   int index;
   @override
-  State<CameraDetails> createState() => _CameraDetailsState();
-}
-
-class _CameraDetailsState extends State<CameraDetails> {
-  final cameradetailbloc = CameraDetailsBloc();
-  TextEditingController room = TextEditingController();
-  TextEditingController no = TextEditingController();
-
-  @override
-  void initState() {
-    cameradetailbloc.id = Provider.of<DVRViewModel>(context, listen: false)
-        .lstDVR[widget.index]
-        .id;
-    cameradetailbloc.context = context;
-    cameradetailbloc.eventsinkCameraDetails.add(CameraDetailsAction.Fetch);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<DVRViewModel>(context);
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            foregroundColor: shadowColorDark,
-            backgroundColor: backgroundColor,
-            snap: false,
-            pinned: true,
-            floating: false,
-            title: Text(
-              "Details",
-              style: GoogleFonts.poppins(fontSize: 25, color: shadowColorDark),
-            ),
-            elevation: 0,
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: containerColor,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 3,
-                              blurRadius: 7,
-                              offset: const Offset(0, 7),
-                              color: Colors.grey.withOpacity(0.5))
-                        ]),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    TextEditingController room = TextEditingController();
+    TextEditingController no = TextEditingController();
+    final controller = Provider.of<DVRViewModel>(context, listen: false);
+    return ChangeNotifierProvider(
+        create: (context) => CameraViewModel(controller.lstDVR[index]),
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          body: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverAppBar(
+                foregroundColor: shadowColorDark,
+                backgroundColor: backgroundColor,
+                snap: false,
+                pinned: true,
+                floating: false,
+                title: Text(
+                  "Details",
+                  style:
+                      GoogleFonts.poppins(fontSize: 25, color: shadowColorDark),
+                ),
+                elevation: 0,
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: containerColor,
+                            borderRadius: BorderRadius.circular(10.0),
+                            boxShadow: [
+                              BoxShadow(
+                                  spreadRadius: 3,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 7),
+                                  color: Colors.grey.withOpacity(0.5))
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
                             children: [
-                              Text(
-                                "Host",
-                                style: GoogleFonts.bebasNeue(fontSize: 25),
-                              ),
-                              Text(
-                                controller.lstDVR[widget.index].host!,
-                                style: GoogleFonts.bebasNeue(
-                                    fontSize: 25, color: Colors.grey),
-                              ),
+                              mainCardRow(
+                                  "Name", controller.lstDVR[index].name!),
+                              mainCardRow(
+                                  "Host", controller.lstDVR[index].host!),
+                              mainCardRow("IP", controller.lstDVR[index].ip!),
+                              mainCardRow("Password",
+                                  controller.lstDVR[index].password!),
+                              mainCardRow(
+                                  "Channel", controller.lstDVR[index].channel!),
                             ],
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "IP",
-                                style: GoogleFonts.bebasNeue(fontSize: 25),
-                              ),
-                              Text(
-                                controller.lstDVR[widget.index].ip!,
-                                style: GoogleFonts.bebasNeue(
-                                    fontSize: 25, color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Password",
-                                style: GoogleFonts.bebasNeue(fontSize: 25),
-                              ),
-                              Text(
-                                controller.lstDVR[widget.index].password!,
-                                style: GoogleFonts.bebasNeue(
-                                    fontSize: 25, color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Channel",
-                                style: GoogleFonts.bebasNeue(fontSize: 25),
-                              ),
-                              Text(
-                                controller.lstDVR[widget.index].channel!,
-                                style: GoogleFonts.bebasNeue(
-                                    fontSize: 25, color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CupertinoSearchTextField(
-                    style: const TextStyle(
-                      color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CupertinoSearchTextField(
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
+                        onChanged: (value) {
+                          // CameraSearchMutation(value);
+                        },
+                        decoration: BoxDecoration(
+                          color: backgroundColorLight,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
                     ),
-                    onChanged: (value) {
-                      // CameraSearchMutation(value);
-                    },
-                    decoration: BoxDecoration(
-                      color: backgroundColorLight,
-                      borderRadius: BorderRadius.circular(15),
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
+                    Consumer<CameraViewModel>(
+                      builder: (context, provider, child) =>
+                          Camera_Details_List(
+                              context, controller, room, no, provider),
+                    )
+                  ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Camera_Details_List(controller, room, no)
-              ],
+              ),
+            ],
+          ),
+          floatingActionButton: Consumer<CameraViewModel>(
+            builder: (context, provider, child) => FloatingActionButton(
+              onPressed: () async {
+                List<DropdownMenuItem<String>> channelItems = [];
+                if (provider.lstchannel.isNotEmpty) {
+                  Provider.of<VenueViewModel>(context, listen: false)
+                      .selectedchannel = provider.lstchannel.first;
+                  for (String i in provider.lstchannel) {
+                    channelItems.add(
+                      DropdownMenuItem(value: i, child: Text(i)),
+                    );
+                  }
+                  List<DropdownMenuItem<Venue>> venueItems = [];
+                  if (Provider.of<VenueViewModel>(context, listen: false)
+                      .lstvenue
+                      .isNotEmpty) {
+                    Provider.of<VenueViewModel>(context, listen: false)
+                            .selectedvenue =
+                        Provider.of<VenueViewModel>(context, listen: false)
+                            .lstvenue[0];
+
+                    for (Venue i
+                        in Provider.of<VenueViewModel>(context, listen: false)
+                            .lstvenue) {
+                      venueItems.add(
+                        DropdownMenuItem(value: i, child: Text(i.name!)),
+                      );
+                    }
+                    add_camera(context, controller.lstDVR[index].id!,
+                        venueItems, channelItems);
+                  }
+                } else {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(snack_bar("No Channel Left...", false));
+                }
+              },
+              backgroundColor: primaryColor,
+              foregroundColor: containerColor,
+              child: const Icon(
+                Icons.add_a_photo_outlined,
+              ),
             ),
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          List<DropdownMenuItem<String>> channelItems = [];
-          if (controller.lstchannel.isNotEmpty) {
-            controller.channel = controller.lstchannel.first;
-            for (String i in controller.lstchannel) {
-              channelItems.add(
-                DropdownMenuItem(value: i, child: Text(i)),
-              );
-            }
-            List<DropdownMenuItem<Venue>> venueItems = [];
-            if (controller.lstvenue.isNotEmpty) {
-              controller.venue = controller.lstvenue[0].name;
-              controller.venueid = controller.lstvenue[0].id;
-              controller.v = controller.lstvenue[0];
-              for (Venue i in controller.lstvenue) {
-                venueItems.add(
-                  DropdownMenuItem(value: i, child: Text(i.name)),
-                );
-              }
-              add_camera(context, controller.lstDVR[widget.index].id!,
-                  venueItems, channelItems, cameradetailbloc);
-            }
-          } else {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(snack_bar("No Channel Left...", false));
-          }
-        },
-        backgroundColor: primaryColor,
-        foregroundColor: containerColor,
-        child: const Icon(
-          Icons.add_a_photo_outlined,
+        ));
+  }
+
+  Row mainCardRow(String righttext, String lefttext) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          righttext,
+          style: GoogleFonts.bebasNeue(fontSize: 25),
         ),
-      ),
+        Text(
+          lefttext,
+          style: GoogleFonts.bebasNeue(fontSize: 25, color: Colors.grey),
+        ),
+      ],
     );
   }
 
-  StreamBuilder<List<Camera>> Camera_Details_List(DVRViewModel controller,
-      TextEditingController room, TextEditingController no) {
-    return StreamBuilder<List<Camera>>(
-        stream: cameradetailbloc.streamCameraDetails,
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            return snapshot.data!.isEmpty
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    child: Center(
-                        child: Text(
-                      'No Data',
-                      style: GoogleFonts.bebasNeue(fontSize: 40),
-                    )))
-                : Consumer<DVRViewModel>(
-                    builder: (context, controller, child) => Wrap(
-                        direction: Axis.horizontal,
-                        children: controller.lstCamera
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                              offset: const Offset(0, 7),
-                                              blurRadius: 7,
-                                              spreadRadius: 3,
-                                              color:
-                                                  Colors.grey.withOpacity(0.5))
-                                        ],
-                                        color: containerColor,
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0, top: 6.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Room",
-                                                style: GoogleFonts.bebasNeue(
-                                                    fontSize: 25),
-                                              ),
-                                              Text(
-                                                  controller.lstvenue
-                                                      .where((element) =>
-                                                          element.id == e.vid)
-                                                      .first
-                                                      .name
-                                                      .toString(),
-                                                  style: GoogleFonts.bebasNeue(
-                                                      fontSize: 25)),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Channel",
-                                                  style: GoogleFonts.bebasNeue(
-                                                      fontSize: 25)),
-                                              Text(e.no.toString(),
-                                                  style: GoogleFonts.bebasNeue(
-                                                      fontSize: 25)),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft:
-                                                      Radius.circular(12.0),
-                                                  topRight:
-                                                      Radius.circular(12.0)),
-                                              color: primaryColor),
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.01,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  InkWell(
-                                                      onTap: () {
-                                                        List<
-                                                                DropdownMenuItem<
-                                                                    String>>
-                                                            channelItems = [];
-                                                        List<
-                                                                DropdownMenuItem<
-                                                                    Venue>>
-                                                            venueItems = [];
-                                                        if (controller
-                                                            .lstchannel
-                                                            .contains(e.no)) {
-                                                        } else {
-                                                          controller.lstchannel
-                                                              .add(e.no
-                                                                  .toString());
-                                                        }
+  Widget Camera_Details_List(
+    BuildContext context,
+    DVRViewModel controller,
+    TextEditingController room,
+    TextEditingController no,
+    CameraViewModel cameraViewModel,
+  ) {
+    if (cameraViewModel.loading) {
+      return apploading();
+    } else if (cameraViewModel.userError != null) {
+      return ErrorMessage(cameraViewModel.userError!.message.toString());
+    } else if (Provider.of<VenueViewModel>(context).lstvenue.isEmpty) {
+      return apploading();
+    } else if (cameraViewModel.lstCamera.isEmpty) {
+      return Center(
+          child: Text(
+        "No Channel Added",
+        style: GoogleFonts.bebasNeue(fontSize: 30),
+      ));
+    }
+    return Wrap(
+        direction: Axis.horizontal,
+        children: cameraViewModel.lstCamera
+            .map((e) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              offset: const Offset(0, 7),
+                              blurRadius: 7,
+                              spreadRadius: 3,
+                              color: Colors.grey.withOpacity(0.5))
+                        ],
+                        color: containerColor,
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, right: 8.0, top: 6.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Room",
+                                style: GoogleFonts.bebasNeue(fontSize: 25),
+                              ),
+                              Text(
+                                  Provider.of<VenueViewModel>(context)
+                                      .lstvenue
+                                      .where((element) => element.id == e.vid)
+                                      .first
+                                      .name
+                                      .toString(),
+                                  style: GoogleFonts.bebasNeue(fontSize: 25)),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Channel",
+                                  style: GoogleFonts.bebasNeue(fontSize: 25)),
+                              Text(e.no.toString(),
+                                  style: GoogleFonts.bebasNeue(fontSize: 25)),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12.0),
+                                  topRight: Radius.circular(12.0)),
+                              color: primaryColor),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        List<DropdownMenuItem<String>>
+                                            channelItems = [];
+                                        List<DropdownMenuItem<Venue>>
+                                            venueItems = [];
+                                        if (cameraViewModel.lstchannel
+                                            .contains(e.no)) {
+                                        } else {
+                                          cameraViewModel.lstchannel
+                                              .add(e.no.toString());
+                                        }
 
-                                                        String value =
-                                                            e.no.toString();
+                                        String value = e.no.toString();
 
-                                                        controller.channel =
-                                                            controller
-                                                                .lstchannel
-                                                                .last;
-                                                        channelItems.add(
-                                                          DropdownMenuItem(
-                                                              value: controller
-                                                                  .channel,
-                                                              child: Text(
-                                                                  controller
-                                                                      .channel!)),
-                                                        );
-
-                                                        for (int i = 0;
-                                                            i <
-                                                                controller
-                                                                        .lstchannel
-                                                                        .length -
-                                                                    1;
-                                                            i++) {
-                                                          channelItems.add(
-                                                            DropdownMenuItem(
-                                                                value: controller
-                                                                        .lstchannel[
-                                                                    i],
-                                                                child: Text(
-                                                                    controller
-                                                                            .lstchannel[
-                                                                        i])),
-                                                          );
-                                                        }
-                                                        Venue v = controller
-                                                            .lstvenue
-                                                            .where((element) =>
-                                                                element.id ==
-                                                                e.vid)
-                                                            .first;
-
-                                                        controller.v = v;
-                                                        List<Venue> templst =
-                                                            [];
-                                                        for (int i = 0;
-                                                            i <
-                                                                controller
-                                                                    .lstvenue
-                                                                    .length;
-                                                            i++) {
-                                                          if (controller
-                                                                      .lstvenue[
-                                                                  i] !=
-                                                              v) {
-                                                            templst.add(controller
-                                                                .lstvenue[i]);
-                                                          }
-                                                        }
-                                                        venueItems.add(
-                                                          DropdownMenuItem(
-                                                              value: v,
-                                                              child:
-                                                                  Text(v.name)),
-                                                        );
-
-                                                        for (int i = 0;
-                                                            i < templst.length;
-                                                            i++) {
-                                                          venueItems.add(
-                                                            DropdownMenuItem(
-                                                                value:
-                                                                    templst[i],
-                                                                child: Text(
-                                                                    templst[i]
-                                                                        .name)),
-                                                          );
-                                                        }
-
-                                                        Camera c = Camera(
-                                                            id: e.id,
-                                                            did: e.did,
-                                                            vid: e.vid,
-                                                            no: e.no);
-                                                        controller.oldcamera =
-                                                            c;
-                                                        room.text =
-                                                            e.vid.toString();
-                                                        update_camera(
-                                                            context,
-                                                            e.id!,
-                                                            controller
-                                                                .lstDVR[widget
-                                                                    .index]
-                                                                .id!,
-                                                            venueItems,
-                                                            channelItems,
-                                                            e.no!,
-                                                            value,
-                                                            cameradetailbloc);
-                                                      },
-                                                      child: const Icon(
-                                                        Icons.edit,
-                                                        color: containerColor,
-                                                      )),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      delete_camera(
+                                        Provider.of<VenueViewModel>(context,
+                                                    listen: false)
+                                                .selectedchannel =
+                                            cameraViewModel.lstchannel.last;
+                                        channelItems.add(
+                                          DropdownMenuItem(
+                                              value:
+                                                  Provider.of<VenueViewModel>(
                                                           context,
-                                                          e.id!,
-                                                          controller
-                                                              .lstDVR[
-                                                                  widget.index]
-                                                              .id!,
-                                                          e.vid!,
-                                                          e.no.toString(),
-                                                          cameradetailbloc);
-                                                    },
-                                                    child: const Icon(
-                                                      Icons.delete,
-                                                      color: Colors.red,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.013,
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                                          listen: false)
+                                                      .selectedchannel,
+                                              child: Text(
+                                                  Provider.of<VenueViewModel>(
+                                                          context,
+                                                          listen: false)
+                                                      .selectedchannel!)),
+                                        );
+
+                                        for (int i = 0;
+                                            i <
+                                                cameraViewModel
+                                                        .lstchannel.length -
+                                                    1;
+                                            i++) {
+                                          channelItems.add(
+                                            DropdownMenuItem(
+                                                value: cameraViewModel
+                                                    .lstchannel[i],
+                                                child: Text(cameraViewModel
+                                                    .lstchannel[i])),
+                                          );
+                                        }
+                                        Venue v = Provider.of<VenueViewModel>(
+                                                context,
+                                                listen: false)
+                                            .lstvenue
+                                            .where((element) =>
+                                                element.id == e.vid)
+                                            .first;
+
+                                        Provider.of<VenueViewModel>(context,
+                                                listen: false)
+                                            .selectedvenue = v;
+                                        List<Venue> templst = [];
+                                        for (int i = 0;
+                                            i <
+                                                Provider.of<VenueViewModel>(
+                                                        context,
+                                                        listen: false)
+                                                    .lstvenue
+                                                    .length;
+                                            i++) {
+                                          if (Provider.of<VenueViewModel>(
+                                                      context,
+                                                      listen: false)
+                                                  .lstvenue[i] !=
+                                              v) {
+                                            templst.add(
+                                                Provider.of<VenueViewModel>(
+                                                        context,
+                                                        listen: false)
+                                                    .lstvenue[i]);
+                                          }
+                                        }
+                                        venueItems.add(
+                                          DropdownMenuItem(
+                                              value: v, child: Text(v.name!)),
+                                        );
+
+                                        for (int i = 0;
+                                            i < templst.length;
+                                            i++) {
+                                          venueItems.add(
+                                            DropdownMenuItem(
+                                                value: templst[i],
+                                                child: Text(templst[i].name!)),
+                                          );
+                                        }
+
+                                        update_camera(
+                                            context,
+                                            e.id!,
+                                            controller.lstDVR[index].id!,
+                                            venueItems,
+                                            channelItems,
+                                            e.no!,
+                                            value,
+                                            cameraViewModel);
+                                      },
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: containerColor,
+                                      )),
+                                  InkWell(
+                                    onTap: () {
+                                      delete_camera(
+                                          context,
+                                          e.id!,
+                                          controller.lstDVR[index].id!,
+                                          e.vid!,
+                                          e.no.toString());
+                                    },
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
                                     ),
-                                  ),
-                                ))
-                            .toList()));
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.30,
-                ),
-                const Center(child: CircularProgressIndicator()),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
-          } else {
-            return const Center(child: Text('No Data'));
-          }
-        }));
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.013,
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ))
+            .toList());
   }
 }

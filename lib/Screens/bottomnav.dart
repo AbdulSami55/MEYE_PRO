@@ -14,7 +14,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
-  final List _screens = [const Home(), DVRDetails()];
+  final List _screens = [const Home(), const DVRDetails()];
 
   void _updateIndex(int value) {
     setState(() {

@@ -4,75 +4,85 @@ import 'package:flutter/cupertino.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
 import 'package:live_streaming/Model/user_error.dart';
 import 'package:live_streaming/repo/api_status.dart';
-import 'package:live_streaming/repo/dvr_services.dart';
-import 'package:live_streaming/view_models/venue_view_model.dart';
+import 'package:live_streaming/repo/camera_service.dart';
 
 import '../Model/Admin/camera.dart';
 import '../Model/Admin/dvr.dart';
 
-class DVRViewModel extends ChangeNotifier {
+class CameraViewModel extends ChangeNotifier {
   bool _isloading = false;
-  var _lstDVR = <DVR>[];
   var _lstchannel = <String>[];
   var _lstvenue = <Venue>[];
   var _lstvenueid = <int>[];
   var _lstCamera = <Camera>[];
-  String? channel;
+
   String? venue;
   Venue? v;
   int? venueid;
   Camera? oldcamera;
   UserError? _userError;
-  DVR _adddvr = DVR();
+  int? did;
+  Camera _addcamera = Camera();
 
   bool get loading => _isloading;
-  List<DVR> get lstDVR => _lstDVR;
   UserError? get userError => _userError;
   List<String> get lstchannel => _lstchannel;
   List<Camera> get lstCamera => _lstCamera;
   List<Venue> get lstvenue => _lstvenue;
   List<int> get lstvenueid => _lstvenueid;
-  DVR get adddvr => _adddvr;
+  Camera get addcamera => _addcamera;
 
-  DVRViewModel() {
-    getDvrData();
+  CameraViewModel(DVR dvr) {
+    did = dvr.id;
+    addchannels(dvr);
+    getCameraData();
   }
   setloading(bool loading) async {
     _isloading = loading;
     notifyListeners();
   }
 
-  void setDvrList(List<DVR> lst) {
-    _lstDVR = lst;
+  void setCameraList(List<Camera> lst) {
+    _lstCamera = lst;
+    for (var i in lst) {
+      if (_lstchannel.contains(i.no)) {
+        _lstchannel.remove(i.no);
+      }
+    }
+  }
+
+  void addchannels(DVR dvr) {
+    int channel = int.parse(dvr.channel.toString());
+    for (int i = 1; i <= channel; i++) {
+      _lstchannel.add(i.toString());
+    }
   }
 
   void setUserError(UserError userError) {
     _userError = userError;
   }
 
-  void addDvr(DVR dvr) {
+  void addDvr(Camera camera) {
     if (isValid()) {
-      _lstDVR.add(dvr);
-      dvr = DVR();
+      _lstCamera.add(camera);
+      camera = Camera();
     }
   }
 
   isValid() {
-    if (adddvr.channel == null ||
-        adddvr.host == null ||
-        adddvr.ip == null ||
-        adddvr.name == null) {
+    if (addcamera.did == null ||
+        addcamera.vid == null ||
+        addcamera.no == null) {
       return false;
     }
     return true;
   }
 
-  getDvrData() async {
+  getCameraData() async {
     setloading(true);
-    var response = await DVRServices.getDvr();
+    var response = await CameraServies.getCamera(did!);
     if (response is Success) {
-      setDvrList(response.response as List<DVR>);
-      VenueViewModel().getVenueData();
+      setCameraList(response.response as List<Camera>);
     }
     if (response is Failure) {
       UserError userError =
@@ -102,11 +112,6 @@ class DVRViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void dvrlist(List<DVR> dvr) {
-    _lstDVR = dvr;
-    notifyListeners();
-  }
-
   void channellist(List<String> channel) {
     _lstchannel = channel;
     notifyListeners();
@@ -115,10 +120,6 @@ class DVRViewModel extends ChangeNotifier {
   void venuelist(List<Venue> venue) {
     _lstvenue = venue;
     notifyListeners();
-  }
-
-  void dvrlistEmpty() {
-    _lstDVR = [];
   }
 
   void channelEmpty() {

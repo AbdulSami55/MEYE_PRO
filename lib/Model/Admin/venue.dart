@@ -1,24 +1,27 @@
-// ignore_for_file: file_names
+import 'dart:convert';
+
+List<Venue> venueFromJson(String str) =>
+    List<Venue>.from(json.decode(str)["data"].map((x) => Venue.fromJson(x)));
+
+String venueToJson(List<Venue> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Venue {
-  final int id;
-  final String name;
+  Venue({
+    this.id,
+    this.name,
+  });
 
-  Venue(
-      {required this.id,
-      required this.name});
+  int? id;
+  String? name;
 
-  factory Venue.fromjson(Map<String, dynamic> json) {
-    return Venue(
+  factory Venue.fromJson(Map<String, dynamic> json) => Venue(
         id: json["id"],
         name: json["name"],
-    );
-  }
+      );
 
-  Map tomap() {
-    Map m = {};
-    m['id'] = id;
-    m['name'] = name;
-    return m;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+      };
 }

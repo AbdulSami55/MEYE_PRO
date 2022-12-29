@@ -3,15 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/repo/camera_api.dart';
-import 'package:live_streaming/Bloc/CameraDetailsBloc.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
+import 'package:live_streaming/view_models/venue_view_model.dart';
 import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../Model/Admin/camera.dart';
-import '../../../view_models/dvr_view_model.dart';
+import '../../../view_models/camera_view_model.dart';
 
 Future<dynamic> update_camera(
     BuildContext context,
@@ -21,7 +21,7 @@ Future<dynamic> update_camera(
     List<DropdownMenuItem<String>> channelItems,
     String no,
     String value,
-    CameraDetailsBloc cameraDetailsBloc) {
+    CameraViewModel cameraViewModel) {
   return showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
@@ -64,9 +64,7 @@ Future<dynamic> update_camera(
                     ),
                     IconButton(
                         onPressed: () {
-                          Provider.of<DVRViewModel>(context, listen: false)
-                              .lstchannel
-                              .remove(value);
+                          cameraViewModel.lstchannel.remove(value);
                           Navigator.pop(context);
                         },
                         icon: const Icon(Icons.cancel)),
@@ -75,7 +73,7 @@ Future<dynamic> update_camera(
                 const SizedBox(
                   height: 20,
                 ),
-                Consumer<DVRViewModel>(
+                Consumer<VenueViewModel>(
                   builder: (context, controller, status) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -84,7 +82,7 @@ Future<dynamic> update_camera(
                       ),
                       DropdownButton<Venue>(
                         isExpanded: true,
-                        value: Provider.of<DVRViewModel>(context).v,
+                        value: controller.selectedvenue,
                         items: venueItems,
                         onChanged: (value) {
                           controller.newVenue(value!);
@@ -96,7 +94,7 @@ Future<dynamic> update_camera(
                 const SizedBox(
                   height: 20,
                 ),
-                Consumer<DVRViewModel>(
+                Consumer<VenueViewModel>(
                   builder: (context, controller, status) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -105,7 +103,7 @@ Future<dynamic> update_camera(
                       ),
                       DropdownButton(
                         isExpanded: true,
-                        value: controller.channel,
+                        value: controller.selectedchannel,
                         items: channelItems,
                         onChanged: (value) {
                           controller.newchannel(value.toString());
@@ -123,11 +121,11 @@ Future<dynamic> update_camera(
                     Camera c = Camera(
                       id: id,
                       did: did,
-                      vid: Provider.of<DVRViewModel>(context, listen: false)
-                          .v!
+                      vid: Provider.of<VenueViewModel>(context, listen: false)
+                          .selectedvenue!
                           .id,
-                      no: Provider.of<DVRViewModel>(context, listen: false)
-                          .channel
+                      no: Provider.of<VenueViewModel>(context, listen: false)
+                          .selectedchannel
                           .toString(),
                     );
                     CameraApi api = CameraApi();
@@ -138,11 +136,11 @@ Future<dynamic> update_camera(
                       ScaffoldMessenger.of(context).showSnackBar(
                           snack_bar("Something Went Wrong...", false));
                     } else {
+                      Provider.of<CameraViewModel>(context, listen: false)
+                          .getCameraData();
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(
                           snack_bar("Camera Updated Successfully...", true));
-                      cameraDetailsBloc.eventsinkCameraDetails
-                          .add(CameraDetailsAction.Fetch);
                     }
                     Navigator.pop(context);
                   } catch (e) {

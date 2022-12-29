@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:live_streaming/Model/Admin/ip.dart';
 
 import '../Model/Admin/camera.dart';
 import '../utilities/constants.dart';

@@ -10,8 +10,6 @@ import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
-
-import '../../../Model/user_error.dart';
 import '../../../repo/dvr_services.dart';
 import '../../../widget/mytextfield.dart';
 

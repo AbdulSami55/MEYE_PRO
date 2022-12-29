@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:live_streaming/Screens/Admin/onboding/components/sign_in_dialog.dart';
 
 class AnimatedBtn extends StatelessWidget {
   const AnimatedBtn({
     Key? key,
-    required this.press,
   }) : super(key: key);
-  final VoidCallback press;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: press,
+      onTap: () => showCustomDialog(
+        context,
+      ),
       child: SizedBox(
         height: 64,
         width: 236,

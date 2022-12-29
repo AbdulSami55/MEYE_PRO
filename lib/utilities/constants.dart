@@ -21,3 +21,5 @@ const String baseUrl = 'http://192.168.0.111:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';
+const String getcamera = '$baseUrl/api/camera-details/';
+const String getvenue = '$baseUrl/api/venue-details';

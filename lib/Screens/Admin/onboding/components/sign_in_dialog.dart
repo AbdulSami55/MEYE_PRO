@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'sign_in_form.dart';
 
-void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
+void showCustomDialog(BuildContext context) {
   showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
@@ -76,5 +76,5 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
         child: child,
       );
     },
-  ).then(onValue);
+  );
 }

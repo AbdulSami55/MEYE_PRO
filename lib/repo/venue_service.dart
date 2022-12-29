@@ -1,18 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:live_streaming/Model/Admin/venue.dart';
 import '../Model/Admin/camera.dart';
 import '../utilities/constants.dart';
 import 'api_status.dart';
 
-class CameraServies {
-  static Future<Object> post(Camera c) async {
+class VenueServies {
+  static Future<Object> post(Venue v) async {
     try {
       var response = await http.post(Uri.parse(addcameraurl),
           headers: <String, String>{
             'Content-Type': 'application/json',
           },
-          body: json.encode(c.toJson()));
+          body: json.encode(v.toJson()));
       if (response.statusCode == 200) {
         return Success(response: json.decode(response.body)["data"]);
       }
@@ -71,11 +72,11 @@ class CameraServies {
     }
   }
 
-  static Future<Object> getCamera(int did) async {
+  static Future<Object> getVenue() async {
     try {
-      var response = await http.get(Uri.parse("$getcamera$did"));
+      var response = await http.get(Uri.parse(getvenue));
       if (response.statusCode == 200) {
-        return Success(response: cameraFromJson(response.body));
+        return Success(response: venueFromJson(response.body));
       }
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Response");
     } on HttpException {

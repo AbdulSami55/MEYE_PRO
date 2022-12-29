@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:provider/provider.dart';
-import '../../../Bloc/CameraDetailsBloc.dart';
 import '../../../view_models/dvr_view_model.dart';
 import 'delete_dvr.dart';
 import 'update_dvr.dart';
@@ -14,7 +13,7 @@ import '../../../widget/components/errormessage.dart';
 import '../Camera/camera_detail.dart';
 
 class DVRDetails extends StatelessWidget {
-  DVRDetails({super.key});
+  const DVRDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -100,13 +99,11 @@ class DVRDetails extends StatelessWidget {
         itemCount: dvrViewModel.lstDVR.length,
         itemBuilder: ((context, index) => InkWell(
               onTap: () {
-                CameraDetailsBloc.index = index;
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => CameraDetails(
-                              index: index,
-                            ))));
+                Navigator.push(context, MaterialPageRoute(builder: ((context) {
+                  return CameraDetails(
+                    index: index,
+                  );
+                })));
               },
               child: Padding(
                 padding: const EdgeInsets.all(10.0),

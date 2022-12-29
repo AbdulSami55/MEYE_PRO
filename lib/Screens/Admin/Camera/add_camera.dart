@@ -3,21 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/repo/camera_api.dart';
-import 'package:live_streaming/Bloc/CameraDetailsBloc.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
+import 'package:live_streaming/view_models/camera_view_model.dart';
+import 'package:live_streaming/view_models/venue_view_model.dart';
 import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
 import '../../../Model/Admin/camera.dart';
-import '../../../view_models/dvr_view_model.dart';
 
 Future<dynamic> add_camera(
-    BuildContext context,
-    int did,
-    List<DropdownMenuItem<Venue>> venue,
-    List<DropdownMenuItem<String>> channelItems,
-    CameraDetailsBloc cameraDetailsBloc) {
+  BuildContext context,
+  int did,
+  List<DropdownMenuItem<Venue>> venue,
+  List<DropdownMenuItem<String>> channelItems,
+) {
   return showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
@@ -56,7 +56,7 @@ Future<dynamic> add_camera(
                 const SizedBox(
                   height: 20,
                 ),
-                Consumer<DVRViewModel>(
+                Consumer<VenueViewModel>(
                   builder: (context, controller, child) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -65,13 +65,10 @@ Future<dynamic> add_camera(
                       ),
                       DropdownButton<Venue>(
                         isExpanded: true,
-                        value: Provider.of<DVRViewModel>(context).v,
+                        value: controller.selectedvenue,
                         items: venue,
                         onChanged: (value) {
-                          Provider.of<DVRViewModel>(context, listen: false)
-                              .newvenueid(value!.id);
-                          Provider.of<DVRViewModel>(context, listen: false)
-                              .newVenue(value);
+                          controller.newVenue(value!);
                         },
                       ),
                     ],
@@ -80,7 +77,7 @@ Future<dynamic> add_camera(
                 const SizedBox(
                   height: 20,
                 ),
-                Consumer<DVRViewModel>(
+                Consumer<VenueViewModel>(
                   builder: (context, controller, child) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -89,11 +86,10 @@ Future<dynamic> add_camera(
                       ),
                       DropdownButton(
                         isExpanded: true,
-                        value: Provider.of<DVRViewModel>(context).channel,
+                        value: controller.selectedchannel,
                         items: channelItems,
                         onChanged: (value) {
-                          Provider.of<DVRViewModel>(context, listen: false)
-                              .newchannel(value!);
+                          controller.newchannel(value!);
                         },
                       ),
                     ],
@@ -108,10 +104,11 @@ Future<dynamic> add_camera(
                     Camera c = Camera(
                       id: 0,
                       did: did,
-                      vid: Provider.of<DVRViewModel>(context, listen: false)
-                          .venueid,
-                      no: Provider.of<DVRViewModel>(context, listen: false)
-                          .channel
+                      vid: Provider.of<VenueViewModel>(context, listen: false)
+                          .selectedvenue!
+                          .id,
+                      no: Provider.of<VenueViewModel>(context, listen: false)
+                          .selectedchannel
                           .toString(),
                     );
                     CameraApi api = CameraApi();
@@ -119,8 +116,8 @@ Future<dynamic> add_camera(
 
                     if (res == "okay") {
                       Navigator.pop(context);
-                      cameraDetailsBloc.eventsinkCameraDetails
-                          .add(CameraDetailsAction.Fetch);
+                      Provider.of<CameraViewModel>(context, listen: false)
+                          .getCameraData();
 
                       ScaffoldMessenger.of(context).showSnackBar(
                           snack_bar("Camera Added Successfully...", true));
