@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:live_streaming/Model/user_error.dart';
 import 'package:live_streaming/repo/api_status.dart';
-import 'package:live_streaming/repo/dvr_services.dart';
+import 'package:live_streaming/repo/Admin/dvr_services.dart';
 import 'package:live_streaming/view_models/venue_view_model.dart';
 import '../Model/Admin/dvr.dart';
 

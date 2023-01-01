@@ -45,6 +45,7 @@ dependencies:
   flutter_svg: ^1.1.6
   provider: ^6.0.5
   go_router: ^6.0.0
+
  
   
 

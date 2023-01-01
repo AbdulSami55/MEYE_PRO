@@ -2,15 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:live_streaming/repo/api_status.dart';
-import 'package:live_streaming/repo/camera_service.dart';
+import 'package:live_streaming/repo/Admin/camera_service.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:provider/provider.dart';
 import '../../../Model/Admin/camera.dart';
 import '../../../view_models/camera_view_model.dart';
 import '../../../widget/snack_bar.dart';
 
-Future<dynamic> delete_camera(
-    BuildContext context, int id, int did, int vid, String no) {
+Future<dynamic> delete_camera(BuildContext context, int id, int did, int vid,
+    String no, CameraViewModel cameraViewModel) {
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -30,8 +30,7 @@ Future<dynamic> delete_camera(
                 var res = await CameraServies.delete(c);
                 Navigator.pop(context);
                 if (res is Success) {
-                  Provider.of<CameraViewModel>(context, listen: false)
-                      .getCameraData();
+                  cameraViewModel.getCameraData();
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                       snack_bar("DVR Deleted Successfully...", true));

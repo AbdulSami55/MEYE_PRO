@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:live_streaming/Screens/Admin/Teacher/teacher_details.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:provider/provider.dart';
 import '../../../view_models/dvr_view_model.dart';
@@ -50,7 +51,7 @@ class DVRDetails extends StatelessWidget {
               title: Row(
                 children: [
                   Text(
-                    "DVR Details",
+                    "Details",
                     style:
                         GoogleFonts.poppins(fontSize: 30, color: Colors.black),
                   ),
@@ -83,10 +84,8 @@ class DVRDetails extends StatelessWidget {
                 child: _ui(dvrViewModel, ip, host, channel, pass, name),
               ),
             ]),
-            _ui(dvrViewModel, ip, host, channel, pass, name),
-            SliverToBoxAdapter(
-              child: _ui(dvrViewModel, ip, host, channel, pass, name),
-            )
+            const TeacherDetails(),
+            _ui(dvrViewModel, ip, host, channel, pass, name)
           ]),
         ),
       ),
@@ -122,6 +121,7 @@ class DVRDetails extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
+                  height: MediaQuery.of(context).size.height * 0.265,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: [
@@ -131,17 +131,24 @@ class DVRDetails extends StatelessWidget {
                             offset: const Offset(0, 7),
                             color: Colors.grey.withOpacity(0.5))
                       ],
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(20.0))),
+                      borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0))),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        const Icon(
-                          Icons.camera_alt_rounded,
-                          size: 50,
+                        Container(
+                          width: MediaQuery.of(context).size.height * 0.12,
+                          height: MediaQuery.of(context).size.height * 0.265,
+                          decoration: const BoxDecoration(
+                              color: backgroundColor2,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(99))),
+                          child: const Icon(
+                            Icons.camera_alt_rounded,
+                            color: backgroundColorLight,
+                            size: 50,
+                          ),
                         ),
                         const SizedBox(
                           width: 10,
@@ -150,14 +157,14 @@ class DVRDetails extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(
-                              height: 10,
+                              height: 15,
                             ),
                             Text(
                               'Name: ${dvrViewModel.lstDVR[index].name}',
                               style: GoogleFonts.bebasNeue(fontSize: 25),
                             ),
                             Text(
-                              'IP: ${dvrViewModel.lstDVR[index].ip}\nPassword: ${dvrViewModel.lstDVR[index].password}\nChannel: ${dvrViewModel.lstDVR[index].channel}\n',
+                              'IP: ${dvrViewModel.lstDVR[index].ip}\nPassword: ${dvrViewModel.lstDVR[index].password}\nChannel: ${dvrViewModel.lstDVR[index].channel}',
                               style: GoogleFonts.bebasNeue(
                                   fontSize: 25, color: Colors.grey[500]),
                             ),
@@ -167,6 +174,8 @@ class DVRDetails extends StatelessWidget {
                           width: 30,
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             IconButton(
                                 onPressed: () {
@@ -219,6 +228,14 @@ class DVRDetails extends StatelessWidget {
                             ),
                           ],
                         ),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.24,
+                          width: 4,
+                          decoration: const BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(99.0))),
+                        )
                       ]),
                 ),
               ),

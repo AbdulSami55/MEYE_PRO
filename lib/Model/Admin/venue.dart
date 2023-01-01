@@ -6,6 +6,8 @@ List<Venue> venueFromJson(String str) =>
 String venueToJson(List<Venue> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+Venue singlevenueFromJson(Map<String, dynamic> mp) => Venue.fromJson(mp);
+
 class Venue {
   Venue({
     this.id,

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
 import 'package:live_streaming/Model/user_error.dart';
 import 'package:live_streaming/repo/api_status.dart';
-import 'package:live_streaming/repo/camera_service.dart';
+import 'package:live_streaming/repo/Admin/camera_service.dart';
 
 import '../Model/Admin/camera.dart';
 import '../Model/Admin/dvr.dart';

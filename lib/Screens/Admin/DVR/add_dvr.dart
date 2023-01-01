@@ -10,7 +10,7 @@ import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
-import '../../../repo/dvr_services.dart';
+import '../../../repo/Admin/dvr_services.dart';
 import '../../../widget/mytextfield.dart';
 
 Future<dynamic> add_dvr(

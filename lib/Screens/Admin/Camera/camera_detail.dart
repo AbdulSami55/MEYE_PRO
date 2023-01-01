@@ -14,6 +14,7 @@ import 'package:live_streaming/widget/components/apploading.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
 import '../../../view_models/dvr_view_model.dart';
+import '../../../widget/components/appbar.dart';
 import '../../../widget/components/errormessage.dart';
 
 class CameraDetails extends StatelessWidget {
@@ -31,19 +32,7 @@ class CameraDetails extends StatelessWidget {
           body: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              SliverAppBar(
-                foregroundColor: shadowColorDark,
-                backgroundColor: backgroundColor,
-                snap: false,
-                pinned: true,
-                floating: false,
-                title: Text(
-                  "Details",
-                  style:
-                      GoogleFonts.poppins(fontSize: 25, color: shadowColorDark),
-                ),
-                elevation: 0,
-              ),
+              appbar("Details"),
               SliverToBoxAdapter(
                 child: Column(
                   children: [
@@ -372,7 +361,8 @@ class CameraDetails extends StatelessWidget {
                                           e.id!,
                                           controller.lstDVR[index].id!,
                                           e.vid!,
-                                          e.no.toString());
+                                          e.no.toString(),
+                                          cameraViewModel);
                                     },
                                     child: const Icon(
                                       Icons.delete,
