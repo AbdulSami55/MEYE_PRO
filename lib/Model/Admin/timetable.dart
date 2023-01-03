@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 TimeTable timeTableFromJson(Map<String, dynamic> mp) => TimeTable.fromJson(mp);
-
+List<TimeTable> lsttimetableFromJson(String str) => List<TimeTable>.from(
+    json.decode(str)["data"].map((x) => TimeTable.fromJson(x)));
 String timeTableToJson(TimeTable data) => json.encode(data.toJson());
 
 class TimeTable {

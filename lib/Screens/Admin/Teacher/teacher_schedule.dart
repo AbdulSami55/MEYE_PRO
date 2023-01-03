@@ -1,12 +1,8 @@
 // ignore_for_file: must_be_immutable, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:live_streaming/Model/Admin/course.dart';
 import 'package:live_streaming/Model/Admin/fulltimetable.dart';
-import 'package:live_streaming/Model/Admin/section.dart';
-import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
-import 'package:live_streaming/Model/Admin/venue.dart';
 import 'package:live_streaming/view_models/teach_view_model.dart';
 import 'package:live_streaming/view_models/timetable.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
@@ -82,7 +78,7 @@ class TeacherScheduleView extends StatelessWidget {
       return ErrorMessage(teachViewModel.userError == null
           ? timetableViewModel.userError!.message.toString()
           : teachViewModel.userError!.message.toString());
-    } else if (timetableViewModel.lsttimetable.isEmpty) {
+    } else if (timetableViewModel.lstfulltimetable.isEmpty) {
       return large_text("No Schedule Set");
     }
 

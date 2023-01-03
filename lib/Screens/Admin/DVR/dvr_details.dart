@@ -36,7 +36,9 @@ class DVRDetails extends StatelessWidget {
               bottom: const TabBar(
                 tabs: [
                   Tab(
-                    icon: Icon(Icons.dvr),
+                    icon: Icon(
+                      Icons.dvr,
+                    ),
                     text: "DVR",
                   ),
                   Tab(icon: Icon(Icons.person), text: "Teacher"),
@@ -52,8 +54,8 @@ class DVRDetails extends StatelessWidget {
                 children: [
                   Text(
                     "Details",
-                    style:
-                        GoogleFonts.poppins(fontSize: 30, color: Colors.black),
+                    style: GoogleFonts.poppins(
+                        fontSize: 30, color: shadowColorDark),
                   ),
                 ],
               ),
@@ -84,7 +86,7 @@ class DVRDetails extends StatelessWidget {
                 child: _ui(dvrViewModel, ip, host, channel, pass, name),
               ),
             ]),
-            const TeacherDetails(),
+            TeacherDetails(),
             _ui(dvrViewModel, ip, host, channel, pass, name)
           ]),
         ),

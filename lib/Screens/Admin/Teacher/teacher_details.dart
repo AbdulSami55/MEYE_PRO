@@ -1,6 +1,9 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
+import 'package:live_streaming/Screens/Admin/Schedule/freeslot.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_schedule.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +15,8 @@ import '../../../widget/textcomponents/large_text.dart';
 import '../../../widget/textcomponents/medium_text.dart';
 
 class TeacherDetails extends StatelessWidget {
-  const TeacherDetails({super.key});
-
+  TeacherDetails({super.key, this.isSchedule});
+  bool? isSchedule;
   @override
   Widget build(BuildContext context) {
     UserViewModel userViewModel = context.watch<UserViewModel>();
@@ -59,38 +62,12 @@ class TeacherDetails extends StatelessWidget {
         itemBuilder: ((context, index) {
           User user = userViewModel.lstuser[index];
           return InkWell(
-            onTap: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return Wrap(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 12.0, bottom: 12.0, left: 16.0),
-                          child: large_text("View"),
-                        ),
-                        InkWell(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => TeacherScheduleView(
-                                        user: user,
-                                      )))),
-                          child: ListTile(
-                            leading: const Icon(Icons.schedule),
-                            title: text_medium('Schedule'),
-                          ),
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: const Icon(Icons.video_collection),
-                          title: text_medium('Recordings'),
-                        ),
-                      ],
-                    );
-                  });
-            },
+            onTap: () => isSchedule == true
+                ? Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => FreeSlotView(user: user))))
+                : bottomSheet(context, user),
             child: Column(
               children: [
                 ListTile(
@@ -105,5 +82,38 @@ class TeacherDetails extends StatelessWidget {
             ),
           );
         }));
+  }
+
+  Future<dynamic> bottomSheet(BuildContext context, User user) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Wrap(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 12.0, bottom: 12.0, left: 16.0),
+                child: large_text("View"),
+              ),
+              InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => TeacherScheduleView(
+                              user: user,
+                            )))),
+                child: ListTile(
+                  leading: const Icon(Icons.schedule),
+                  title: text_medium('Schedule'),
+                ),
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.video_collection),
+                title: text_medium('Recordings'),
+              ),
+            ],
+          );
+        });
   }
 }

@@ -28,3 +28,4 @@ const String getuser = '$baseUrl/api/user-details';
 const String getuserimage = '$baseUrl/api/get-user-image/UserImages/';
 const String gettimetableurl = '$baseUrl/api/timetable-details/';
 const String getteachurl = '$baseUrl/api/teach-details/';
+const String gettimetable = '$baseUrl/api/get-timetable';

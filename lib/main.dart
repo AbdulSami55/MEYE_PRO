@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_details.dart';
 import 'package:live_streaming/Screens/bottomnav.dart';
+import 'package:live_streaming/view_models/Reschedule_view_model.dart';
 import 'package:live_streaming/view_models/dvr_view_model.dart';
 import 'package:live_streaming/view_models/timetable.dart';
 import 'package:live_streaming/view_models/user_view_model.dart';
@@ -41,7 +42,7 @@ final GoRouter _router = GoRouter(
         ),
         GoRoute(
             path: 'TeacherDetails',
-            builder: ((context, state) => const TeacherDetails()))
+            builder: ((context, state) => TeacherDetails()))
       ],
     ),
   ],
