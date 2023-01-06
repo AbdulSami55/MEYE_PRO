@@ -4,10 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/utilities/constants.dart';
 
-Text text_medium(String text, {Color? color}) {
+Text text_medium(String text, {Color? color, double? font}) {
   return Text(
     text,
     style: GoogleFonts.poppins(
-        fontSize: 17, textStyle: TextStyle(color: color ?? shadowColorDark)),
+        fontSize: font ?? 17,
+        textStyle: TextStyle(color: color ?? shadowColorDark)),
   );
 }

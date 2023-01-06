@@ -6,16 +6,21 @@ import '../../utilities/constants.dart';
 import '../api_status.dart';
 
 class UserServies {
-  static Future<Object> post(User u) async {
+  static Future<Object> post(User u, File file) async {
     try {
-      var response = await http.post(Uri.parse(adduser),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-          },
-          body: json.encode(u.toJson()));
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            "$adduser?id=0&uid=${u.uid}&name=${u.name}&image=0&password=${u.password}&role=${u.role}"),
+      );
+      request.files.add(await http.MultipartFile.fromPath('file', file.path));
+      var response = await request.send();
       if (response.statusCode == 200) {
-        return Success(response: json.decode(response.body)["data"]);
+        var responsed = await http.Response.fromStream(response);
+        final responseData = jsonDecode(responsed.body);
+        return Success(response: responseData["data"]);
       }
+
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Response");
     } on HttpException {
       return Failure(code: NO_INTERNET, errorResponse: 'No Internet');

@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
-import 'package:live_streaming/Screens/Admin/Schedule/reschedule.dart';
+import 'package:live_streaming/Screens/Admin/Schedule/teacher_schedule_select.dart';
 import 'package:live_streaming/view_models/Reschedule_view_model.dart';
 import 'package:live_streaming/view_models/venue_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
+import 'package:live_streaming/widget/mybutton.dart';
+import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
-
 import '../../../utilities/constants.dart';
 import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
@@ -170,9 +171,23 @@ class FreeSlotView extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        Container(
-          child: text_medium("Okay"),
-        )
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: mybutton(() {
+              if (rescheduleviewmodel.selectedvalue != null) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => TeacherScheduleScreen(
+                              user: user,
+                              venue: rescheduleviewmodel.selectedvalue!,
+                              daytime: rescheduleviewmodel.Daytime,
+                            ))));
+              } else {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(snack_bar("Select any Slot", false));
+              }
+            }, "Okay", Icons.done))
       ],
     );
   }
@@ -278,6 +293,7 @@ class FreeSlotView extends StatelessWidget {
               )),
           child: DropdownButton<String>(
             isExpanded: true,
+            underline: const SizedBox(),
             value: day == "Mon" && time == "08:30:00"
                 ? reScheduleViewModel.mon8
                 : day == "Tue" && time == "08:30:00"
@@ -560,6 +576,19 @@ class FreeSlotView extends StatelessWidget {
     bool status = venueViewModel.lstvenue
         .where((element) => element.name == value)
         .isNotEmpty;
+
+    if (time == "08:30:00") {
+      reScheduleViewModel.Daytime = "$day,08:30,10:00";
+    } else if (time == "10:00:00") {
+      reScheduleViewModel.Daytime = "$day,10:00,11:30";
+    } else if (time == "11:30:00") {
+      reScheduleViewModel.Daytime = "$day,11:30,01:00";
+    } else if (time == "01:30:00") {
+      reScheduleViewModel.Daytime = "$day,01:00,03:00";
+    } else if (time == "03:00:00") {
+      reScheduleViewModel.Daytime = "$day,03:00,04:30";
+    }
+
     if (status) {
       reScheduleViewModel.changeSelectedValue(venueViewModel.lstvenue
           .where((element) => element.name == value)

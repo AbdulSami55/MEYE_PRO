@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:live_streaming/Screens/Admin/Profile/add_user.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_details.dart';
 import 'package:live_streaming/Screens/bottomnav.dart';
-import 'package:live_streaming/view_models/Reschedule_view_model.dart';
 import 'package:live_streaming/view_models/dvr_view_model.dart';
+import 'package:live_streaming/view_models/reschedule_view_model.dart';
 import 'package:live_streaming/view_models/timetable.dart';
 import 'package:live_streaming/view_models/user_view_model.dart';
 import 'package:live_streaming/view_models/venue_view_model.dart';
@@ -42,7 +43,8 @@ final GoRouter _router = GoRouter(
         ),
         GoRoute(
             path: 'TeacherDetails',
-            builder: ((context, state) => TeacherDetails()))
+            builder: ((context, state) => TeacherDetails())),
+        GoRoute(path: 'AddUser', builder: ((context, state) => const AddUser()))
       ],
     ),
   ],
@@ -60,6 +62,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => VenueViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => TimetableViewModel()),
+        ChangeNotifierProvider(create: (_) => ReScheduleViewModel()),
       ],
       child: MaterialApp.router(
         routerConfig: _router,

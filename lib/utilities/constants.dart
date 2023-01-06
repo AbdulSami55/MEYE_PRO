@@ -10,7 +10,8 @@ const Color shadowColorDark = Colors.black;
 const Color primaryColor = Colors.green;
 Color? backgroundColor = Colors.grey[300];
 const Color containerColor = Colors.white;
-
+//------------------------Font Size---------------------------
+const MediumFontSize = 25;
 //-------------------------Errors------------------------------
 const INVALID_RESPONSE = 100;
 const NO_INTERNET = 101;
@@ -29,3 +30,4 @@ const String getuserimage = '$baseUrl/api/get-user-image/UserImages/';
 const String gettimetableurl = '$baseUrl/api/timetable-details/';
 const String getteachurl = '$baseUrl/api/teach-details/';
 const String gettimetable = '$baseUrl/api/get-timetable';
+const String addreschedule = '$baseUrl/api/add-reschedule';

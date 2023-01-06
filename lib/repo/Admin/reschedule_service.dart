@@ -1,19 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:live_streaming/Model/Admin/schedule.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
-import 'package:live_streaming/Model/Admin/venue.dart';
 import '../../utilities/constants.dart';
 import '../api_status.dart';
 
 class RescheduleServies {
-  static Future<Object> post(Venue v) async {
+  static Future<Object> post(Schedule s) async {
     try {
-      var response = await http.post(Uri.parse(addcameraurl),
+      var response = await http.post(Uri.parse(addreschedule),
           headers: <String, String>{
             'Content-Type': 'application/json',
           },
-          body: json.encode(v.toJson()));
+          body: json.encode(s.toJson()));
       if (response.statusCode == 200) {
         return Success(response: json.decode(response.body)["data"]);
       }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 Padding mytextfiled(
     String img, TextEditingController controller, bool obsecure) {
   return Padding(
-    padding: const EdgeInsets.only(top: 8, bottom: 16),
+    padding: const EdgeInsets.only(top: 8, bottom: 12),
     child: TextFormField(
       obscureText: obsecure,
       controller: controller,

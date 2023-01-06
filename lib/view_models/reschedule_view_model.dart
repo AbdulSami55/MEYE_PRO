@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
+import 'package:live_streaming/Model/Admin/schedule.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/repo/Admin/reschedule_service.dart';
 
@@ -13,7 +14,7 @@ class ReScheduleViewModel extends ChangeNotifier {
   var _lsttimetable = <TimeTable>[];
   UserError? _userError;
   Venue? _selectedvalue;
-
+  String Daytime = '';
   String mon8 = "",
       mon10 = "",
       mon11 = "",
@@ -62,15 +63,35 @@ class ReScheduleViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setUserError(UserError userError) {
+  void setUserError(UserError? userError) {
     _userError = userError;
   }
 
   void getdata() async {
+    setUserError(null);
     setloading(true);
     var response = await RescheduleServies.getTimetable();
     if (response is Success) {
       setlsttimetable(response.response as List<TimeTable>);
+    }
+    if (response is Failure) {
+      UserError userError =
+          UserError(code: response.code, message: response.errorResponse);
+      setUserError(userError);
+    }
+    setloading(false);
+  }
+
+  Future insertdata(Schedule schedule) async {
+    setloading(true);
+    setUserError(null);
+    var response = await RescheduleServies.post(schedule);
+    if (response is Success) {
+      String data = response.response as String;
+      if (data != "okay") {
+        UserError userError = UserError(code: response.code, message: data);
+        setUserError(userError);
+      }
     }
     if (response is Failure) {
       UserError userError =

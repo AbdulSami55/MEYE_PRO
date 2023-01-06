@@ -63,10 +63,7 @@ class TeacherDetails extends StatelessWidget {
           User user = userViewModel.lstuser[index];
           return InkWell(
             onTap: () => isSchedule == true
-                ? Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => FreeSlotView(user: user))))
+                ? schedulebottomSheet(context, user)
                 : bottomSheet(context, user),
             child: Column(
               children: [
@@ -82,6 +79,40 @@ class TeacherDetails extends StatelessWidget {
             ),
           );
         }));
+  }
+
+  Future<dynamic> schedulebottomSheet(BuildContext context, User user) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Wrap(
+            children: [
+              Padding(
+                  padding: const EdgeInsets.only(
+                      top: 12.0, bottom: 12.0, left: 16.0),
+                  child: large_text("Schedule")),
+              InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => FreeSlotView(user: user)))),
+                child: ListTile(
+                    leading: const Icon(Icons.grid_view_sharp),
+                    title: text_medium("Reschdule")),
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.schedule),
+                title: text_medium('Preschedule'),
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.swap_horiz),
+                title: text_medium('Swapping'),
+              ),
+            ],
+          );
+        });
   }
 
   Future<dynamic> bottomSheet(BuildContext context, User user) {
