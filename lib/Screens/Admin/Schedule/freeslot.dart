@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, non_constant_identifier_names
+// ignore_for_file: must_be_immutable, non_constant_identifier_names, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
@@ -12,6 +12,7 @@ import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../../utilities/constants.dart';
 import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
@@ -23,6 +24,9 @@ class FreeSlotView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final venueViewModel = context.watch<VenueViewModel>();
+    String startdate = "";
+    String enddate = "";
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: CustomScrollView(
@@ -32,57 +36,114 @@ class FreeSlotView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: backgroundColorLight,
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 3,
-                              blurRadius: 7,
-                              offset: const Offset(0, 7),
-                              color: Colors.grey.withOpacity(0.5))
-                        ]),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircleAvatar(
-                              radius: 33,
-                              backgroundImage: NetworkImage(
-                                  "$getuserimage${user.role}/${user.image}")),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                          height: 20,
-                        ),
-                        text_medium(user.name.toString())
-                      ],
-                    ),
-                  ),
-                ),
+                topbar(context),
                 const SizedBox(
                   height: 30,
                 ),
-                Container(
-                    color: backgroundColor,
-                    child: ChangeNotifierProvider(
-                      create: (context) => ReScheduleViewModel(),
-                      child: Consumer<ReScheduleViewModel>(
-                        builder: (context, provider, child) =>
-                            ScheduleTable(context, provider, venueViewModel),
-                      ),
-                    )),
+                SfDateRangePicker(
+                  onSelectionChanged: ((args) {
+                    startdate =
+                        args.value.toString().split(',')[0].split(' ')[1];
+                    enddate = args.value.toString().split(',')[1].split(' ')[2];
+                  }),
+                  selectionMode: DateRangePickerSelectionMode.range,
+                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: mybutton(() {
+                      if (startdate != "") {
+                        int year = int.parse(DateTime.now()
+                            .toString()
+                            .split(' ')[0]
+                            .split('-')[0]
+                            .toString());
+                        int month = int.parse(DateTime.now()
+                            .toString()
+                            .split(' ')[0]
+                            .split('-')[1]
+                            .toString());
+                        int day = int.parse(DateTime.now()
+                            .toString()
+                            .split(' ')[0]
+                            .split('-')[2]
+                            .toString());
+
+                        int selectyear = int.parse(
+                            startdate.split(' ')[0].split('-')[0].toString());
+                        int selectmonth = int.parse(
+                            startdate.split(' ')[0].split('-')[1].toString());
+                        int selectday = int.parse(
+                            startdate.split(' ')[0].split('-')[2].toString());
+                        final DateTime date1 =
+                            DateTime(year, month, day, 0, 0, 0);
+                        final DateTime date2 = DateTime(
+                            selectyear, selectmonth, selectday, 0, 0, 0);
+                        final Duration durdef = date2.difference(date1);
+  
+                        if (enddate == "null)") {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              snack_bar("Select End Date", false));
+                        } else if (durdef.inDays < 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(snack_bar(
+                              "Start Date Must be Greater than Current Date",
+                              false));
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            snack_bar("Select Date First", false));
+                      }
+                    }, "Okay", Icons.done))
+                // Container(
+                //     color: backgroundColor,
+                //     child: ChangeNotifierProvider(
+                //       create: (context) => ReScheduleViewModel(),
+                //       child: Consumer<ReScheduleViewModel>(
+                //         builder: (context, provider, child) =>
+                //             ScheduleTable(context, provider, venueViewModel),
+                //       ),
+                //     )),
               ],
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Padding topbar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.15,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: backgroundColorLight,
+            boxShadow: [
+              BoxShadow(
+                  spreadRadius: 3,
+                  blurRadius: 7,
+                  offset: const Offset(0, 7),
+                  color: Colors.grey.withOpacity(0.5))
+            ]),
+        child: Row(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                  radius: 33,
+                  backgroundImage:
+                      NetworkImage("$getuserimage${user.role}/${user.image}")),
+            ),
+            const SizedBox(
+              width: 5,
+              height: 20,
+            ),
+            text_medium(user.name.toString())
+          ],
+        ),
       ),
     );
   }
@@ -154,15 +215,15 @@ class FreeSlotView extends StatelessWidget {
                     ],
                   ),
                   ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "08:30:00"),
+                      rescheduleviewmodel, venueViewModel, "08:30"),
                   ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "10:00:00"),
+                      rescheduleviewmodel, venueViewModel, "10:00"),
                   ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "11:30:00"),
+                      rescheduleviewmodel, venueViewModel, "11:30"),
                   ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "01:30:00"),
+                      rescheduleviewmodel, venueViewModel, "01:30"),
                   ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "03:00:00"),
+                      rescheduleviewmodel, venueViewModel, "03:00"),
                 ],
               ),
             )
@@ -225,7 +286,7 @@ class FreeSlotView extends StatelessWidget {
     }
 
     for (TimeTable t in rescheduleviewmodel.lsttimetable) {
-      if (t.starttime.toString().split('.')[0] == time) {
+      if (t.starttime.toString() == time) {
         if (t.day == "Mon") {
           Venue v = vmonlst.where((element) => element.id == t.vid).first;
           monlst.remove(v.name);

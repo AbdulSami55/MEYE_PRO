@@ -20,7 +20,6 @@ class TeacherDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserViewModel userViewModel = context.watch<UserViewModel>();
-
     return Scaffold(
       backgroundColor: backgroundColor,
       body: CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
@@ -59,26 +58,27 @@ class TeacherDetails extends StatelessWidget {
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
         itemCount: userViewModel.lstuser.length,
-        itemBuilder: ((context, index) {
-          User user = userViewModel.lstuser[index];
-          return InkWell(
-            onTap: () => isSchedule == true
-                ? schedulebottomSheet(context, user)
-                : bottomSheet(context, user),
-            child: Column(
-              children: [
-                ListTile(
-                  leading: CircleAvatar(
-                      radius: 33,
-                      backgroundImage: NetworkImage(
-                          "$getuserimage${user.role}/${user.image}")),
-                  title: text_medium(user.name.toString()),
+        itemBuilder: (context, index) => userViewModel.lstuser[index].role ==
+                "Teacher"
+            ? InkWell(
+                onTap: () => isSchedule == true
+                    ? schedulebottomSheet(context, userViewModel.lstuser[index])
+                    : bottomSheet(context, userViewModel.lstuser[index]),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                          radius: 33,
+                          backgroundImage: NetworkImage(
+                              "$getuserimage${userViewModel.lstuser[index].role}/${userViewModel.lstuser[index].image}")),
+                      title: text_medium(
+                          userViewModel.lstuser[index].name.toString()),
+                    ),
+                    const Divider()
+                  ],
                 ),
-                const Divider()
-              ],
-            ),
-          );
-        }));
+              )
+            : const Text(""));
   }
 
   Future<dynamic> schedulebottomSheet(BuildContext context, User user) {

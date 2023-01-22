@@ -1,5 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/Model/Admin/ip.dart';
@@ -69,7 +71,7 @@ class _HomeState extends State<Home> {
                           child: Stack(
                             children: [
                               Image.memory(
-                                snapshot.data,
+                                base64.decode(snapshot.data.data),
                                 gaplessPlayback: true,
                                 height:
                                     MediaQuery.of(context).size.height * 0.60,

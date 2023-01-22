@@ -87,7 +87,8 @@ class DVRDetails extends StatelessWidget {
               ),
             ]),
             TeacherDetails(),
-            _ui(dvrViewModel, ip, host, channel, pass, name)
+            TeacherDetails(),
+            // VideoPlay(),
           ]),
         ),
       ),

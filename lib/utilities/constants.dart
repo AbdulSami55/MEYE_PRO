@@ -18,7 +18,8 @@ const NO_INTERNET = 101;
 const INVALID_FORMAT = 102;
 const UNKNOWN_ERROR = 103;
 //------------------------------------URLS---------------------
-const String baseUrl = 'http://192.168.0.111:8000';
+
+const String baseUrl = 'http://192.168.0.112:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';

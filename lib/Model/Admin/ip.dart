@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, avoid_print, empty_catches
 
+import 'package:flutter_client_sse/flutter_client_sse.dart';
 import 'package:web_socket_channel/io.dart';
 
 class NetworkIP {

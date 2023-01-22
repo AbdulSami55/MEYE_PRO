@@ -48,6 +48,9 @@ dependencies:
   ml_linalg: ^13.11.21
   shared_preferences: ^2.0.15
   flutter_date_pickers: ^0.4.0
+  flutter_cache_manager: ^3.3.0
+  flutter_client_sse: ^1.0.0
+  syncfusion_flutter_datepicker: ^20.4.44
 
 
  

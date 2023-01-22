@@ -15,7 +15,7 @@ import 'Model/Admin/ip.dart';
 import 'Screens/Admin/onboding/onboding_screen.dart';
 
 void main() {
-  // Connect();
+  Connect();
   runApp(const MyApp());
 }
 

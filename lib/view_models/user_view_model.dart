@@ -203,14 +203,14 @@ class UserViewModel extends ChangeNotifier {
       for (var i in val) {
         lst.add(double.parse(i.toString()));
       }
-      final vector1 = Vector.fromList(lst);
-      final v = Vector.fromList(vector);
-      final vector2 = v - vector1;
-      if (vector2.norm() < 0.6) {
-        print("match");
-      } else {
-        print("not match");
-      }
+      // final vector1 = Vector.fromList(lst);
+      // final v = Vector.fromList(vector);
+      // final vector2 = v - vector1;
+      // if (vector2.norm() < 0.6) {
+      //   print("match");
+      // } else {
+      //   print("not match");
+      // }
     }
     if (response is Failure) {
       UserError userError =

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, file_names
 
 import 'package:flutter/cupertino.dart';
 import 'package:live_streaming/Model/Admin/schedule.dart';
