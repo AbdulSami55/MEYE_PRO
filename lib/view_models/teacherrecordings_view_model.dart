@@ -10,12 +10,12 @@ class TeacherRecordingsViewModel with ChangeNotifier {
   bool _isloading = false;
   var _teacherrecordings;
   UserError? _userError;
-  String prevcoursename = "";
+  String filter = "Section";
 
   bool get loading => _isloading;
   UserError? get userError => _userError;
   TeacherRecordings get teacherrecordings => _teacherrecordings;
-
+  TeacherRecordings? tempteacherrecordings = TeacherRecordings();
   TeacherRecordingsViewModel(int teacherid) {
     getData(teacherid);
   }
@@ -24,8 +24,42 @@ class TeacherRecordingsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void setFilter(String value) {
+    if (value != "") {
+      if (filter == "Date") {
+        tempteacherrecordings!.recordings = teacherrecordings.recordings!
+            .where((element) => element.date.toString().contains(value))
+            .toList();
+      } else if (filter == "Type") {
+        tempteacherrecordings!.recordings = teacherrecordings.recordings!
+            .where((element) => element.filename.toString().contains(value))
+            .toList();
+      } else if (filter == "Section") {
+        tempteacherrecordings!.section = teacherrecordings.section!
+            .where((element) => element.name.toString().contains(value))
+            .toList();
+      } else if (filter == "Course") {
+        tempteacherrecordings!.course = teacherrecordings.course!
+            .where((element) => element.name.toString().contains(value))
+            .toList();
+      }
+    } else {
+      tempteacherrecordings!.recordings = teacherrecordings.recordings;
+      tempteacherrecordings!.course = teacherrecordings.course;
+      tempteacherrecordings!.section = teacherrecordings.section;
+      tempteacherrecordings!.teacherslot = teacherrecordings.teacherslot;
+      tempteacherrecordings!.timetable = teacherrecordings.timetable;
+    }
+    notifyListeners();
+  }
+
   void setTeacherRecordings(TeacherRecordings teacherrecordings) {
     _teacherrecordings = teacherrecordings;
+    tempteacherrecordings!.recordings = teacherrecordings.recordings;
+    tempteacherrecordings!.course = teacherrecordings.course;
+    tempteacherrecordings!.section = teacherrecordings.section;
+    tempteacherrecordings!.teacherslot = teacherrecordings.teacherslot;
+    tempteacherrecordings!.timetable = teacherrecordings.timetable;
   }
 
   void setUserError(UserError userError) {

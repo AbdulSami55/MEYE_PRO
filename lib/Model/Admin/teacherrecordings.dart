@@ -16,18 +16,18 @@ TeacherRecordings teacherrecordingsFromJson(String str) =>
 
 class TeacherRecordings {
   TeacherRecordings(
-      {required this.teacherslot,
-      required this.recordings,
-      required this.timetable,
-      required this.section,
-      required this.venue,
-      required this.course});
-  List<TeacherSlot> teacherslot;
-  List<Recordings> recordings;
-  List<TimeTable> timetable;
-  List<Section> section;
-  List<Venue> venue;
-  List<Course> course;
+      {this.teacherslot,
+      this.recordings,
+      this.timetable,
+      this.section,
+      this.venue,
+      this.course});
+  List<TeacherSlot>? teacherslot;
+  List<Recordings>? recordings;
+  List<TimeTable>? timetable;
+  List<Section>? section;
+  List<Venue>? venue;
+  List<Course>? course;
 
   factory TeacherRecordings.fromJson(Map<String, dynamic> json) =>
       TeacherRecordings(

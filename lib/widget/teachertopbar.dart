@@ -5,8 +5,8 @@ import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 
 import '../utilities/constants.dart';
 
-Padding Teachertopcard(
-    BuildContext context, String image, String name, bool isrecording) {
+Padding Teachertopcard(BuildContext context, String image, String name,
+    bool isrecording, dynamic onpress) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0),
     child: Container(
@@ -49,7 +49,9 @@ Padding Teachertopcard(
                   const SizedBox(
                     width: 40,
                   ),
-                  isrecording ? const Icon(Icons.sort) : const Text("")
+                  isrecording
+                      ? InkWell(onTap: onpress, child: const Icon(Icons.sort))
+                      : const Text("")
                 ],
               ),
             ],

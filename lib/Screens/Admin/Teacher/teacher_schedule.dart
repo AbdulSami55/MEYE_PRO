@@ -35,7 +35,8 @@ class TeacherScheduleView extends StatelessWidget {
                     context,
                     "$getuserimage${user.role}/${user.image}",
                     user.name.toString(),
-                    false),
+                    false,
+                    () {}),
                 const SizedBox(
                   height: 30,
                 ),

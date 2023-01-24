@@ -30,7 +30,7 @@ class _VideoPlayState extends State<VideoPlay> {
   void initState() {
     super.initState();
     controller = VideoPlayerController.network(
-        'http://192.168.43.192:8000/video?path=${widget.teacherRecordings.recordings[widget.index].filename}');
+        'http://192.168.43.192:8000/video?path=${widget.teacherRecordings.recordings![widget.index].filename}');
     _initializeVideoPlayerFuture = controller.initialize();
   }
 
@@ -162,7 +162,8 @@ class _VideoPlayState extends State<VideoPlay> {
                 Row(
                   children: [
                     text_medium("Course="),
-                    text_medium(teacherRecordings.course[index].name.toString(),
+                    text_medium(
+                        teacherRecordings.course![index].name.toString(),
                         color: shadowColorLight),
                   ],
                 ),
@@ -170,7 +171,7 @@ class _VideoPlayState extends State<VideoPlay> {
                   children: [
                     text_medium("Section="),
                     text_medium(
-                        teacherRecordings.section[index].name.toString(),
+                        teacherRecordings.section![index].name.toString(),
                         color: shadowColorLight),
                   ],
                 ),
@@ -178,7 +179,7 @@ class _VideoPlayState extends State<VideoPlay> {
                   children: [
                     text_medium("Type="),
                     text_medium(
-                        teacherRecordings.recordings[index].filename
+                        teacherRecordings.recordings![index].filename
                             .split(',')[2]
                             .toString()
                             .split('.')[0],
@@ -189,7 +190,7 @@ class _VideoPlayState extends State<VideoPlay> {
                   children: [
                     text_medium("Date="),
                     text_medium(
-                        teacherRecordings.recordings[index].date
+                        teacherRecordings.recordings![index].date
                             .toString()
                             .split(' ')[0],
                         color: shadowColorLight),
