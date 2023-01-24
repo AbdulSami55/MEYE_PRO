@@ -7,6 +7,13 @@ String venueToJson(List<Venue> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 Venue singlevenueFromJson(Map<String, dynamic> mp) => Venue.fromJson(mp);
+List<Venue> rlstvenueFromJson(List lst) {
+  List<Venue> templst = [];
+  for (var i in lst) {
+    templst.add(Venue.fromJson(i));
+  }
+  return templst;
+}
 
 class Venue {
   Venue({

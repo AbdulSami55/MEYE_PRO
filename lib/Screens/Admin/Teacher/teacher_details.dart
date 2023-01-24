@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Screens/Admin/Schedule/freeslot.dart';
+import 'package:live_streaming/Screens/Admin/Teacher/teacher_recordings.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_schedule.dart';
 import 'package:provider/provider.dart';
 
@@ -139,9 +140,17 @@ class TeacherDetails extends StatelessWidget {
                 ),
               ),
               const Divider(),
-              ListTile(
-                leading: const Icon(Icons.video_collection),
-                title: text_medium('Recordings'),
+              InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => TeacherRecordingView(
+                              user: user,
+                            )))),
+                child: ListTile(
+                  leading: const Icon(Icons.video_collection),
+                  title: text_medium('Recordings'),
+                ),
               ),
             ],
           );

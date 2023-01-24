@@ -1,85 +1,129 @@
-// import 'dart:convert';
+// ignore_for_file: must_be_immutable, non_constant_identifier_names
 
-// import 'package:flutter/material.dart';
-// import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-// import 'package:http/http.dart' as http;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:live_streaming/Model/Admin/teacherrecordings.dart';
+import 'package:live_streaming/Model/Admin/user.dart';
+import 'package:live_streaming/Screens/Admin/recordings.dart';
+import 'package:live_streaming/view_models/teacherrecordings_view_model.dart';
+import 'package:live_streaming/widget/components/appbar.dart';
+import 'package:live_streaming/widget/textcomponents/medium_text.dart';
+import 'package:provider/provider.dart';
+import '../../../utilities/constants.dart';
+import '../../../widget/components/apploading.dart';
+import '../../../widget/components/errormessage.dart';
+import '../../../widget/teachertopbar.dart';
 
-// Image base64ToImage(String base64String) {
-//   return Image.memory(
-//     base64Decode(base64String),
-//     gaplessPlayback: true,
-//   );
-// }
+class TeacherRecordingView extends StatelessWidget {
+  TeacherRecordingView({super.key, required this.user});
+  User user;
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: CustomScrollView(
+        slivers: [
+          appbar("Teacher Recordings"),
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Teachertopcard(
+                    context,
+                    "$getuserimage${user.role}/${user.image}",
+                    user.name.toString(),
+                    true),
+                const SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: CupertinoSearchTextField(
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    onChanged: (value) {
+                      // SearchMutation(value);
+                    },
+                    decoration: BoxDecoration(
+                      color: backgroundColorLight,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+                ChangeNotifierProvider(
+                  create: ((context) => TeacherRecordingsViewModel(user.id!)),
+                  child: Container(
+                    color: backgroundColor,
+                    child: Consumer<TeacherRecordingsViewModel>(
+                        builder: (context, provider, child) {
+                      return _recordings(
+                        context,
+                        provider,
+                      );
+                    }),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
-// class VideoPlay extends StatefulWidget {
-//  const VideoPlay({Key? key, required this.title}) : super(key: key);
-
-//   final String title;
-
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int frameCounter = 0;
-//   int lastTime = DateTime.now().millisecondsSinceEpoch;
-//   int fps = 0;
-
-//   final fpsValueNotifier = ValueNotifier(0);
-
-//   final pollingRate = 10; // time between requests in ms
-
-//   bool _timeDifferenceBiggerThanSecond() {
-//     return DateTime.now().millisecondsSinceEpoch - lastTime > 1000;
-//   }
-
-//   // Future<Image> _fetchVideoFrame() async {
-//   //   final response = await http.get(Uri.parse(url));
-
-//   //   if (_timeDifferenceBiggerThanSecond()) {
-//   //     fpsValueNotifier.value = frameCounter;
-//   //     lastTime = DateTime.now().millisecondsSinceEpoch;
-//   //     frameCounter = 0;
-//   //   } else {
-//   //     frameCounter++;
-//   //   }
-//   //   return Image.memory(
-//   //     response.bodyBytes,
-//   //     gaplessPlayback: true,
-//   //   );
-//   // }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             StreamBuilder<FileResponse>(
-//               stream: fileStream,
-//               builder: (context, snapshot) {
-//                 if (snapshot.hasData) {
-//                   FileInfo fileInfo = snapshot.data as FileInfo;
-//                   return Image.file(fileInfo.file);
-//                 } else if (snapshot.hasError) {
-//                   return Text("${snapshot.error}");
-//                 } else if (snapshot.connectionState == ConnectionState.done) {
-//                   return const Text("Done");
-//                 }
-//                 return CircularProgressIndicator();
-//               },
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   Stream<FileResponse> fileStream =
-//       DefaultCacheManager().getFileStream('http://192.168.0.112:8000/video');
-// }
+  Widget _recordings(BuildContext context,
+      TeacherRecordingsViewModel teacherRecordingsViewModel) {
+    if (teacherRecordingsViewModel.loading) {
+      return apploading();
+    } else if (teacherRecordingsViewModel.userError != null) {
+      return ErrorMessage(
+          teacherRecordingsViewModel.userError!.message.toString());
+    } else if (teacherRecordingsViewModel
+        .teacherrecordings.recordings.isEmpty) {
+      return Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.25,
+          ),
+          ErrorMessage("NO Data"),
+        ],
+      );
+    }
+    return ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        shrinkWrap: true,
+        itemCount:
+            teacherRecordingsViewModel.teacherrecordings.recordings.length,
+        itemBuilder: ((context, index) {
+          TeacherRecordings teacherRecordings =
+              teacherRecordingsViewModel.teacherrecordings;
+          return Column(
+            children: [
+              InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => VideoPlay(
+                              index: index,
+                              user: user,
+                              teacherRecordings: teacherRecordings,
+                            )))),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.play_arrow,
+                    size: 50,
+                  ),
+                  title: text_medium(
+                      "${teacherRecordings.recordings[index].date.toString().split(' ')[0]}\n${teacherRecordings.recordings[index].filename.split(',')[2]}"),
+                  subtitle: Text(
+                      "Course Name: ${teacherRecordings.course[index].name}\nSection : ${teacherRecordings.section[index].name}"),
+                ),
+              ),
+              const Divider()
+            ],
+          );
+        }));
+  }
+}

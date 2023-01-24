@@ -6,6 +6,7 @@ import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/view_models/teach_view_model.dart';
 import 'package:live_streaming/view_models/timetable.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
+import 'package:live_streaming/widget/teachertopbar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
@@ -30,23 +31,11 @@ class TeacherScheduleView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: backgroundColorLight,
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 3,
-                              blurRadius: 7,
-                              offset: const Offset(0, 7),
-                              color: Colors.grey.withOpacity(0.5))
-                        ]),
-                    child: Row(),
-                  ),
-                ),
+                Teachertopcard(
+                    context,
+                    "$getuserimage${user.role}/${user.image}",
+                    user.name.toString(),
+                    false),
                 const SizedBox(
                   height: 30,
                 ),
@@ -87,36 +76,36 @@ class TeacherScheduleView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.23,
+          width: MediaQuery.of(context).size.width * 0.12,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 60,
+                height: 40,
               ),
-              timeSchedule("08:30-10:00"),
+              timeSchedule("08:30-\n10:00"),
               const SizedBox(
-                height: 70,
+                height: 40,
               ),
-              timeSchedule("10:00-11:30"),
+              timeSchedule("10:00-\n11:30"),
               const SizedBox(
-                height: 60,
+                height: 35,
               ),
-              timeSchedule("11:30-01:00"),
+              timeSchedule("11:30-\n01:00"),
               const SizedBox(
-                height: 60,
+                height: 25,
               ),
-              timeSchedule("01:30-03:00"),
+              timeSchedule("01:30-\n03:00"),
               const SizedBox(
-                height: 70,
+                height: 40,
               ),
-              timeSchedule("03:00-04:30"),
+              timeSchedule("03:00-\n04:30"),
             ],
           ),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.75,
+          width: MediaQuery.of(context).size.width * 0.85,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -308,7 +297,7 @@ class TeacherScheduleView extends StatelessWidget {
   Container rowData(String data) {
     return Container(
         height: 80,
-        width: 50,
+        width: 55,
         decoration: BoxDecoration(
             color: data == "" ? backgroundColor : shadowColorLight,
             border: Border.all(
@@ -325,7 +314,7 @@ class TeacherScheduleView extends StatelessWidget {
   Container scheduleColumn(String text) {
     return Container(
         height: 30,
-        width: 50,
+        width: 55,
         decoration: BoxDecoration(
           border: Border.all(color: shadowColorLight),
           color: primaryColor,

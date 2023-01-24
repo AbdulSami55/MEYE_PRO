@@ -1,8 +1,17 @@
 import 'dart:convert';
 
 Course courseFromJson(Map<String, dynamic> mp) => Course.fromJson(mp);
+List<Course> lstcourseFromJson(String str) =>
+    List<Course>.from(json.decode(str).map((x) => Course.fromJson(x)));
 
 String courseToJson(Course data) => json.encode(data.toJson());
+List<Course> rlstcourseFromJson(List lst) {
+  List<Course> templst = [];
+  for (var i in lst) {
+    templst.add(Course.fromJson(i));
+  }
+  return templst;
+}
 
 class Course {
   Course({
