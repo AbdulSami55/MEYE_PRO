@@ -11,7 +11,7 @@ class UserServies {
       var request = http.MultipartRequest(
         'POST',
         Uri.parse(
-            "$adduser?id=0&uid=${u.uid}&name=${u.name}&image=0&password=${u.password}&role=${u.role}"),
+            "$adduser?id=0&userID=${u.userID}&name=${u.name}&image=0&password=${u.password}&role=${u.role}"),
       );
       request.files.add(await http.MultipartFile.fromPath('file', file.path));
       var response = await request.send();

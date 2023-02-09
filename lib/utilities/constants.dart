@@ -34,3 +34,4 @@ const String gettimetable = '$baseUrl/api/get-timetable';
 const String addreschedule = '$baseUrl/api/add-reschedule';
 const String getteacherrecordings =
     '$baseUrl/api/recordings-details-by-teacherid/';
+const String getvideo = '$baseUrl/video?path=';

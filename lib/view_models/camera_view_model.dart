@@ -15,7 +15,7 @@ class CameraViewModel extends ChangeNotifier {
   var _lstCamera = <Camera>[];
 
   UserError? _userError;
-  int? did;
+  int? dvrID;
   Camera _addcamera = Camera();
 
   bool get loading => _isloading;
@@ -27,7 +27,7 @@ class CameraViewModel extends ChangeNotifier {
   Camera get addcamera => _addcamera;
 
   CameraViewModel(DVR dvr) {
-    did = dvr.id;
+    dvrID = dvr.id;
     addchannels(dvr);
     getCameraData();
   }
@@ -39,8 +39,8 @@ class CameraViewModel extends ChangeNotifier {
   void setCameraList(List<Camera> lst) {
     _lstCamera = lst;
     for (var i in lst) {
-      if (_lstchannel.contains(i.no)) {
-        _lstchannel.remove(i.no);
+      if (_lstchannel.contains(i.portNumber)) {
+        _lstchannel.remove(i.portNumber);
       }
     }
   }
@@ -64,9 +64,9 @@ class CameraViewModel extends ChangeNotifier {
   }
 
   isValid() {
-    if (addcamera.did == null ||
-        addcamera.vid == null ||
-        addcamera.no == null) {
+    if (addcamera.dvrID == null ||
+        addcamera.venueID == null ||
+        addcamera.portNumber == null) {
       return false;
     }
     return true;
@@ -74,7 +74,7 @@ class CameraViewModel extends ChangeNotifier {
 
   getCameraData() async {
     setloading(true);
-    var response = await CameraServies.getCamera(did!);
+    var response = await CameraServies.getCamera(dvrID!);
     if (response is Success) {
       setCameraList(response.response as List<Camera>);
     }

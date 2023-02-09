@@ -21,8 +21,8 @@ class TimeTable {
     this.starttime,
     this.endtime,
     this.day,
-    this.cid,
-    this.vid,
+    this.courseID,
+    this.venueID,
   });
 
   int? id;
@@ -30,26 +30,26 @@ class TimeTable {
   String? starttime;
   String? endtime;
   String? day;
-  int? cid;
-  int? vid;
+  int? courseID;
+  int? venueID;
 
   factory TimeTable.fromJson(Map<String, dynamic> json) => TimeTable(
         id: json["id"],
-        secId: json["sec_id"],
+        secId: json["sectionID"],
         starttime: json["starttime"],
         endtime: json["endtime"],
         day: json["day"],
-        cid: json["cid"],
-        vid: json["vid"],
+        courseID: json["courseID"],
+        venueID: json["venueID"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "sec_id": secId,
+        "sectionID": secId,
         "starttime": starttime,
         "endtime": endtime,
         "day": day,
-        "cid": cid,
-        "vid": vid,
+        "courseID": courseID,
+        "venueID": venueID,
       };
 }

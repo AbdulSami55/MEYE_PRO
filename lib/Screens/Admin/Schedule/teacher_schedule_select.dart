@@ -343,8 +343,8 @@ class TeacherScheduleScreen extends StatelessWidget {
             : "",
         teachViewModel.lstteach
             .where((element) =>
-                element.tid == user.id &&
-                element.tmid == fullTimeTable.timeTable!.id)
+                element.teacherID == user.id &&
+                element.timeTableID == fullTimeTable.timeTable!.id)
             .first,
         context);
   }
@@ -394,8 +394,8 @@ class TeacherScheduleScreen extends StatelessWidget {
                               Schedule schedule = Schedule(
                                   id: 0,
                                   status: false,
-                                  thid: teach!.id,
-                                  vid: venue.id,
+                                  teachID: teach!.id,
+                                  venueID: venue.id,
                                   starttime: daytime.split(',')[1],
                                   endtime: daytime.split(',')[2],
                                   day: daytime.split(',')[0]);

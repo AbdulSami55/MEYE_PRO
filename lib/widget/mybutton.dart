@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Padding mybutton(dynamic func, String text, IconData icon) {
   return Padding(
-    padding: const EdgeInsets.only(top: 8, bottom: 24),
+    padding: const EdgeInsets.only(top: 16, bottom: 24),
     child: ElevatedButton.icon(
       onPressed: func,
       style: ElevatedButton.styleFrom(

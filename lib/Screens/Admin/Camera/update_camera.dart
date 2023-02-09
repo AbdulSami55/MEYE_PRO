@@ -17,7 +17,7 @@ import '../../../view_models/camera_view_model.dart';
 Future<dynamic> update_camera(
     BuildContext context,
     int id,
-    int did,
+    int dvrID,
     List<DropdownMenuItem<Venue>> venueItems,
     List<DropdownMenuItem<String>> channelItems,
     String no,
@@ -121,13 +121,15 @@ Future<dynamic> update_camera(
                   try {
                     Camera c = Camera(
                       id: id,
-                      did: did,
-                      vid: Provider.of<VenueViewModel>(context, listen: false)
-                          .selectedvenue!
-                          .id,
-                      no: Provider.of<VenueViewModel>(context, listen: false)
-                          .selectedchannel
-                          .toString(),
+                      dvrID: dvrID,
+                      venueID:
+                          Provider.of<VenueViewModel>(context, listen: false)
+                              .selectedvenue!
+                              .id,
+                      portNumber:
+                          Provider.of<VenueViewModel>(context, listen: false)
+                              .selectedchannel
+                              .toString(),
                     );
 
                     var res = await CameraServies.put(c);

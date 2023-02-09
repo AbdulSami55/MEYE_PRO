@@ -149,7 +149,7 @@ class AddUser extends StatelessWidget {
                   ),
                   mybutton(() {
                     User u = User(
-                        uid: id.text,
+                        userID: id.text,
                         name: name.text,
                         password: password.text,
                         role: Provider.of<UserViewModel>(context, listen: false)

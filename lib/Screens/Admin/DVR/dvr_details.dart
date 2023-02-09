@@ -159,8 +159,8 @@ class DVRDetails extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              height: 15,
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.05,
                             ),
                             Text(
                               'Name: ${dvrViewModel.lstDVR[index].name}',

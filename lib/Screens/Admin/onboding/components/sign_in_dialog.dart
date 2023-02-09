@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'sign_in_form.dart';
 
-void showCustomDialog(BuildContext context) {
+void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
   showGeneralDialog(
     context: context,
     barrierLabel: "Barrier",
@@ -12,7 +12,7 @@ void showCustomDialog(BuildContext context) {
     pageBuilder: (_, __, ___) {
       return Center(
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.75,
+          height: MediaQuery.of(context).size.height / 1.55,
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           decoration: BoxDecoration(

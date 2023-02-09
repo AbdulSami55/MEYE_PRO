@@ -29,8 +29,9 @@ class _VideoPlayState extends State<VideoPlay> {
   @override
   void initState() {
     super.initState();
-    controller = VideoPlayerController.network(
-        'http://192.168.43.192:8000/video?path=${widget.teacherRecordings.recordings![widget.index].filename}');
+    String request =
+        '$getvideo${widget.teacherRecordings.recordings![widget.index].filename}';
+    controller = VideoPlayerController.network(request);
     _initializeVideoPlayerFuture = controller.initialize();
   }
 

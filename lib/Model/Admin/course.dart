@@ -16,27 +16,27 @@ List<Course> rlstcourseFromJson(List lst) {
 class Course {
   Course({
     this.id,
-    this.cid,
-    this.crHr,
+    this.courseID,
+    this.creditHours,
     this.name,
   });
 
   int? id;
-  String? cid;
-  int? crHr;
+  String? courseID;
+  int? creditHours;
   String? name;
 
   factory Course.fromJson(Map<String, dynamic> json) => Course(
         id: json["id"],
-        cid: json["cid"],
-        crHr: json["cr_hr"],
+        courseID: json["courseID"],
+        creditHours: json["creditHours"],
         name: json["name"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "cid": cid,
-        "cr_hr": crHr,
+        "courseID": courseID,
+        "creditHours": creditHours,
         "name": name,
       };
 }

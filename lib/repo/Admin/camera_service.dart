@@ -71,9 +71,9 @@ class CameraServies {
     }
   }
 
-  static Future<Object> getCamera(int did) async {
+  static Future<Object> getCamera(int dvrID) async {
     try {
-      var response = await http.get(Uri.parse("$getcamera$did"));
+      var response = await http.get(Uri.parse("$getcamera$dvrID"));
       if (response.statusCode == 200) {
         return Success(response: cameraFromJson(response.body));
       }

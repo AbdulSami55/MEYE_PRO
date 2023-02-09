@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
+import 'package:live_streaming/Screens/Admin/Schedule/freeslot.dart';
 import 'package:live_streaming/Screens/Admin/Schedule/teacher_schedule_select.dart';
 import 'package:live_streaming/view_models/Reschedule_view_model.dart';
 import 'package:live_streaming/view_models/venue_view_model.dart';
@@ -12,12 +13,13 @@ import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../../utilities/constants.dart';
 import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 
-class FreeSlotView extends StatelessWidget {
-  FreeSlotView({super.key, required this.user});
+class DateRangeView extends StatelessWidget {
+  DateRangeView({super.key, required this.user});
   User user;
 
   @override
@@ -39,15 +41,74 @@ class FreeSlotView extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                Container(
-                    color: backgroundColor,
-                    child: ChangeNotifierProvider(
-                      create: (context) => ReScheduleViewModel(),
-                      child: Consumer<ReScheduleViewModel>(
-                        builder: (context, provider, child) =>
-                            ScheduleTable(context, provider, venueViewModel),
-                      ),
-                    )),
+                SfDateRangePicker(
+                  onSelectionChanged: ((args) {
+                    startdate =
+                        args.value.toString().split(',')[0].split(' ')[1];
+                    enddate = args.value.toString().split(',')[1].split(' ')[2];
+                  }),
+                  selectionMode: DateRangePickerSelectionMode.range,
+                ),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: mybutton(() {
+                      if (startdate != "") {
+                        int year = int.parse(DateTime.now()
+                            .toString()
+                            .split(' ')[0]
+                            .split('-')[0]
+                            .toString());
+                        int month = int.parse(DateTime.now()
+                            .toString()
+                            .split(' ')[0]
+                            .split('-')[1]
+                            .toString());
+                        int day = int.parse(DateTime.now()
+                            .toString()
+                            .split(' ')[0]
+                            .split('-')[2]
+                            .toString());
+
+                        int selectyear = int.parse(
+                            startdate.split(' ')[0].split('-')[0].toString());
+                        int selectmonth = int.parse(
+                            startdate.split(' ')[0].split('-')[1].toString());
+                        int selectday = int.parse(
+                            startdate.split(' ')[0].split('-')[2].toString());
+                        final DateTime date1 =
+                            DateTime(year, month, day, 0, 0, 0);
+                        final DateTime date2 = DateTime(
+                            selectyear, selectmonth, selectday, 0, 0, 0);
+                        final Duration durdef = date2.difference(date1);
+
+                        if (enddate == "null)") {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              snack_bar("Select End Date", false));
+                        } else if (durdef.inDays < 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(snack_bar(
+                              "Start Date Must be Greater than Current Date",
+                              false));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) =>
+                                      FreeSlotView(user: user))));
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            snack_bar("Select Date First", false));
+                      }
+                    }, "Okay", Icons.done))
+                // Container(
+                //     color: backgroundColor,
+                //     child: ChangeNotifierProvider(
+                //       create: (context) => ReScheduleViewModel(),
+                //       child: Consumer<ReScheduleViewModel>(
+                //         builder: (context, provider, child) =>
+                //             ScheduleTable(context, provider, venueViewModel),
+                //       ),
+                //     )),
               ],
             ),
           )
@@ -290,7 +351,6 @@ class FreeSlotView extends StatelessWidget {
   Widget rowData(List<String> lst, String day, String time,
       ReScheduleViewModel reScheduleViewModel, VenueViewModel venueViewModel) {
     return Consumer<ReScheduleViewModel>(builder: (context, provider, child) {
-      time = "$time:00";
       return Container(
           height: 70,
           width: 55,

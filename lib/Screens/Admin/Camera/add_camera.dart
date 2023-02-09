@@ -15,7 +15,7 @@ import '../../../Model/Admin/camera.dart';
 
 Future<dynamic> add_camera(
   BuildContext context,
-  int did,
+  int dvrID,
   List<DropdownMenuItem<Venue>> venue,
   List<DropdownMenuItem<String>> channelItems,
 ) {
@@ -28,7 +28,7 @@ Future<dynamic> add_camera(
     pageBuilder: (_, __, ___) {
       return Center(
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.70,
+          height: MediaQuery.of(context).size.height / 1.7,
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           decoration: BoxDecoration(
@@ -104,13 +104,15 @@ Future<dynamic> add_camera(
                   try {
                     Camera c = Camera(
                       id: 0,
-                      did: did,
-                      vid: Provider.of<VenueViewModel>(context, listen: false)
-                          .selectedvenue!
-                          .id,
-                      no: Provider.of<VenueViewModel>(context, listen: false)
-                          .selectedchannel
-                          .toString(),
+                      dvrID: dvrID,
+                      venueID:
+                          Provider.of<VenueViewModel>(context, listen: false)
+                              .selectedvenue!
+                              .id,
+                      portNumber:
+                          Provider.of<VenueViewModel>(context, listen: false)
+                              .selectedchannel
+                              .toString(),
                     );
 
                     var res = await CameraServies.post(c);

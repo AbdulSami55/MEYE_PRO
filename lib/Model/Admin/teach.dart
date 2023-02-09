@@ -9,23 +9,23 @@ String teachToJson(List<Teach> data) =>
 class Teach {
   Teach({
     this.id,
-    this.tmid,
-    this.tid,
+    this.timeTableID,
+    this.teacherID,
   });
 
   int? id;
-  int? tmid;
-  int? tid;
+  int? timeTableID;
+  int? teacherID;
 
   factory Teach.fromJson(Map<String, dynamic> json) => Teach(
         id: json["id"],
-        tmid: json["tmid"],
-        tid: json["tid"],
+        timeTableID: json["timeTableID"],
+        teacherID: json["teacherID"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "tmid": tmid,
-        "tid": tid,
+        "timeTableID": timeTableID,
+        "teacherID": teacherID,
       };
 }

@@ -9,27 +9,27 @@ String cameraToJson(List<Camera> data) =>
 class Camera {
   Camera({
     this.id,
-    this.did,
-    this.vid,
-    this.no,
+    this.dvrID,
+    this.venueID,
+    this.portNumber,
   });
 
   int? id;
-  int? did;
-  int? vid;
-  String? no;
+  int? dvrID;
+  int? venueID;
+  String? portNumber;
 
   factory Camera.fromJson(Map<String, dynamic> json) => Camera(
         id: json["id"],
-        did: json["did"],
-        vid: json["vid"],
-        no: json["no"],
+        dvrID: json["dvrID"],
+        venueID: json["venueID"],
+        portNumber: json["portNumber"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "did": did,
-        "vid": vid,
-        "no": no,
+        "dvrID": dvrID,
+        "venueID": venueID,
+        "portNumber": portNumber,
       };
 }

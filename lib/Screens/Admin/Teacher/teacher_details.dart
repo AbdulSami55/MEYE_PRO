@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
-import 'package:live_streaming/Screens/Admin/Schedule/freeslot.dart';
+import 'package:live_streaming/Screens/Admin/Schedule/daterange.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_recordings.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_schedule.dart';
 import 'package:provider/provider.dart';
@@ -96,7 +96,7 @@ class TeacherDetails extends StatelessWidget {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: ((context) => FreeSlotView(user: user)))),
+                        builder: ((context) => DateRangeView(user: user)))),
                 child: ListTile(
                     leading: const Icon(Icons.grid_view_sharp),
                     title: text_medium("Reschdule")),

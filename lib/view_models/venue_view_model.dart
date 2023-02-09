@@ -11,7 +11,7 @@ class VenueViewModel extends ChangeNotifier {
   var _lstvenue = <Venue>[];
   Venue? selectedvenue;
   UserError? _userError;
-  int? did;
+  int? dvrID;
   Venue _addvenue = Venue();
   String? selectedchannel;
 

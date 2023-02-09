@@ -17,26 +17,26 @@ List<Recordings> rlistrecordingsFromJson(List lst) {
 class Recordings {
   Recordings({
     required this.id,
-    required this.tsid,
+    required this.teacherSlotID,
     required this.filename,
     required this.date,
   });
 
   int id;
-  int tsid;
+  int teacherSlotID;
   String filename;
   DateTime date;
 
   factory Recordings.fromJson(Map<String, dynamic> json) => Recordings(
         id: json["id"],
-        tsid: json["tsid"],
+        teacherSlotID: json["teacherSlotID"],
         filename: json["filename"],
         date: DateTime.parse(json["date"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "tsid": tsid,
+        "teacherSlotID": teacherSlotID,
         "filename": filename,
         "date": date.toIso8601String(),
       };

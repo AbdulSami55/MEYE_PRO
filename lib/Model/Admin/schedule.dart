@@ -7,16 +7,16 @@ String scheduleToJson(Schedule data) => json.encode(data.toJson());
 class Schedule {
   Schedule(
       {this.id,
-      this.thid,
-      this.vid,
+      this.teachID,
+      this.venueID,
       this.starttime,
       this.endtime,
       this.day,
       this.status});
 
   int? id;
-  int? thid;
-  int? vid;
+  int? teachID;
+  int? venueID;
   String? starttime;
   String? endtime;
   String? day;
@@ -24,8 +24,8 @@ class Schedule {
 
   factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
       id: json["id"],
-      thid: json["thid"],
-      vid: json["vid"],
+      teachID: json["teachID"],
+      venueID: json["venueID"],
       starttime: json["starttime"],
       endtime: json["endtime"],
       day: json["day"],
@@ -33,8 +33,8 @@ class Schedule {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "thid": thid,
-        "vid": vid,
+        "teachID": teachID,
+        "venueID": venueID,
         "starttime": starttime,
         "endtime": endtime,
         "day": day,

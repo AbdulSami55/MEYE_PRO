@@ -1,7 +1,5 @@
 // ignore_for_file: sized_box_for_whitespace
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/Model/Admin/ip.dart';
@@ -17,18 +15,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  @override
-  void initState() {
-    NetworkIP.Connect();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    NetworkIP.close();
-    super.dispose();
-  }
-
   TextEditingController ip = TextEditingController();
   TextEditingController host = TextEditingController();
   TextEditingController channel = TextEditingController();
@@ -52,114 +38,77 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: () => NetworkIP.Connect(),
-        child: NetworkIP.lst.isEmpty
-            ? Center(
-                child: Text(
-                "No Camera Availible",
-                style: GoogleFonts.bebasNeue(fontSize: 30),
-              ))
-            : SingleChildScrollView(
-                child: Column(children: [
-                  StreamBuilder(
-                    stream: NetworkIP.lst[0],
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Container(
-                          color: Colors.green,
-                          child: Stack(
-                            children: [
-                              Image.memory(
-                                base64.decode(snapshot.data.data),
-                                gaplessPlayback: true,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.60,
-                                fit: BoxFit.cover,
-                              ),
-                              const Positioned(
-                                  left: 10,
-                                  right: 20,
-                                  child: Text(
-                                    "Cam 01",
-                                    style: TextStyle(
-                                        color: Colors.green,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ],
-                          ),
-                        );
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        return const Text("Camera 01 Not  Availible");
-                      }
-                    },
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        primary: false,
-                        shrinkWrap: true,
-                        itemCount: NetworkIP.lst.length - 1,
-                        itemBuilder: ((context, index) {
-                          return StreamBuilder(
-                            stream: NetworkIP.lst[index + 1],
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return InkWell(
-                                  onTap: () {
-                                    final cam = NetworkIP.lst[0];
-                                    NetworkIP.lst[0] = NetworkIP.lst[index + 1];
-                                    NetworkIP.lst[index + 1] = cam;
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.green, width: 2),
-                                    ),
-                                    child: Stack(
-                                      children: [
-                                        Image.memory(
-                                          snapshot.data,
-                                          gaplessPlayback: true,
-                                        ),
-                                        Positioned(
-                                            left: 10,
-                                            right: 20,
-                                            child: Text(
-                                              "Cam 0${index + 2}",
-                                              style: const TextStyle(
+      body: NetworkIP.lst.isEmpty
+          ? Center(
+              child: Text(
+              "No Camera Availible",
+              style: GoogleFonts.bebasNeue(fontSize: 30),
+            ))
+          : SingleChildScrollView(
+              child: Column(children: [
+                Wrap(
+                    direction: Axis.horizontal,
+                    children: NetworkIP.lst
+                        .map((element) => StreamBuilder(
+                              stream: element,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return InkWell(
+                                    onTap: () {},
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.42,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.20,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
                                                   color: Colors.green,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
-                                      ],
+                                                  width: 2),
+                                            ),
+                                            child: Image.memory(
+                                              snapshot.data,
+                                              gaplessPlayback: true,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                          const Positioned(
+                                              left: 10,
+                                              right: 20,
+                                              child: Text(
+                                                "",
+                                                style: TextStyle(
+                                                    color: Colors.green,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              } else if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                return Text(
-                                    " Camera 0${index + 2} Not  Availible");
-                              }
-                            },
-                          );
-                        })),
-                  ),
-                  // SizedBox(
-                  //   height: MediaQuery.of(context).size.height * 0.00,
-                  // )
-                ]),
-              ),
-      ),
+                                  );
+                                } else if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                } else {
+                                  return const Text(" Camera  Not  Availible");
+                                }
+                              },
+                            ))
+                        .toList()),
+                // SizedBox(
+                //   height: MediaQuery.of(context).size.height * 0.00,
+                // )
+              ]),
+            ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,

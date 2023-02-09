@@ -26,7 +26,7 @@ class TeachViewModel extends ChangeNotifier {
     Provider.of<TimetableViewModel>(context, listen: false).emptylst();
     for (Teach t in lst) {
       await Provider.of<TimetableViewModel>(context, listen: false)
-          .getdata(t.tmid!);
+          .getdata(t.timeTableID!);
     }
   }
 

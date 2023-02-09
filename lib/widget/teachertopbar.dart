@@ -39,8 +39,8 @@ Padding Teachertopcard(BuildContext context, String image, String name,
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 30,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
               ),
               Row(
                 children: [
