@@ -5,14 +5,14 @@ import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
 import 'package:live_streaming/Screens/Admin/Schedule/teacher_schedule_select.dart';
-import 'package:live_streaming/view_models/Reschedule_view_model.dart';
-import 'package:live_streaming/view_models/venue_view_model.dart';
+import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
 import '../../../utilities/constants.dart';
+import '../../../view_models/Admin/reschedule_view_model.dart';
 import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 

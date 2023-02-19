@@ -9,7 +9,7 @@ import 'package:live_streaming/Screens/Admin/Teacher/teacher_schedule.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utilities/constants.dart';
-import '../../../view_models/user_view_model.dart';
+import '../../../view_models/Admin/user_view_model.dart';
 import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 import '../../../widget/textcomponents/large_text.dart';

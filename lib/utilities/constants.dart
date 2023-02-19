@@ -35,3 +35,11 @@ const String addreschedule = '$baseUrl/api/add-reschedule';
 const String getteacherrecordings =
     '$baseUrl/api/recordings-details-by-teacherid/';
 const String getvideo = '$baseUrl/video?path=';
+
+//----------------------------------------------------Routes-----------------------------------
+
+const String routesStudentDashboard = '/StudentDashboard';
+const String routesSignin = '/';
+const String routesTeacherDashboard = '/TeacherDashboard';
+const String routesTeacherBottomNavBar = '/TeacherBottomNavBar';
+const String routesAdminBottomNavBar = '/AdminHome';

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/teacherrecordings.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Screens/Admin/recordings.dart';
-import 'package:live_streaming/view_models/teacherrecordings_view_model.dart';
+import 'package:live_streaming/view_models/Admin/teacherrecordings_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';

@@ -5,9 +5,9 @@ import 'package:live_streaming/Model/Admin/schedule.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/repo/Admin/reschedule_service.dart';
 
-import '../Model/Admin/venue.dart';
-import '../Model/user_error.dart';
-import '../repo/api_status.dart';
+import '../../Model/Admin/venue.dart';
+import '../../Model/user_error.dart';
+import '../../repo/api_status.dart';
 
 class ReScheduleViewModel extends ChangeNotifier {
   bool _loading = true;

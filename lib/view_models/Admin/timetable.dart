@@ -8,8 +8,8 @@ import 'package:live_streaming/Model/Admin/section.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
 import 'package:live_streaming/repo/Admin/timetable_services.dart';
-import '../Model/user_error.dart';
-import '../repo/api_status.dart';
+import '../../Model/user_error.dart';
+import '../../repo/api_status.dart';
 
 class TimetableViewModel extends ChangeNotifier {
   bool _loading = true;

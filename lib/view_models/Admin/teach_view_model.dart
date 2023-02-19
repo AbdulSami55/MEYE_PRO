@@ -3,11 +3,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:live_streaming/Model/Admin/teach.dart';
 import 'package:live_streaming/repo/Admin/teach_services.dart';
-import 'package:live_streaming/view_models/timetable.dart';
+import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:provider/provider.dart';
 
-import '../Model/user_error.dart';
-import '../repo/api_status.dart';
+import '../../Model/user_error.dart';
+import '../../repo/api_status.dart';
 
 class TeachViewModel extends ChangeNotifier {
   bool _loading = true;

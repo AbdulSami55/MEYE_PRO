@@ -9,12 +9,12 @@ import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/Screens/Admin/Camera/add_camera.dart';
 import 'package:live_streaming/Screens/Admin/Camera/delete_camera.dart';
 import 'package:live_streaming/Screens/Admin/Camera/update_camera.dart';
-import 'package:live_streaming/view_models/camera_view_model.dart';
-import 'package:live_streaming/view_models/venue_view_model.dart';
+import 'package:live_streaming/view_models/Admin/camera_view_model.dart';
+import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
 import 'package:live_streaming/widget/components/apploading.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
-import '../../../view_models/dvr_view_model.dart';
+import '../../../view_models/Admin/dvr_view_model.dart';
 import '../../../widget/components/appbar.dart';
 import '../../../widget/components/errormessage.dart';
 

@@ -5,7 +5,7 @@ import 'package:live_streaming/repo/api_status.dart';
 import 'package:live_streaming/repo/Admin/camera_service.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import '../../../Model/Admin/camera.dart';
-import '../../../view_models/camera_view_model.dart';
+import '../../../view_models/Admin/camera_view_model.dart';
 import '../../../widget/snack_bar.dart';
 
 Future<dynamic> delete_camera(BuildContext context, int id, int dvrID,

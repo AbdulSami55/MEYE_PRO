@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/utilities/constants.dart';
-import 'package:live_streaming/view_models/user_view_model.dart';
+import 'package:live_streaming/view_models/Admin/user_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:provider/provider.dart';
 

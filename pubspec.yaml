@@ -51,6 +51,7 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   flutter_client_sse: ^1.0.0
   syncfusion_flutter_datepicker: ^20.4.44
+  badges: ^3.0.2
 
 
  
