@@ -38,7 +38,7 @@ class _SignInFormState extends State<SignInForm> {
           ),
         ),
         mytextfiled("assets/icons/pass.png", password, true),
-        mybutton(() => context.go(routesAdminBottomNavBar), "Sign In",
+        mybutton(() => context.go(routesTeacherBottomNavBar), "Sign In",
             CupertinoIcons.arrow_right),
       ],
     );

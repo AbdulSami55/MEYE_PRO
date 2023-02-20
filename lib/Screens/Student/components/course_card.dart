@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 
+import '../../../utilities/constants.dart';
+
 class CourseCard extends StatelessWidget {
   const CourseCard({
     Key? key,
     required this.title,
-    this.color = const Color(0xFF7553F6),
+    this.color = containerCardColor,
     this.iconSrc = "assets/avaters/Avatar 2.jpg",
   }) : super(key: key);
 
@@ -34,7 +36,7 @@ class CourseCard extends StatelessWidget {
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w600),
+                        color: containerColor, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
                     height: 15,

@@ -5,7 +5,7 @@ import 'package:live_streaming/Screens/Student/components/text.dart';
 
 import '../../utilities/constants.dart';
 
-SliverAppBar std_teacher_appbar(BuildContext context) {
+SliverAppBar stdteacherappbar(BuildContext context) {
   return SliverAppBar(
     pinned: true,
     actions: [
@@ -44,7 +44,17 @@ SliverAppBar std_teacher_appbar(BuildContext context) {
       ),
     ],
     automaticallyImplyLeading: false,
-    title: student_text(context, "Abdul Sami", 30),
-    backgroundColor: backgroundColorLight,
+    title: student_text(context, "Abdul Sami", 30, color: containerColor),
+    flexibleSpace: Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: <Color>[
+              containerCardColor,
+              Color.fromARGB(255, 141, 114, 238)
+            ]),
+      ),
+    ),
   );
 }

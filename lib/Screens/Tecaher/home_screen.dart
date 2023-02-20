@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
 import 'package:provider/provider.dart';
-
 import '../../utilities/constants.dart';
 import '../../view_models/Admin/teach_view_model.dart';
 import '../../view_models/Admin/timetable.dart';
@@ -14,24 +13,33 @@ class TeacherDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     final timetableViewModel = context.watch<TimetableViewModel>();
     return Scaffold(
-      backgroundColor: backgroundColorLight,
       body: CustomScrollView(
         slivers: [
-          std_teacher_appbar(context),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 30,
-            ),
-          ),
+          stdteacherappbar(context),
           SliverToBoxAdapter(
-            child: ChangeNotifierProvider(
-              create: ((context) => TeachViewModel(1, context)),
-              child: Container(
-                color: backgroundColorLight,
-                child: Consumer<TeachViewModel>(
-                    builder: (context, provider, child) {
-                  return ScheduleTable(context, provider, timetableViewModel);
-                }),
+            child: Container(
+              height: MediaQuery.of(context).size.height * 1,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [containerCardColor, Colors.red]),
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  ChangeNotifierProvider(
+                    create: ((context) => TeachViewModel(1, context)),
+                    child: Consumer<TeachViewModel>(
+                        builder: (context, provider, child) {
+                      return ScheduleTable(
+                          context, provider, timetableViewModel,
+                          iswhite: true);
+                    }),
+                  ),
+                ],
               ),
             ),
           ),

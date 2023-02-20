@@ -14,7 +14,7 @@ class StudentDashboard extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColorLight,
       body: CustomScrollView(slivers: [
-        std_teacher_appbar(context),
+        stdteacherappbar(context),
         SliverToBoxAdapter(
           child: ui(context),
         )

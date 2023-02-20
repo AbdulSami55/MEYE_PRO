@@ -10,6 +10,7 @@ const Color shadowColorDark = Colors.black;
 const Color primaryColor = Colors.green;
 Color? backgroundColor = Colors.grey[300];
 const Color containerColor = Colors.white;
+const Color containerCardColor = Color(0xFF7553F6);
 //------------------------Font Size---------------------------
 const MediumFontSize = 25;
 //-------------------------Errors------------------------------
@@ -43,3 +44,4 @@ const String routesSignin = '/';
 const String routesTeacherDashboard = '/TeacherDashboard';
 const String routesTeacherBottomNavBar = '/TeacherBottomNavBar';
 const String routesAdminBottomNavBar = '/AdminHome';
+const String routesAttendanceCamera = '/AttendanceCamera';

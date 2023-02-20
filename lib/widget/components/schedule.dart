@@ -12,7 +12,8 @@ import 'apploading.dart';
 import 'errormessage.dart';
 
 Widget ScheduleTable(BuildContext context, TeachViewModel teachViewModel,
-    TimetableViewModel timetableViewModel) {
+    TimetableViewModel timetableViewModel,
+    {bool? iswhite}) {
   if (timetableViewModel.loading || teachViewModel.loading) {
     return apploading();
   } else if (teachViewModel.userError != null ||
@@ -37,23 +38,23 @@ Widget ScheduleTable(BuildContext context, TeachViewModel teachViewModel,
             const SizedBox(
               height: 40,
             ),
-            timeSchedule("08:30-\n10:00"),
+            timeSchedule("08:30-\n10:00", iswhite),
             const SizedBox(
               height: 40,
             ),
-            timeSchedule("10:00-\n11:30"),
+            timeSchedule("10:00-\n11:30", iswhite),
             const SizedBox(
               height: 35,
             ),
-            timeSchedule("11:30-\n01:00"),
+            timeSchedule("11:30-\n01:00", iswhite),
             const SizedBox(
               height: 25,
             ),
-            timeSchedule("01:30-\n03:00"),
+            timeSchedule("01:30-\n03:00", iswhite),
             const SizedBox(
               height: 40,
             ),
-            timeSchedule("03:00-\n04:30"),
+            timeSchedule("03:00-\n04:30", iswhite),
           ],
         ),
       ),
@@ -223,10 +224,13 @@ Row ScheduleConditions(
   );
 }
 
-Padding timeSchedule(String time) {
+Padding timeSchedule(String time, bool? iswhite) {
   return Padding(
     padding: const EdgeInsets.only(left: 8.0),
-    child: Text(time),
+    child: Text(
+      time,
+      style: TextStyle(color: iswhite != null ? Colors.white : Colors.black),
+    ),
   );
 }
 
@@ -252,7 +256,7 @@ Container rowData(String data) {
       height: 80,
       width: 55,
       decoration: BoxDecoration(
-          color: data == "" ? backgroundColorLight : shadowColorLight,
+          color: data == "" ? Colors.transparent : shadowColorLight,
           border: Border.all(
             color: backgroundColor2,
           )),

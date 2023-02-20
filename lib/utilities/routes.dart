@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Screens/Admin/Profile/add_user.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_details.dart';
+import 'package:live_streaming/Screens/Tecaher/attendance.dart';
 import 'package:live_streaming/Screens/Tecaher/bottom_nav.dart';
 import 'package:live_streaming/Screens/Tecaher/home_screen.dart';
 
@@ -37,6 +38,9 @@ final GoRouter router = GoRouter(
         GoRoute(
             path: 'TeacherBottomNavBar',
             builder: ((context, state) => const TeacherBottomNav())),
+        GoRoute(
+            path: 'AttendanceCamera',
+            builder: ((context, state) => const AttendanceCamera())),
       ],
     ),
   ],
