@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:live_streaming/utilities/routes.dart';
 
 import 'package:live_streaming/view_models/Admin/dvr_view_model.dart';
+import 'package:live_streaming/view_models/Admin/recording_view_model.dart';
 import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/view_models/Admin/user_view_model.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => TimetableViewModel()),
         ChangeNotifierProvider(create: (_) => ReScheduleViewModel()),
-         ChangeNotifierProvider(create: (_) => BottomNavViewModel()),
+        ChangeNotifierProvider(create: (_) => BottomNavViewModel()),
+        ChangeNotifierProvider(create: (_) => RecordingViewModel())
       ],
       child: MaterialApp.router(
         routerConfig: router,

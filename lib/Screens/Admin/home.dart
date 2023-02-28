@@ -1,9 +1,17 @@
 // ignore_for_file: sized_box_for_whitespace
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/Model/Admin/ip.dart';
 import 'package:live_streaming/utilities/constants.dart';
+import 'package:live_streaming/view_models/Admin/recording_view_model.dart';
+import 'package:live_streaming/widget/components/apploading.dart';
+import 'package:live_streaming/widget/textcomponents/large_text.dart';
+import 'package:live_streaming/widget/textcomponents/medium_text.dart';
+import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 import 'DVR/add_dvr.dart';
 
@@ -38,77 +46,35 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: NetworkIP.lst.isEmpty
-          ? Center(
-              child: Text(
-              "No Camera Availible",
-              style: GoogleFonts.bebasNeue(fontSize: 30),
-            ))
-          : SingleChildScrollView(
-              child: Column(children: [
-                Wrap(
-                    direction: Axis.horizontal,
-                    children: NetworkIP.lst
-                        .map((element) => StreamBuilder(
-                              stream: element,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return InkWell(
-                                    onTap: () {},
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.42,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.20,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.green,
-                                                  width: 2),
-                                            ),
-                                            child: Image.memory(
-                                              snapshot.data,
-                                              gaplessPlayback: true,
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                          const Positioned(
-                                              left: 10,
-                                              right: 20,
-                                              child: Text(
-                                                "",
-                                                style: TextStyle(
-                                                    color: Colors.green,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                } else if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                } else {
-                                  return const Text(" Camera  Not  Availible");
-                                }
-                              },
-                            ))
-                        .toList()),
-                // SizedBox(
-                //   height: MediaQuery.of(context).size.height * 0.00,
-                // )
-              ]),
-            ),
+      body: Consumer<RecordingViewModel>(builder: ((context, provider, child) {
+        if (provider.loading) {
+          return apploading();
+        }
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CupertinoSearchTextField(
+                  decoration: BoxDecoration(
+                    color: backgroundColorLight,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              Wrap(
+                direction: Axis.horizontal,
+                children: [
+                  cameraView(context, provider),
+                  cameraView(context, provider),
+                  cameraView(context, provider),
+                  cameraView(context, provider),
+                ],
+              ),
+            ],
+          ),
+        );
+      })),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
@@ -117,6 +83,39 @@ class _HomeState extends State<Home> {
         },
         child: const Icon(Icons.add_a_photo),
       ),
+    );
+  }
+
+  Widget cameraView(BuildContext context, RecordingViewModel provider) {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                      spreadRadius: 3,
+                      blurRadius: 7,
+                      offset: const Offset(0, 7),
+                      color: Colors.grey.withOpacity(0.5))
+                ]),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: VlcPlayer(
+                controller: provider.vlcPlayer!,
+                aspectRatio: 16 / 9,
+                placeholder: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+            top: 10, left: 20, child: large_text("Lab5", color: primaryColor))
+      ],
     );
   }
 }

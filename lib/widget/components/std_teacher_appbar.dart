@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Screens/Student/components/text.dart';
-
 import '../../utilities/constants.dart';
 
 SliverAppBar stdteacherappbar(BuildContext context) {
   return SliverAppBar(
+    backgroundColor: backgroundColorLight,
     pinned: true,
     actions: [
       Column(
@@ -44,17 +44,6 @@ SliverAppBar stdteacherappbar(BuildContext context) {
       ),
     ],
     automaticallyImplyLeading: false,
-    title: student_text(context, "Abdul Sami", 30, color: containerColor),
-    flexibleSpace: Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: <Color>[
-              containerCardColor,
-              Color.fromARGB(255, 141, 114, 238)
-            ]),
-      ),
-    ),
+    title: student_text(context, "Abdul Sami", 30),
   );
 }

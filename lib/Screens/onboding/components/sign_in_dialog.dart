@@ -12,7 +12,9 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
     pageBuilder: (_, __, ___) {
       return Center(
         child: Container(
-          height: MediaQuery.of(context).size.height / 1.55,
+          height: MediaQuery.of(context).size.height < 500
+              ? MediaQuery.of(context).size.height / 1.35
+              : MediaQuery.of(context).size.height / 1.55,
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           decoration: BoxDecoration(

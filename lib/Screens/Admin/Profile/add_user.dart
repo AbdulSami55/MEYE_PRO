@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +9,8 @@ import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Admin/user_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
+import 'package:live_streaming/widget/progress_indicator.dart';
+import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widget/mybutton.dart';
@@ -35,7 +39,7 @@ class AddUser extends StatelessWidget {
       backgroundColor: backgroundColor,
       body: CustomScrollView(
         slivers: [
-          appbar("Add User"),
+          appbar("Add User", backarrow: false, context: context),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -55,32 +59,7 @@ class AddUser extends StatelessWidget {
                               provider.addUserImage(File(img!.path));
                             }
                           },
-                          child: Stack(
-                            children: [
-                              provider.file != null
-                                  ? CircleAvatar(
-                                      backgroundColor: backgroundColorDark,
-                                      foregroundColor: backgroundColorLight,
-                                      radius: 50,
-                                      backgroundImage:
-                                          FileImage(provider.file!),
-                                    )
-                                  : const CircleAvatar(
-                                      backgroundColor: backgroundColorDark,
-                                      foregroundColor: backgroundColorLight,
-                                      radius: 50,
-                                      backgroundImage: AssetImage(
-                                          "assets/images/defaulticon.png"),
-                                    ),
-                              const Positioned(
-                                  bottom: 4,
-                                  right: 4,
-                                  child: Icon(
-                                    Icons.add_circle,
-                                    color: containerColor,
-                                  ))
-                            ],
-                          ),
+                          child: getImage(provider),
                         );
                       }),
                     ],
@@ -115,49 +94,38 @@ class AddUser extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Consumer<UserViewModel>(
-                    builder: (context, provider, child) => Container(
-                      color: containerColor,
-                      child: DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.grey.shade300, width: 2.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.grey.shade300, width: 2.0),
-                            ),
-                            border: const OutlineInputBorder(),
-                            prefixIcon: const Icon(
-                              Icons.type_specimen,
-                              color: primaryColor,
-                            ),
-                          ),
-                          isExpanded: true,
-                          value: provider.selectedrole,
-                          items: lstdropdown(),
-                          onChanged: (value) {
-                            provider.changeSelectedRole(value!);
-                          }),
-                    ),
-                  ),
+                  selectRole(lstdropdown),
                   const SizedBox(
                     height: 10,
                   ),
-                  mybutton(() {
+                  mybutton(() async {
+                    showLoaderDialog(context, "Adding..");
                     User u = User(
                         userID: id.text,
                         name: name.text,
                         password: password.text,
                         role: Provider.of<UserViewModel>(context, listen: false)
                             .selectedrole);
-                    UserViewModel().insertUserdata(
-                        u,
-                        Provider.of<UserViewModel>(context, listen: false)
-                            .file!);
+                    await UserViewModel()
+                        .insertUserdata(
+                            u,
+                            Provider.of<UserViewModel>(context, listen: false)
+                                .file!)
+                        .then((value) {
+                      if (value == "okay") {
+                        ScaffoldMessenger.of(context).showSnackBar(snack_bar(
+                            "${context.read<UserViewModel>().selectedrole} added..",
+                            true));
+                      } else if (value == "ae") {
+                        ScaffoldMessenger.of(context).showSnackBar(snack_bar(
+                            "${context.read<UserViewModel>().selectedrole} already exists..",
+                            false));
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(snack_bar("$value", false));
+                      }
+                      Navigator.pop(context);
+                    });
                   }, "Submit", CupertinoIcons.arrow_right),
                 ],
               ),
@@ -165,6 +133,64 @@ class AddUser extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  Consumer<UserViewModel> selectRole(
+      List<DropdownMenuItem<String>> Function() lstdropdown) {
+    return Consumer<UserViewModel>(
+      builder: (context, provider, child) => Container(
+        color: containerColor,
+        child: DropdownButtonFormField<String>(
+            decoration: InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade300, width: 2.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade300, width: 2.0),
+              ),
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(
+                Icons.type_specimen,
+                color: primaryColor,
+              ),
+            ),
+            isExpanded: true,
+            value: provider.selectedrole,
+            items: lstdropdown(),
+            onChanged: (value) {
+              provider.changeSelectedRole(value!);
+            }),
+      ),
+    );
+  }
+
+  Stack getImage(UserViewModel provider) {
+    return Stack(
+      children: [
+        provider.file != null
+            ? CircleAvatar(
+                backgroundColor: backgroundColorDark,
+                foregroundColor: backgroundColorLight,
+                radius: 50,
+                backgroundImage: FileImage(provider.file!),
+              )
+            : const CircleAvatar(
+                backgroundColor: backgroundColorDark,
+                foregroundColor: backgroundColorLight,
+                radius: 50,
+                backgroundImage: AssetImage("assets/images/defaulticon.png"),
+              ),
+        const Positioned(
+            bottom: 4,
+            right: 4,
+            child: Icon(
+              Icons.add_circle,
+              color: containerColor,
+            ))
+      ],
     );
   }
 

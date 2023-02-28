@@ -20,7 +20,7 @@ const INVALID_FORMAT = 102;
 const UNKNOWN_ERROR = 103;
 //------------------------------------URLS---------------------
 
-const String baseUrl = 'http://192.168.43.192:8000';
+const String baseUrl = 'http://192.168.235.67:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';
@@ -45,3 +45,4 @@ const String routesTeacherDashboard = '/TeacherDashboard';
 const String routesTeacherBottomNavBar = '/TeacherBottomNavBar';
 const String routesAdminBottomNavBar = '/AdminHome';
 const String routesAttendanceCamera = '/AttendanceCamera';
+const String routesProfile = '/Profile';
