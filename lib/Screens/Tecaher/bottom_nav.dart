@@ -2,13 +2,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_streaming/Screens/Tecaher/attendance.dart';
 import 'package:live_streaming/Screens/Tecaher/home_screen.dart';
 import 'package:live_streaming/view_models/handle_bottom_nav.dart';
 import 'package:provider/provider.dart';
-
 import '../../utilities/constants.dart';
 
 class TeacherBottomNav extends StatelessWidget {

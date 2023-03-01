@@ -3,9 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../utilities/constants.dart';
 
-SliverAppBar appbar(String text, {bool? backarrow, BuildContext? context}) {
+SliverAppBar appbar(String text,
+    {bool? backarrow,
+    BuildContext? context,
+    bool? automaticallyImplyLeading,
+    String? route}) {
   return SliverAppBar(
-    automaticallyImplyLeading: backarrow ?? true,
+    automaticallyImplyLeading: automaticallyImplyLeading ?? true,
     foregroundColor: shadowColorDark,
     backgroundColor: backgroundColor,
     snap: false,
@@ -13,11 +17,11 @@ SliverAppBar appbar(String text, {bool? backarrow, BuildContext? context}) {
     floating: false,
     title: Row(
       children: [
-        backarrow == false
+        backarrow == true
             ? Row(
                 children: [
                   InkWell(
-                      onTap: () => context!.go(routesAdminBottomNavBar),
+                      onTap: () => context!.go(route!),
                       child: const Icon(Icons.arrow_back)),
                   const SizedBox(
                     width: 15,

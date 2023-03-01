@@ -46,3 +46,5 @@ const String routesTeacherBottomNavBar = '/TeacherBottomNavBar';
 const String routesAdminBottomNavBar = '/AdminHome';
 const String routesAttendanceCamera = '/AttendanceCamera';
 const String routesProfile = '/Profile';
+const String routesLiveStreamDetails = '/LiveStreamDetails';
+const String routesAssignCourse = '/AssignCourse';

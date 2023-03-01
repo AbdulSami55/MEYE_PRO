@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 
-class RecordingViewModel with ChangeNotifier {
+class LiveStreamViewModel with ChangeNotifier {
   bool loading = false;
-  VlcPlayerController? vlcPlayer;
-  RecordingViewModel() {
+  VlcPlayerController? _vlcPlayer;
+  VlcPlayerController get vlcPlayer => _vlcPlayer!;
+  LiveStreamViewModel() {
     startVideo();
   }
 
@@ -17,7 +18,7 @@ class RecordingViewModel with ChangeNotifier {
     setLoading(true);
 
     String myUrl = 'http://192.168.0.103:8080/video';
-    vlcPlayer = VlcPlayerController.network(myUrl,
+    _vlcPlayer = VlcPlayerController.network(myUrl,
         autoPlay: true, options: VlcPlayerOptions());
     setLoading(false);
   }

@@ -17,7 +17,7 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<BottomNavViewModel>();
     final List screens = [
-      Home(),
+      const Home(),
       const DVRDetails(),
       const RescheduleScreen(),
       const Profile()

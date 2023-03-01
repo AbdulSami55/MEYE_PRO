@@ -39,7 +39,11 @@ class AddUser extends StatelessWidget {
       backgroundColor: backgroundColor,
       body: CustomScrollView(
         slivers: [
-          appbar("Add User", backarrow: false, context: context),
+          appbar("Add User",
+              automaticallyImplyLeading: false,
+              backarrow: true,
+              context: context,
+              route: routesAdminBottomNavBar),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8.0),

@@ -1,12 +1,9 @@
 // ignore_for_file: unused_field
 
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Screens/onboding/components/sign_in_dialog.dart';
-import 'package:live_streaming/Screens/onboding/components/sign_in_form.dart';
 import 'package:rive/rive.dart';
-
 import 'components/animated_btn.dart';
 
 class OnbodingScreen extends StatefulWidget {

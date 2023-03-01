@@ -94,8 +94,11 @@ class Profile extends StatelessWidget {
                         thickness: 1,
                         height: 0,
                       ),
-                      profile_list_tile(
-                          context, "Privacy Policy", Icons.privacy_tip),
+                      InkWell(
+                        onTap: () => context.go(routesAssignCourse),
+                        child: profile_list_tile(context, "Assign Courses",
+                            Icons.assignment_turned_in_outlined),
+                      ),
                       const Divider(
                         thickness: 1,
                         height: 0,
