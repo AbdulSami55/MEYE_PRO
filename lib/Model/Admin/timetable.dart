@@ -1,55 +1,63 @@
 import 'dart:convert';
 
-TimeTable timeTableFromJson(Map<String, dynamic> mp) => TimeTable.fromJson(mp);
-List<TimeTable> lsttimetableFromJson(String str) => List<TimeTable>.from(
-    json.decode(str)["data"].map((x) => TimeTable.fromJson(x)));
+List<TimeTable> timeTableFromJson(String str) =>
+    List<TimeTable>.from(json.decode(str).map((x) => TimeTable.fromJson(x)));
 
-String timeTableToJson(TimeTable data) => json.encode(data.toJson());
-
-List<TimeTable> rlsttimetableFromJson(List lst) {
-  List<TimeTable> templst = [];
-  for (var i in lst) {
-    templst.add(TimeTable.fromJson(i));
-  }
-  return templst;
-}
+String timeTableToJson(List<TimeTable> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TimeTable {
   TimeTable({
-    this.id,
-    this.secId,
-    this.starttime,
-    this.endtime,
-    this.day,
-    this.courseID,
-    this.venueID,
+    required this.id,
+    required this.discipline,
+    required this.starttime,
+    required this.endtime,
+    required this.day,
+    required this.courseCode,
+    required this.courseName,
+    required this.venue,
+    required this.teacherName,
+    required this.sessionId,
+    required this.sessionName,
   });
 
-  int? id;
-  int? secId;
-  String? starttime;
-  String? endtime;
-  String? day;
-  int? courseID;
-  int? venueID;
+  int id;
+  String discipline;
+  String starttime;
+  String endtime;
+  String day;
+  String courseCode;
+  String courseName;
+  String venue;
+  String teacherName;
+  String sessionId;
+  String sessionName;
 
   factory TimeTable.fromJson(Map<String, dynamic> json) => TimeTable(
         id: json["id"],
-        secId: json["sectionID"],
+        discipline: json["discipline"],
         starttime: json["starttime"],
         endtime: json["endtime"],
         day: json["day"],
-        courseID: json["courseID"],
-        venueID: json["venueID"],
+        courseCode: json["courseCode"],
+        courseName: json["courseName"],
+        venue: json["venue"],
+        teacherName: json["teacherName"],
+        sessionId: json["sessionId"],
+        sessionName: json["sessionName"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "sectionID": secId,
+        "discipline": discipline,
         "starttime": starttime,
         "endtime": endtime,
         "day": day,
-        "courseID": courseID,
-        "venueID": venueID,
+        "courseCode": courseCode,
+        "courseName": courseName,
+        "venue": venue,
+        "teacherName": teacherName,
+        "sessionId": sessionId,
+        "sessionName": sessionName,
       };
 }

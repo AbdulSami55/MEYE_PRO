@@ -33,7 +33,7 @@ class TeacherRecordings {
       TeacherRecordings(
           teacherslot: rlistteacherSlotFromJson(json["teacherslot"]),
           recordings: rlistrecordingsFromJson(json["recordings"]),
-          timetable: rlsttimetableFromJson(json["timetable"]),
+          // timetable: rlsttimetableFromJson(json["timetable"]),
           section: rlstsectionFromJson(json["section"]),
           venue: rlstvenueFromJson(json["venue"]),
           course: rlstcourseFromJson(json["course"]));

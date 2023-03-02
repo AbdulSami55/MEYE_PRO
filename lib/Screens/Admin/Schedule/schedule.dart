@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:live_streaming/view_models/Admin/user_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utilities/constants.dart';
 import '../Teacher/teacher_details.dart';
@@ -9,6 +11,7 @@ class RescheduleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserViewModel userViewModel = context.watch<UserViewModel>();
     return Scaffold(
       backgroundColor: backgroundColor,
       body: NestedScrollView(
@@ -32,8 +35,11 @@ class RescheduleScreen extends StatelessWidget {
             elevation: 0,
           ),
         ],
-        body: TeacherDetails(
-          isSchedule: true,
+        body: RefreshIndicator(
+          onRefresh: () => userViewModel.refreshPage(),
+          child: TeacherDetails(
+            isSchedule: true,
+          ),
         ),
       ),
     );

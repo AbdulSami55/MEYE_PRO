@@ -44,7 +44,6 @@ Padding Teachertopcard(BuildContext context, String image, String name,
               ),
               Row(
                 children: [
-                  text_medium("Name="),
                   text_medium(name, color: shadowColorLight),
                   const SizedBox(
                     width: 40,

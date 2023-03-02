@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
-import 'package:live_streaming/view_models/Admin/teach_view_model.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/components/schedule.dart';
@@ -16,7 +15,6 @@ class TeacherScheduleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timetableViewModel = context.watch<TimetableViewModel>();
     return Scaffold(
       backgroundColor: backgroundColor,
       body: CustomScrollView(
@@ -36,13 +34,12 @@ class TeacherScheduleView extends StatelessWidget {
                   height: 30,
                 ),
                 ChangeNotifierProvider(
-                  create: ((context) => TeachViewModel(user.id!, context)),
+                  create: ((context) => TimetableViewModel(user.name!)),
                   child: Container(
                     color: backgroundColor,
-                    child: Consumer<TeachViewModel>(
+                    child: Consumer<TimetableViewModel>(
                         builder: (context, provider, child) {
-                      return ScheduleTable(
-                          context, provider, timetableViewModel);
+                      return ScheduleTable(context, provider);
                     }),
                   ),
                 ),

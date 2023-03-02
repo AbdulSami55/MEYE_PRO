@@ -32,7 +32,7 @@ class RescheduleServies {
     try {
       var response = await http.get(Uri.parse(gettimetable));
       if (response.statusCode == 200) {
-        return Success(response: lsttimetableFromJson(response.body));
+        return Success(response: timeTableFromJson(response.body));
       }
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Response");
     } on HttpException {

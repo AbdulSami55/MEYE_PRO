@@ -52,6 +52,7 @@ class VenueViewModel extends ChangeNotifier {
   }
 
   getVenueData() async {
+    _userError = null;
     setloading(true);
     var response = await VenueServies.getVenue();
     if (response is Success) {

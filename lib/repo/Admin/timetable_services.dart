@@ -2,14 +2,16 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:live_streaming/utilities/constants.dart';
 
+import '../../Model/Admin/timetable.dart';
 import '../api_status.dart';
 
 class TimeTableServices {
-  Future<Object> gettimetable(int timetableid) async {
+  Future<Object> gettimetable(String teacherName) async {
     try {
-      var response = await http.get(Uri.parse("$gettimetableurl$timetableid"));
+      var response =
+          await http.get(Uri.parse("$getteachertimetableurl$teacherName"));
       if (response.statusCode == 200) {
-        return Success(response: response.body);
+        return Success(response: timeTableFromJson(response.body));
       }
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Response");
     } on HttpException {

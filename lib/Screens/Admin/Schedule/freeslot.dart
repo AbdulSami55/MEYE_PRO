@@ -233,20 +233,20 @@ class FreeSlotView extends StatelessWidget {
 
     for (TimeTable t in rescheduleviewmodel.lsttimetable) {
       if (t.starttime.toString() == time) {
-        if (t.day == "Mon") {
-          Venue v = vmonlst.where((element) => element.id == t.venueID).first;
+        if (t.day == "Monday") {
+          Venue v = vmonlst.where((element) => element.name == t.venue).first;
           monlst.remove(v.name);
-        } else if (t.day == "Tue") {
-          Venue v = vtuelst.where((element) => element.id == t.venueID).first;
+        } else if (t.day == "Tuesday") {
+          Venue v = vtuelst.where((element) => element.name == t.venue).first;
           tuelst.remove(v.name);
-        } else if (t.day == "Wed") {
-          Venue v = vwedlst.where((element) => element.id == t.venueID).first;
+        } else if (t.day == "Wednesday") {
+          Venue v = vwedlst.where((element) => element.name == t.venue).first;
           wedlst.remove(v.name);
-        } else if (t.day == "Thu") {
-          Venue v = vthulst.where((element) => element.id == t.venueID).first;
+        } else if (t.day == "Thursday") {
+          Venue v = vthulst.where((element) => element.name == t.venue).first;
           thulst.remove(v.name);
-        } else if (t.day == "Fri") {
-          Venue v = vfrilst.where((element) => element.id == t.venueID).first;
+        } else if (t.day == "Friday") {
+          Venue v = vfrilst.where((element) => element.name == t.venue).first;
           frilst.remove(v.name);
         }
       }

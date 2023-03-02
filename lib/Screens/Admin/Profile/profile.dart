@@ -80,7 +80,7 @@ class Profile extends StatelessWidget {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () => context.go("/AddUser"),
+                        onTap: () => context.push("/AddUser"),
                         child: profile_list_tile(
                             context, "Add User", CupertinoIcons.add_circled),
                       ),
@@ -88,14 +88,18 @@ class Profile extends StatelessWidget {
                         thickness: 1,
                         height: 0,
                       ),
-                      profile_list_tile(
-                          context, "Setting", CupertinoIcons.settings),
+                      InkWell(
+                        onTap: () => context.pushNamed(routesTeacherDetails,
+                            params: {'isRuleSetting': true.toString()}),
+                        child: profile_list_tile(
+                            context, "Rule Setting", CupertinoIcons.settings),
+                      ),
                       const Divider(
                         thickness: 1,
                         height: 0,
                       ),
                       InkWell(
-                        onTap: () => context.go(routesAssignCourse),
+                        onTap: () => context.push(routesAssignCourse),
                         child: profile_list_tile(context, "Assign Courses",
                             Icons.assignment_turned_in_outlined),
                       ),

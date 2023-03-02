@@ -49,6 +49,7 @@ class UserViewModel extends ChangeNotifier {
   }
 
   void getUserdata() async {
+    _userError = null;
     setloading(true);
     var response = await UserServies.getUser();
     if (response is Success) {
@@ -60,6 +61,11 @@ class UserViewModel extends ChangeNotifier {
       setUserError(userError);
     }
     setloading(false);
+  }
+
+  Future<void> refreshPage() {
+    return Future.delayed(const Duration(milliseconds: 1))
+        .then((value) => getUserdata());
   }
 
   Future insertUserdata(User u, File file) async {

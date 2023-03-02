@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Screens/Admin/Profile/add_user.dart';
 import 'package:live_streaming/Screens/Admin/Profile/assign_course.dart';
 import 'package:live_streaming/Screens/Admin/Profile/profile.dart';
+import 'package:live_streaming/Screens/Admin/Profile/rule_setting.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_details.dart';
 import 'package:live_streaming/Screens/Admin/live_stream_details.dart';
 import 'package:live_streaming/Screens/Tecaher/attendance.dart';
@@ -52,6 +54,18 @@ final GoRouter router = GoRouter(
         GoRoute(
             path: 'AssignCourse',
             builder: ((context, state) => const AssignCourse())),
+        GoRoute(
+            path: 'RuleSetting',
+            builder: ((context, state) {
+              User user = state.extra as User;
+              return RuleSetting(user: user);
+            })),
+        GoRoute(
+            path: 'TeacherDetails/:isRuleSetting',
+            name: 'TeacherDetails',
+            builder: ((context, state) => TeacherDetails(
+                  isRuleSetting: state.params['isRuleSetting'],
+                )))
       ],
     ),
   ],

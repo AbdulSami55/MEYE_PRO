@@ -2,10 +2,12 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Screens/Admin/Schedule/daterange.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_recordings.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_schedule.dart';
+import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utilities/constants.dart';
@@ -16,14 +18,21 @@ import '../../../widget/textcomponents/large_text.dart';
 import '../../../widget/textcomponents/medium_text.dart';
 
 class TeacherDetails extends StatelessWidget {
-  TeacherDetails({super.key, this.isSchedule});
+  TeacherDetails({super.key, this.isSchedule, this.isRuleSetting});
   bool? isSchedule;
+  String? isRuleSetting;
   @override
   Widget build(BuildContext context) {
     UserViewModel userViewModel = context.watch<UserViewModel>();
     return Scaffold(
       backgroundColor: backgroundColor,
       body: CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+        isRuleSetting != null
+            ? appbar(
+                "Teacher Details",
+              )
+            : const SliverToBoxAdapter(
+                child: Padding(padding: EdgeInsets.zero)),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),
@@ -57,14 +66,15 @@ class TeacherDetails extends StatelessWidget {
     }
     return ListView.builder(
         shrinkWrap: true,
-        physics: const BouncingScrollPhysics(),
         itemCount: userViewModel.lstuser.length,
         itemBuilder: (context, index) => userViewModel.lstuser[index].role ==
                 "Teacher"
             ? InkWell(
                 onTap: () => isSchedule == true
                     ? schedulebottomSheet(context, userViewModel.lstuser[index])
-                    : bottomSheet(context, userViewModel.lstuser[index]),
+                    : isRuleSetting != null
+                        ? context.push(routesRuleSetting,extra: userViewModel.lstuser[index])
+                        : bottomSheet(context, userViewModel.lstuser[index]),
                 child: Column(
                   children: [
                     ListTile(

@@ -295,19 +295,19 @@ class DateRangeView extends StatelessWidget {
     for (TimeTable t in rescheduleviewmodel.lsttimetable) {
       if (t.starttime.toString() == time) {
         if (t.day == "Mon") {
-          Venue v = vmonlst.where((element) => element.id == t.venueID).first;
+          Venue v = vmonlst.where((element) => element.name == t.venue).first;
           monlst.remove(v.name);
         } else if (t.day == "Tue") {
-          Venue v = vtuelst.where((element) => element.id == t.venueID).first;
+          Venue v = vtuelst.where((element) => element.name == t.venue).first;
           tuelst.remove(v.name);
         } else if (t.day == "Wed") {
-          Venue v = vwedlst.where((element) => element.id == t.venueID).first;
+          Venue v = vwedlst.where((element) => element.name == t.venue).first;
           wedlst.remove(v.name);
         } else if (t.day == "Thu") {
-          Venue v = vthulst.where((element) => element.id == t.venueID).first;
+          Venue v = vthulst.where((element) => element.name == t.venue).first;
           thulst.remove(v.name);
         } else if (t.day == "Fri") {
-          Venue v = vfrilst.where((element) => element.id == t.venueID).first;
+          Venue v = vfrilst.where((element) => element.name == t.venue).first;
           frilst.remove(v.name);
         }
       }

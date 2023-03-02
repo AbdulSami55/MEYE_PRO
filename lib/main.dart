@@ -5,7 +5,6 @@ import 'package:live_streaming/utilities/routes.dart';
 
 import 'package:live_streaming/view_models/Admin/dvr_view_model.dart';
 import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
-import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/view_models/Admin/user_view_model.dart';
 import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
 import 'package:live_streaming/view_models/handle_bottom_nav.dart';
@@ -26,7 +25,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DVRViewModel()),
         ChangeNotifierProvider(create: (_) => VenueViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
-        ChangeNotifierProvider(create: (_) => TimetableViewModel()),
         ChangeNotifierProvider(create: (_) => ReScheduleViewModel()),
         ChangeNotifierProvider(create: (_) => BottomNavViewModel()),
       ],

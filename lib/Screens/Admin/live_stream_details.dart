@@ -18,11 +18,10 @@ class LiveStreamingDetails extends StatelessWidget {
       backgroundColor: backgroundColor,
       body: CustomScrollView(
         slivers: [
-          appbar("Live Stream Details",
-              automaticallyImplyLeading: false,
-              backarrow: true,
-              route: routesAdminBottomNavBar,
-              context: context),
+          appbar(
+            "Live Stream Details",
+            automaticallyImplyLeading: false,
+          ),
           SliverToBoxAdapter(
             child: ChangeNotifierProvider(
               create: (context) => LiveStreamViewModel(),
