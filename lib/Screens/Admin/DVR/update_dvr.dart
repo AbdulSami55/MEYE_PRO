@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/Model/Admin/dvr.dart';
 import 'package:live_streaming/repo/api_status.dart';
-import 'package:live_streaming/view_models/Admin/dvr_view_model.dart';
+import 'package:live_streaming/view_models/Admin/DVR/dvr_view_model.dart';
 import 'package:live_streaming/widget/mytextfield.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';

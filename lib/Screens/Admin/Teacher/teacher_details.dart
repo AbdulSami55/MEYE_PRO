@@ -11,7 +11,7 @@ import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utilities/constants.dart';
-import '../../../view_models/Admin/user_view_model.dart';
+import '../../../view_models/Admin/User/user_view_model.dart';
 import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 import '../../../widget/textcomponents/large_text.dart';
@@ -73,7 +73,8 @@ class TeacherDetails extends StatelessWidget {
                 onTap: () => isSchedule == true
                     ? schedulebottomSheet(context, userViewModel.lstuser[index])
                     : isRuleSetting != null
-                        ? context.push(routesRuleSetting,extra: userViewModel.lstuser[index])
+                        ? context.push(routesRuleSetting,
+                            extra: userViewModel.lstuser[index])
                         : bottomSheet(context, userViewModel.lstuser[index]),
                 child: Column(
                   children: [

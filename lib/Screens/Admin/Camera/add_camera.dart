@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
 import 'package:live_streaming/repo/api_status.dart';
 import 'package:live_streaming/repo/Admin/camera_service.dart';
-import 'package:live_streaming/view_models/Admin/camera_view_model.dart';
+import 'package:live_streaming/view_models/Admin/DVR/camera_view_model.dart';
 import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
 import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';

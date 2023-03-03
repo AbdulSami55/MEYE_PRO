@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/utilities/routes.dart';
 
-import 'package:live_streaming/view_models/Admin/dvr_view_model.dart';
+import 'package:live_streaming/view_models/Admin/DVR/dvr_view_model.dart';
+import 'package:live_streaming/view_models/Admin/Profile/rule_setting_view_model.dart';
 import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
-import 'package:live_streaming/view_models/Admin/user_view_model.dart';
+import 'package:live_streaming/view_models/Admin/User/user_view_model.dart';
 import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
 import 'package:live_streaming/view_models/handle_bottom_nav.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => VenueViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => ReScheduleViewModel()),
+        ChangeNotifierProvider(create: (_) => RuleSettingViewModel()),
         ChangeNotifierProvider(create: (_) => BottomNavViewModel()),
       ],
       child: MaterialApp.router(

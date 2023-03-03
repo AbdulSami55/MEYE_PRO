@@ -19,6 +19,7 @@ class TimeTable {
     required this.teacherName,
     required this.sessionId,
     required this.sessionName,
+    required this.isSelected,
   });
 
   int id;
@@ -32,6 +33,7 @@ class TimeTable {
   String teacherName;
   String sessionId;
   String sessionName;
+  bool isSelected = false;
 
   factory TimeTable.fromJson(Map<String, dynamic> json) => TimeTable(
         id: json["id"],
@@ -45,6 +47,7 @@ class TimeTable {
         teacherName: json["teacherName"],
         sessionId: json["sessionId"],
         sessionName: json["sessionName"] ?? '',
+        isSelected: false,
       );
 
   Map<String, dynamic> toJson() => {

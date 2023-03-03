@@ -5,7 +5,7 @@ import 'package:live_streaming/Model/user_error.dart';
 import 'package:live_streaming/repo/api_status.dart';
 import 'package:live_streaming/repo/Admin/dvr_services.dart';
 import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
-import '../../Model/Admin/dvr.dart';
+import '../../../Model/Admin/dvr.dart';
 
 class DVRViewModel extends ChangeNotifier {
   bool _isloading = false;

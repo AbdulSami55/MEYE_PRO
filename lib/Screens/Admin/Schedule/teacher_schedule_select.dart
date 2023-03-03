@@ -2,18 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
-import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/components/select_schedule.dart';
-import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
-import '../../../Model/Admin/timetable.dart';
 import '../../../Model/Admin/venue.dart';
 import '../../../utilities/constants.dart';
-import '../../../widget/components/apploading.dart';
-import '../../../widget/components/errormessage.dart';
 
 class TeacherScheduleScreen extends StatelessWidget {
   TeacherScheduleScreen(

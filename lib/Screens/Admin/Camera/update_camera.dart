@@ -12,7 +12,7 @@ import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../Model/Admin/camera.dart';
-import '../../../view_models/Admin/camera_view_model.dart';
+import '../../../view_models/Admin/DVR/camera_view_model.dart';
 
 Future<dynamic> update_camera(
     BuildContext context,

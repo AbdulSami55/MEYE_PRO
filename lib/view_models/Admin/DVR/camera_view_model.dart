@@ -5,8 +5,8 @@ import 'package:live_streaming/Model/user_error.dart';
 import 'package:live_streaming/repo/api_status.dart';
 import 'package:live_streaming/repo/Admin/camera_service.dart';
 
-import '../../Model/Admin/camera.dart';
-import '../../Model/Admin/dvr.dart';
+import '../../../Model/Admin/camera.dart';
+import '../../../Model/Admin/dvr.dart';
 
 class CameraViewModel extends ChangeNotifier {
   bool _isloading = false;
