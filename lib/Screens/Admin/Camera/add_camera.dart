@@ -28,7 +28,9 @@ Future<dynamic> add_camera(
     pageBuilder: (_, __, ___) {
       return Center(
         child: Container(
-          height: MediaQuery.of(context).size.height / 1.40,
+          height: MediaQuery.of(context).size.height < 700
+              ? MediaQuery.of(context).size.height / 1.35
+              : MediaQuery.of(context).size.height / 1.55,
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           decoration: BoxDecoration(

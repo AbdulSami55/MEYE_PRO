@@ -2,9 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:live_streaming/Model/Admin/teacherrecordings.dart';
+import 'package:live_streaming/Model/Admin/recordings.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
-import 'package:live_streaming/Screens/Admin/recordings.dart';
+import 'package:live_streaming/Screens/Admin/Teacher/recordings.dart';
 import 'package:live_streaming/view_models/Admin/User/teacherrecordings_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
@@ -41,7 +41,7 @@ class TeacherRecordingView extends StatelessWidget {
                   height: 30,
                 ),
                 ChangeNotifierProvider(
-                  create: ((context) => TeacherRecordingsViewModel(user.id!)),
+                  create: ((context) => TeacherRecordingsViewModel(user.name!)),
                   child: Container(
                     color: backgroundColor,
                     child: Consumer<TeacherRecordingsViewModel>(
@@ -68,18 +68,15 @@ class TeacherRecordingView extends StatelessWidget {
     } else if (teacherRecordingsViewModel.userError != null) {
       return ErrorMessage(
           teacherRecordingsViewModel.userError!.message.toString());
-    } else if (teacherRecordingsViewModel.teacherrecordings.recordings !=
-        null) {
-      if (teacherRecordingsViewModel.teacherrecordings.recordings!.isEmpty) {
-        return Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.25,
-            ),
-            ErrorMessage("NO Data"),
-          ],
-        );
-      }
+    } else if (teacherRecordingsViewModel.tempTeacherRecordings.isEmpty) {
+      return Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.25,
+          ),
+          ErrorMessage("NO Data"),
+        ],
+      );
     }
     return Column(
       children: [
@@ -87,31 +84,35 @@ class TeacherRecordingView extends StatelessWidget {
         ListView.builder(
             physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
-            itemCount: teacherRecordingsViewModel
-                .tempteacherrecordings!.recordings!.length,
+            itemCount: teacherRecordingsViewModel.tempTeacherRecordings.length,
             itemBuilder: ((context, index) {
-              TeacherRecordings teacherRecordings =
-                  teacherRecordingsViewModel.tempteacherrecordings!;
+              Recordings teacherRecordings =
+                  teacherRecordingsViewModel.tempTeacherRecordings[index];
               return Column(
                 children: [
                   InkWell(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => VideoPlay(
-                                  index: index,
-                                  user: user,
-                                  teacherRecordings: teacherRecordings,
-                                )))),
+                    onTap: () {
+                      teacherRecordingsViewModel
+                          .setPlayer('$getvideo${teacherRecordings.fileName}');
+                      teacherRecordingsViewModel
+                          .setSelectedVideo(teacherRecordings);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => VideoPlay(
+                                    teacherRecordingsViewModel:
+                                        teacherRecordingsViewModel,
+                                  ))));
+                    },
                     child: ListTile(
                       leading: const Icon(
                         Icons.play_arrow,
                         size: 50,
                       ),
                       title: text_medium(
-                          "${teacherRecordings.recordings![index].date.toString().split(' ')[0]}\n${teacherRecordings.recordings![index].filename.split(',')[2]}"),
+                          "${teacherRecordings.date.toString().split(' ')[0]}\n${teacherRecordings.fileName.split(',')[2]}"),
                       subtitle: Text(
-                          "Course Name: ${teacherRecordings.course![index].name}\nSection : ${teacherRecordings.section![index].name}"),
+                          "Course Name: ${teacherRecordings.courseName}\nSection : ${teacherRecordings.discipline}"),
                     ),
                   ),
                   const Divider()

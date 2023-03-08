@@ -163,12 +163,12 @@ class DVRDetails extends StatelessWidget {
                             ),
                             Text(
                               'Name: ${dvrViewModel.lstDVR[index].name}',
-                              style: GoogleFonts.bebasNeue(fontSize: 25),
+                              style: GoogleFonts.bebasNeue(fontSize: 24),
                             ),
                             Text(
                               'IP: ${dvrViewModel.lstDVR[index].ip}\nPassword: ${dvrViewModel.lstDVR[index].password}\nChannel: ${dvrViewModel.lstDVR[index].channel}',
                               style: GoogleFonts.bebasNeue(
-                                  fontSize: 25, color: Colors.grey[500]),
+                                  fontSize: 24, color: Colors.grey[500]),
                             ),
                           ],
                         ),

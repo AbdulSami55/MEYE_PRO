@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
 
   Widget cameraView(BuildContext context, LiveStreamViewModel provider) {
     return InkWell(
-      onTap: () => context.go(routesLiveStreamDetails),
+      onTap: () => context.push(routesLiveStreamDetails),
       child: Stack(
         children: [
           Padding(

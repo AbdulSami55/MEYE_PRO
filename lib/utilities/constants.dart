@@ -20,7 +20,7 @@ const INVALID_FORMAT = 102;
 const UNKNOWN_ERROR = 103;
 //------------------------------------URLS---------------------
 
-const String baseUrl = 'http://192.168.43.192:8000';
+const String baseUrl = 'http://192.168.100.122:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';
@@ -35,7 +35,7 @@ const String getteachurl = '$baseUrl/api/teach-details/';
 const String gettimetable = '$baseUrl/api/timetable-details';
 const String addreschedule = '$baseUrl/api/add-reschedule';
 const String getteacherrecordings =
-    '$baseUrl/api/recordings-details-by-teacherid/';
+    '$baseUrl/api/recordings-details-by-teachername/';
 const String getvideo = '$baseUrl/video?path=';
 
 //----------------------------------------------------Routes-----------------------------------

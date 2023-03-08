@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import '../../Model/Admin/teacherrecordings.dart';
+import 'package:live_streaming/Model/Admin/recordings.dart';
 import '../../utilities/constants.dart';
 import '../api_status.dart';
 
 class TeacherRecordingServies {
-  static Future<Object> getRecordings(int teacherid) async {
+  static Future<Object> getRecordings(String teacherName) async {
     try {
       var response =
-          await http.get(Uri.parse("$getteacherrecordings$teacherid"));
+          await http.get(Uri.parse("$getteacherrecordings$teacherName"));
       if (response.statusCode == 200) {
-        return Success(response: teacherrecordingsFromJson(response.body));
+        return Success(response: recordingsFromJson(response.body));
       }
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Response");
     } on HttpException {

@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 List<DVR> dvrFromJson(String str) =>
-    List<DVR>.from(json.decode(str)["data"].map((x) => DVR.fromJson(x)));
+    List<DVR>.from(json.decode(str).map((x) => DVR.fromJson(x)));
 
 String DVRToJson(List<DVR> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));

@@ -20,7 +20,6 @@ class LiveStreamingDetails extends StatelessWidget {
         slivers: [
           appbar(
             "Live Stream Details",
-            automaticallyImplyLeading: false,
           ),
           SliverToBoxAdapter(
             child: ChangeNotifierProvider(
