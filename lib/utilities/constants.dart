@@ -20,15 +20,19 @@ const INVALID_FORMAT = 102;
 const UNKNOWN_ERROR = 103;
 //------------------------------------URLS---------------------
 
-const String baseUrl = 'http://192.168.100.122:8000';
+const String baseUrl = 'http://192.168.0.113:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';
 const String getcamera = '$baseUrl/api/camera-details/';
 const String getvenue = '$baseUrl/api/venue-details';
 const String adduser = '$baseUrl/api/add-user';
+const String addstudent = '$baseUrl/api/add-student';
 const String getuser = '$baseUrl/api/user-details';
+const String getstudent = '$baseUrl/api/student-details';
 const String getuserimage = '$baseUrl/api/get-user-image/UserImages/';
+const String getstudentimage =
+    '$baseUrl/api/get-student-image/UserImages/Student/';
 const String gettimetableurl = '$baseUrl/api/timetable-details/';
 const String getteachertimetableurl = '$baseUrl/api/teacher-timetable-details/';
 const String getteachurl = '$baseUrl/api/teach-details/';

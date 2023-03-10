@@ -28,7 +28,7 @@ class TeacherRecordingsViewModel with ChangeNotifier {
   TeacherRecordingsViewModel(String teacherName) {
     getData(teacherName);
   }
-  setloading(bool loading) async {
+  setloading(bool loading) {
     _isloading = loading;
     notifyListeners();
   }

@@ -17,7 +17,7 @@ class LiveStreamViewModel with ChangeNotifier {
   startVideo() async {
     setLoading(true);
 
-    String myUrl = 'http://192.168.235.103:8080/video';
+    String myUrl = 'http://192.168.0.107:8080/video';
     _vlcPlayer = VlcPlayerController.network(myUrl,
         autoPlay: true, options: VlcPlayerOptions());
     setLoading(false);

@@ -8,6 +8,7 @@ import 'package:live_streaming/Screens/Admin/Schedule/daterange.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_recordings.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_schedule.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
+import 'package:live_streaming/widget/components/search_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utilities/constants.dart';
@@ -33,23 +34,7 @@ class TeacherDetails extends StatelessWidget {
               )
             : const SliverToBoxAdapter(
                 child: Padding(padding: EdgeInsets.zero)),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),
-            child: CupertinoSearchTextField(
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              onChanged: (value) {
-                // SearchMutation(value);
-              },
-              decoration: BoxDecoration(
-                color: backgroundColorLight,
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-          ),
-        ),
+        searchBar(isTeacher: true),
         SliverToBoxAdapter(
           child: _ui(userViewModel),
         ),
@@ -66,6 +51,7 @@ class TeacherDetails extends StatelessWidget {
     }
     return ListView.builder(
         shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
         itemCount: userViewModel.lstuser.length,
         itemBuilder: (context, index) => userViewModel.lstuser[index].role ==
                 "Teacher"

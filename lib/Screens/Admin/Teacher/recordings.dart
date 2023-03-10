@@ -6,7 +6,6 @@ import 'package:live_streaming/view_models/Admin/User/teacherrecordings_view_mod
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-
 import '../../../utilities/constants.dart';
 import '../../../widget/components/appbar.dart';
 import '../../../widget/textcomponents/medium_text.dart';
