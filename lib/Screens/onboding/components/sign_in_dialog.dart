@@ -9,12 +9,12 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
     barrierDismissible: true,
     barrierColor: Colors.black.withOpacity(0.5),
     transitionDuration: const Duration(milliseconds: 400),
-    pageBuilder: (_, __, ___) {
+    pageBuilder: (dialogContext, __, ___) {
       return Center(
         child: Container(
-          height: MediaQuery.of(context).size.height < 700
-              ? MediaQuery.of(context).size.height / 1.35
-              : MediaQuery.of(context).size.height / 1.55,
+          height: MediaQuery.of(dialogContext).size.height < 700
+              ? MediaQuery.of(dialogContext).size.height / 1.35
+              : MediaQuery.of(dialogContext).size.height / 1.55,
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           decoration: BoxDecoration(
@@ -57,7 +57,7 @@ void showCustomDialog(BuildContext context, {required ValueChanged onValue}) {
         ),
       );
     },
-    transitionBuilder: (_, anim, __, child) {
+    transitionBuilder: (dialogContext, anim, __, child) {
       Tween<Offset> tween;
       // if (anim.status == AnimationStatus.reverse) {
       //   tween = Tween(begin: const Offset(0, 1), end: Offset.zero);

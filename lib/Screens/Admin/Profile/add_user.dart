@@ -11,6 +11,7 @@ import 'package:live_streaming/view_models/Admin/User/user_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
+import 'package:live_streaming/widget/textcomponents/small_text.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widget/mybutton.dart';
@@ -66,33 +67,13 @@ class AddUser extends StatelessWidget {
                       }),
                     ],
                   ),
-                  const Text(
-                    "User Id",
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
+                  textSmall("User Id"),
                   mytextfiled("assets/icons/emilicon.png", id, false),
-                  const Text(
-                    "Name",
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
+                  textSmall("Name"),
                   textfiled("", name, false),
-                  const Text(
-                    "Password",
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
+                  textSmall("Password"),
                   mytextfiled("assets/icons/pass.png", password, true),
-                  const Text(
-                    "Role",
-                    style: TextStyle(
-                      color: Colors.black54,
-                    ),
-                  ),
+                  textSmall("Role"),
                   const SizedBox(
                     height: 10,
                   ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
+import 'package:live_streaming/Screens/Admin/Profile/AssignCourse/student_list.dart';
 import 'package:live_streaming/Screens/Admin/Profile/add_user.dart';
-import 'package:live_streaming/Screens/Admin/Profile/assign_course.dart';
+import 'package:live_streaming/Screens/Admin/Profile/AssignCourse/assign_course.dart';
 import 'package:live_streaming/Screens/Admin/Profile/profile.dart';
 import 'package:live_streaming/Screens/Admin/Profile/rule_setting.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_details.dart';
@@ -65,6 +66,13 @@ final GoRouter router = GoRouter(
             name: 'TeacherDetails',
             builder: ((context, state) => TeacherDetails(
                   isRuleSetting: state.params['isRuleSetting'],
+                ))),
+        GoRoute(
+            path: 'StudentCourseOffered/:lstcourse/:sectionOfferId',
+            name: 'StudentCourseOffered',
+            builder: ((context, state) => StudentCourseOffered(
+                  lstcourse: state.params['lstcourse']!,
+                  sectionOfferId: state.params['sectionOfferId']!,
                 )))
       ],
     ),

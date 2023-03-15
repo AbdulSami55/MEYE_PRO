@@ -24,12 +24,15 @@ const String baseUrl = 'http://192.168.0.113:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';
-const String getcamera = '$baseUrl/api/camera-details/';
-const String getvenue = '$baseUrl/api/venue-details';
-const String adduser = '$baseUrl/api/add-user';
-const String addstudent = '$baseUrl/api/add-student';
-const String getuser = '$baseUrl/api/user-details';
-const String getstudent = '$baseUrl/api/student-details';
+const String getcameraurl = '$baseUrl/api/camera-details/';
+const String getvenueurl = '$baseUrl/api/venue-details';
+const String adduserurl = '$baseUrl/api/add-user';
+const String addstudenturl = '$baseUrl/api/add-student';
+const String getuserurl = '$baseUrl/api/user-details';
+const String getsigninurl = '$baseUrl/api/signin';
+const String getstudenturl = '$baseUrl/api/student-details';
+const String getStudentOfferedCourseurl =
+    '$baseUrl/api/student-offered-courses';
 const String getuserimage = '$baseUrl/api/get-user-image/UserImages/';
 const String getstudentimage =
     '$baseUrl/api/get-student-image/UserImages/Student/';
@@ -41,7 +44,8 @@ const String addreschedule = '$baseUrl/api/add-reschedule';
 const String getteacherrecordings =
     '$baseUrl/api/recordings-details-by-teachername/';
 const String getvideo = '$baseUrl/video?path=';
-
+const String getSectionOfferCoursesurl = '$baseUrl/api/section-offer-details';
+const String enrollStudenturl = '$baseUrl/api/student-enroll';
 //----------------------------------------------------Routes-----------------------------------
 
 const String routesStudentDashboard = '/StudentDashboard';
@@ -55,3 +59,4 @@ const String routesLiveStreamDetails = '/LiveStreamDetails';
 const String routesAssignCourse = '/AssignCourse';
 const String routesRuleSetting = '/RuleSetting';
 const String routesTeacherDetails = 'TeacherDetails';
+const String routesStudentCourseOffered = 'StudentCourseOffered';

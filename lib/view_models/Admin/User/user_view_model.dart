@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field, prefer_final_fields
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
@@ -15,12 +16,16 @@ class UserViewModel extends ChangeNotifier {
   File? _file;
   UserError? _userError;
   String _selectedrole = "Teacher";
+  User? _user;
+  bool _signinloading = false;
 
   String get selectedrole => _selectedrole;
   List<User> get lstuser => _lstuser;
   bool get isloading => _isloading;
+  bool get signinloading => _signinloading;
   UserError? get userError => _userError;
   File? get file => _file;
+  User get user => _user!;
 
   UserViewModel() {
     getUserdata();
@@ -46,6 +51,15 @@ class UserViewModel extends ChangeNotifier {
 
   void setUserError(UserError userError) {
     _userError = userError;
+  }
+
+  void setUser(User user) {
+    _user = user;
+  }
+
+  setSigninLoading(bool value) {
+    _signinloading = value;
+    notifyListeners();
   }
 
   void getUserdata() async {

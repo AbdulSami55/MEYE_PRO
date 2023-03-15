@@ -9,6 +9,7 @@ import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
 import 'package:live_streaming/view_models/Admin/User/user_view_model.dart';
 import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
 import 'package:live_streaming/view_models/handle_bottom_nav.dart';
+import 'package:live_streaming/view_models/signin_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ReScheduleViewModel()),
         ChangeNotifierProvider(create: (_) => RuleSettingViewModel()),
         ChangeNotifierProvider(create: (_) => BottomNavViewModel()),
+        ChangeNotifierProvider(create: (_) => SignInViewModel()),
       ],
       child: MaterialApp.router(
         routerConfig: router,

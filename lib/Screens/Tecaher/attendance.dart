@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
-
 import '../../widget/components/std_teacher_appbar.dart';
 import 'components/glass_container.dart';
 
@@ -17,12 +15,7 @@ class AttendanceCamera extends StatelessWidget {
           SliverToBoxAdapter(
             child: Container(
               height: MediaQuery.of(context).size.height * 1,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: [containerCardColor, Colors.red]),
-              ),
+              decoration: const BoxDecoration(),
               child: ListView(
                 padding: EdgeInsets.zero,
                 physics: const BouncingScrollPhysics(),
@@ -42,8 +35,8 @@ class AttendanceCamera extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text_medium('Abdul Sami', color: Colors.white),
-                            text_medium('P', color: Colors.white)
+                            text_medium('Abdul Sami'),
+                            text_medium('P')
                           ],
                         ),
                         const SizedBox(
@@ -52,8 +45,8 @@ class AttendanceCamera extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text_medium('Abdul Sami', color: Colors.white),
-                            text_medium('P', color: Colors.white)
+                            text_medium('Abdul Sami'),
+                            text_medium('P')
                           ],
                         ),
                         const SizedBox(
@@ -62,8 +55,8 @@ class AttendanceCamera extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text_medium('Abdul Sami', color: Colors.white),
-                            text_medium('P', color: Colors.white)
+                            text_medium('Abdul Sami'),
+                            text_medium('P')
                           ],
                         ),
                         const SizedBox(
@@ -72,8 +65,8 @@ class AttendanceCamera extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text_medium('Abdul Sami', color: Colors.white),
-                            text_medium('P', color: Colors.white)
+                            text_medium('Abdul Sami'),
+                            text_medium('P')
                           ],
                         ),
                         const SizedBox(
@@ -82,8 +75,8 @@ class AttendanceCamera extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text_medium('Abdul Sami', color: Colors.white),
-                            text_medium('P', color: Colors.white)
+                            text_medium('Abdul Sami'),
+                            text_medium('P')
                           ],
                         ),
                         const SizedBox(
@@ -92,8 +85,8 @@ class AttendanceCamera extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text_medium('Abdul Sami', color: Colors.white),
-                            text_medium('P', color: Colors.white)
+                            text_medium('Abdul Sami'),
+                            text_medium('P')
                           ],
                         ),
                         const SizedBox(
@@ -102,8 +95,8 @@ class AttendanceCamera extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text_medium('Abdul Sami', color: Colors.white),
-                            text_medium('P', color: Colors.white)
+                            text_medium('Abdul Sami'),
+                            text_medium('P')
                           ],
                         ),
                         const SizedBox(
@@ -112,8 +105,8 @@ class AttendanceCamera extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text_medium('Abdul Sami', color: Colors.white),
-                            text_medium('P', color: Colors.white)
+                            text_medium('Abdul Sami'),
+                            text_medium('P')
                           ],
                         ),
                         const SizedBox(
@@ -122,8 +115,8 @@ class AttendanceCamera extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text_medium('Abdul Sami', color: Colors.white),
-                            text_medium('P', color: Colors.white)
+                            text_medium('Abdul Sami'),
+                            text_medium('P')
                           ],
                         ),
                         const SizedBox(

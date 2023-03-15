@@ -7,7 +7,7 @@ import 'package:live_streaming/utilities/constants.dart';
 Text text_medium(String text, {Color? color, double? font}) {
   return Text(
     text,
-    style: GoogleFonts.poppins(
+    style: GoogleFonts.roboto(
         fontSize: font ?? 17,
         textStyle: TextStyle(color: color ?? shadowColorDark)),
   );
