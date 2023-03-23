@@ -15,10 +15,12 @@ class TeacherScheduleScreen extends StatelessWidget {
       {super.key,
       required this.user,
       required this.venue,
-      required this.daytime});
+      required this.daytime,
+      required this.discipline});
   User user;
   Venue venue;
   String daytime;
+  String discipline;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,20 +69,10 @@ class TeacherScheduleScreen extends StatelessWidget {
                             const SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              children: [
-                                text_medium("Name="),
-                                text_medium(user.name.toString(),
-                                    color: shadowColorLight)
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                text_medium("Venue="),
-                                text_medium(venue.name.toString(),
-                                    color: shadowColorLight)
-                              ],
-                            ),
+                            text_medium(user.name.toString(),
+                                color: shadowColorLight),
+                            text_medium(venue.name.toString(),
+                                color: shadowColorLight),
                           ],
                         ),
                       ],
@@ -96,7 +88,8 @@ class TeacherScheduleScreen extends StatelessWidget {
                     color: backgroundColor,
                     child: Consumer<TimetableViewModel>(
                         builder: (context, provider, child) {
-                      return selectScheduleTable(context, provider);
+                      return selectScheduleTable(context, provider,
+                          discipline: discipline);
                     }),
                   ),
                 ),

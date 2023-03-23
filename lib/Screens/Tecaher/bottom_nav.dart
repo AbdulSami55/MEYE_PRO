@@ -17,6 +17,7 @@ class TeacherBottomNav extends StatelessWidget {
     List<Widget> lst = [const TeacherDashboard(), const AttendanceCamera()];
     final provider = context.watch<BottomNavViewModel>();
     return Scaffold(
+        backgroundColor: backgroundColor,
         body: lst[provider.teacherSelectedValue],
         bottomNavigationBar: Transform.translate(
           offset: const Offset(0, 10),

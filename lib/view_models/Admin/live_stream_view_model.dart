@@ -1,10 +1,13 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 
 class LiveStreamViewModel with ChangeNotifier {
   bool loading = false;
-  VlcPlayerController? _vlcPlayer;
-  VlcPlayerController get vlcPlayer => _vlcPlayer!;
+  List<VlcPlayerController> _vlcPlayer = <VlcPlayerController>[];
+  List<VlcPlayerController> get vlcPlayer => _vlcPlayer;
+  int selectedVideo = 0;
   LiveStreamViewModel() {
     startVideo();
   }
@@ -17,9 +20,15 @@ class LiveStreamViewModel with ChangeNotifier {
   startVideo() async {
     setLoading(true);
 
-    String myUrl = 'http://192.168.0.107:8080/video';
-    _vlcPlayer = VlcPlayerController.network(myUrl,
+    String myUrl = 'http://192.168.0.117:8080/video';
+    VlcPlayerController vlcPlayerController = VlcPlayerController.network(myUrl,
         autoPlay: true, options: VlcPlayerOptions());
+    _vlcPlayer.add(vlcPlayerController);
+    myUrl = 'http://192.168.0.108:8080/video';
+    vlcPlayerController = VlcPlayerController.network(myUrl,
+        autoPlay: true, options: VlcPlayerOptions());
+    _vlcPlayer.add(vlcPlayerController);
+
     setLoading(false);
   }
 }

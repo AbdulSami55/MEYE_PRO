@@ -40,7 +40,7 @@ class UserServies {
         if (response.statusCode == 200) {
           var responsed = await http.Response.fromStream(response);
           final responseData = jsonDecode(responsed.body);
-          return Success(response: responseData["data"]);
+          return Success(response: responseData);
         }
       } else {
         var request = http.MultipartRequest(
@@ -53,7 +53,7 @@ class UserServies {
         if (response.statusCode == 200) {
           var responsed = await http.Response.fromStream(response);
           final responseData = jsonDecode(responsed.body);
-          return Success(response: responseData["data"]);
+          return Success(response: responseData);
         }
       }
 

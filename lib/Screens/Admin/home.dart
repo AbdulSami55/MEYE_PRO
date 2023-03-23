@@ -73,21 +73,25 @@ class _HomeState extends State<Home> {
           ),
           Wrap(
             direction: Axis.horizontal,
-            children: [
-              cameraView(context, provider),
-              // cameraView(context, provider),
-              // cameraView(context, provider),
-              // cameraView(context, provider),
-            ],
+            children: provider.vlcPlayer
+                .asMap()
+                .map((index, e) =>
+                    MapEntry(index, cameraView(context, e, index)))
+                .values
+                .toList(),
           ),
         ],
       ),
     );
   }
 
-  Widget cameraView(BuildContext context, LiveStreamViewModel provider) {
+  Widget cameraView(BuildContext context,
+      VlcPlayerController vlcPlayerController, int index) {
     return InkWell(
-      onTap: () => context.push(routesLiveStreamDetails),
+      onTap: () {
+        context.read<LiveStreamViewModel>().selectedVideo = index;
+        context.push(routesLiveStreamDetails);
+      },
       child: Stack(
         children: [
           Padding(
@@ -105,7 +109,7 @@ class _HomeState extends State<Home> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
                 child: VlcPlayer(
-                  controller: provider.vlcPlayer,
+                  controller: vlcPlayerController,
                   aspectRatio: 16 / 9,
                   placeholder: const Center(
                     child: CircularProgressIndicator(),
@@ -115,7 +119,9 @@ class _HomeState extends State<Home> {
             ),
           ),
           Positioned(
-              top: 10, left: 20, child: large_text("Lab5", color: primaryColor))
+              top: 10,
+              left: 20,
+              child: large_text("Lab${index + 1}", color: primaryColor))
         ],
       ),
     );

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-Widget large_text(String text, {Color? color}) {
+Widget large_text(String text, {Color? color, double? font}) {
   return Text(
     text,
-    style: GoogleFonts.bebasNeue(fontSize: 25, color: color ?? Colors.black),
+    style: GoogleFonts.bebasNeue(
+        fontSize: font ?? 25, color: color ?? Colors.black),
   );
 }

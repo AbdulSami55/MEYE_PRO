@@ -59,43 +59,49 @@ class LiveStreamingDetails extends StatelessWidget {
                   ]),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        text_medium("Bscs-8B"),
-                        text_medium("Mr Umer"),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        text_medium("PDC"),
-                        text_medium("08-30-10:00"),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        text_medium("LAB5"),
-                        text_medium("Camera-02"),
-                      ],
-                    )
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      dataTile("Discipline: ", "Bscs-8B"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      dataTile("Instructor: ", "Mr Umer"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      dataTile("Course: ", "PDC"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      dataTile("Time: ", "08-30-10:00"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      dataTile("Venue: ", "LAB5"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      dataTile("Channel: ", "02"),
+                    ],
+                  ),
                 ),
               ),
             ),
           )
         ],
       ),
+    );
+  }
+
+  Row dataTile(String title, String subTitle) {
+    return Row(
+      children: [
+        text_medium(title),
+        text_medium(subTitle, color: Colors.grey),
+      ],
     );
   }
 
@@ -118,7 +124,7 @@ class LiveStreamingDetails extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
                 child: VlcPlayer(
-                  controller: provider.vlcPlayer,
+                  controller: provider.vlcPlayer[provider.selectedVideo],
                   aspectRatio: 16 / 9,
                   placeholder: const Center(
                     child: CircularProgressIndicator(),
@@ -128,7 +134,10 @@ class LiveStreamingDetails extends StatelessWidget {
             ),
           ),
           Positioned(
-              top: 10, left: 20, child: large_text("Lab5", color: primaryColor))
+              top: 10,
+              left: 20,
+              child: large_text("Lab${provider.selectedVideo + 1}",
+                  color: primaryColor))
         ],
       ),
     );

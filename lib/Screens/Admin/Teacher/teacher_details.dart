@@ -1,6 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
@@ -76,7 +75,7 @@ class TeacherDetails extends StatelessWidget {
                   ],
                 ),
               )
-            : const Text(""));
+            : const Padding(padding: EdgeInsets.zero));
   }
 
   Future<dynamic> schedulebottomSheet(BuildContext context, User user) {

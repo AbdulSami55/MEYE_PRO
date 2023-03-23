@@ -20,14 +20,10 @@ Padding glassContainer() {
                 color: Colors.black.withOpacity(0.05),
               )
             ],
-            border:
-                Border.all(color: Colors.white.withOpacity(0.2), width: 1.0),
-            gradient: LinearGradient(
-              colors: [
-                Colors.white.withOpacity(0.5),
-                Colors.white.withOpacity(0.2)
-              ],
-              stops: const [0.0, 1.0],
+            border: Border.all(color: Colors.white, width: 1.0),
+            gradient: const LinearGradient(
+              colors: [Colors.white, Colors.white],
+              stops: [0.0, 1.0],
             ),
             borderRadius: BorderRadius.circular(20)),
         child: Padding(

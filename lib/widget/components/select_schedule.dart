@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 Widget selectScheduleTable(
     BuildContext context, TimetableViewModel timetableViewModel,
-    {bool? isRule}) {
+    {bool? isRule, String? discipline}) {
   timetableViewModel.emptylst();
   if (timetableViewModel.loading) {
     return apploading();
@@ -105,8 +105,10 @@ Widget selectScheduleTable(
                                 element.starttime.toString() == "08:30")
                             .toList(),
                         context,
-                        isRule)
-                    : rowSchedule("", "", "", "", "", [], context, isRule),
+                        isRule,
+                        discipline ?? "")
+                    : rowSchedule(
+                        "", "", "", "", "", [], context, discipline, isRule),
                 timetableViewModel.lsttimetable
                             .where((element) =>
                                 element.starttime.toString() == "10:00")
@@ -121,8 +123,10 @@ Widget selectScheduleTable(
                                 element.starttime.toString() == "10:00")
                             .toList(),
                         context,
-                        isRule)
-                    : rowSchedule("", "", "", "", "", [], context, isRule),
+                        isRule,
+                        discipline ?? "")
+                    : rowSchedule(
+                        "", "", "", "", "", [], context, discipline, isRule),
                 timetableViewModel.lsttimetable
                             .where((element) =>
                                 element.starttime.toString() == "11:30")
@@ -137,8 +141,10 @@ Widget selectScheduleTable(
                                 element.starttime.toString() == "11:30")
                             .toList(),
                         context,
-                        isRule)
-                    : rowSchedule("", "", "", "", "", [], context, isRule),
+                        isRule,
+                        discipline ?? "")
+                    : rowSchedule(
+                        "", "", "", "", "", [], context, discipline, isRule),
                 timetableViewModel.lsttimetable
                             .where((element) =>
                                 element.starttime.toString() == "01:30")
@@ -153,8 +159,10 @@ Widget selectScheduleTable(
                                 element.starttime.toString() == "01:30")
                             .toList(),
                         context,
-                        isRule)
-                    : rowSchedule("", "", "", "", "", [], context, isRule),
+                        isRule,
+                        discipline ?? "")
+                    : rowSchedule(
+                        "", "", "", "", "", [], context, discipline, isRule),
                 timetableViewModel.lsttimetable
                             .where((element) =>
                                 element.starttime.toString() == "03:00")
@@ -169,8 +177,10 @@ Widget selectScheduleTable(
                                 element.starttime.toString() == "03:00")
                             .toList(),
                         context,
-                        isRule)
-                    : rowSchedule("", "", "", "", "", [], context, isRule),
+                        isRule,
+                        discipline ?? "")
+                    : rowSchedule(
+                        "", "", "", "", "", [], context, discipline, isRule),
               ],
             ),
           )
@@ -180,10 +190,12 @@ Widget selectScheduleTable(
   );
 }
 
-Row ScheduleConditions(
-    List<TimeTable> timeTable, BuildContext context, bool? isRule) {
+Row ScheduleConditions(List<TimeTable> timeTable, BuildContext context,
+    bool? isRule, String discipline) {
+  if (discipline != "") {}
   return rowSchedule(
-      timeTable.where((e) => e.day == "Monday").isNotEmpty
+      timeTable.where((e) => e.day == "Monday").isNotEmpty &&
+              timeTable.where((e) => e.discipline == discipline).isNotEmpty
           ? "${timeTable.where((e) => e.day == "Monday").first.discipline}\n${timeTable.where((e) => e.day == "Monday").first.courseName}\n${timeTable.where((e) => e.day == "Monday").first.venue}"
           : "",
       timeTable.where((e) => e.day == "Tuesday").isNotEmpty
@@ -200,6 +212,7 @@ Row ScheduleConditions(
           : "",
       timeTable,
       context,
+      discipline,
       isRule);
 }
 
@@ -218,6 +231,7 @@ Row rowSchedule(
     String friData,
     List<TimeTable> timeTable,
     BuildContext context,
+    String? discipline,
     bool? isRule) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -225,47 +239,68 @@ Row rowSchedule(
       const SizedBox(
         width: 20,
       ),
-      rowData(
-          mondata,
-          timeTable.where((element) => element.day == "Monday").isNotEmpty
-              ? timeTable.where((element) => element.day == "Monday").first
-              : null,
-          context,
-          isRule),
-      rowData(
-          tueData,
-          timeTable.where((element) => element.day == "Tuesday").isNotEmpty
-              ? timeTable.where((element) => element.day == "Tuesday").first
-              : null,
-          context,
-          isRule),
-      rowData(
-          wedData,
-          timeTable.where((element) => element.day == "Wednesday").isNotEmpty
-              ? timeTable.where((element) => element.day == "Wednesday").first
-              : null,
-          context,
-          isRule),
-      rowData(
-          thuData,
-          timeTable.where((element) => element.day == "Thursday").isNotEmpty
-              ? timeTable.where((element) => element.day == "Thursday").first
-              : null,
-          context,
-          isRule),
-      rowData(
-          friData,
-          timeTable.where((element) => element.day == "Friday").isNotEmpty
-              ? timeTable.where((element) => element.day == "Friday").first
-              : null,
-          context,
-          isRule),
+      discipline == mondata.split('\n')[0]
+          ? rowData(
+              mondata,
+              timeTable.where((element) => element.day == "Monday").isNotEmpty
+                  ? timeTable.where((element) => element.day == "Monday").first
+                  : null,
+              context,
+              isRule,
+              discipline!)
+          : rowData("", null, context, isRule, discipline!),
+      discipline == tueData.split('\n')[0]
+          ? rowData(
+              tueData,
+              timeTable.where((element) => element.day == "Tuesday").isNotEmpty
+                  ? timeTable.where((element) => element.day == "Tuesday").first
+                  : null,
+              context,
+              isRule,
+              discipline)
+          : rowData("", null, context, isRule, discipline),
+      discipline == wedData.split('\n')[0]
+          ? rowData(
+              wedData,
+              timeTable
+                      .where((element) => element.day == "Wednesday")
+                      .isNotEmpty
+                  ? timeTable
+                      .where((element) => element.day == "Wednesday")
+                      .first
+                  : null,
+              context,
+              isRule,
+              discipline)
+          : rowData("", null, context, isRule, discipline),
+      discipline == thuData.split('\n')[0]
+          ? rowData(
+              thuData,
+              timeTable.where((element) => element.day == "Thursday").isNotEmpty
+                  ? timeTable
+                      .where((element) => element.day == "Thursday")
+                      .first
+                  : null,
+              context,
+              isRule,
+              discipline)
+          : rowData("", null, context, isRule, discipline),
+      discipline == friData.split('\n')[0]
+          ? rowData(
+              friData,
+              timeTable.where((element) => element.day == "Friday").isNotEmpty
+                  ? timeTable.where((element) => element.day == "Friday").first
+                  : null,
+              context,
+              isRule,
+              discipline)
+          : rowData("", null, context, isRule, discipline),
     ],
   );
 }
 
-Widget rowData(
-    String data, TimeTable? timeTable, BuildContext context, bool? isRule) {
+Widget rowData(String data, TimeTable? timeTable, BuildContext context,
+    bool? isRule, String discipline) {
   return Consumer<TimetableViewModel>(
     builder: (context, provider, child) {
       timeTable != null ? provider.setListTempTimeTable(timeTable) : null;

@@ -9,7 +9,7 @@ import '../../utilities/constants.dart';
 SliverAppBar stdteacherappbar(BuildContext context) {
   final provider = context.watch<SignInViewModel>();
   return SliverAppBar(
-    backgroundColor: backgroundColorLight,
+    backgroundColor: backgroundColor,
     pinned: true,
     actions: [
       Column(

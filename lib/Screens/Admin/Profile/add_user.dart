@@ -82,33 +82,41 @@ class AddUser extends StatelessWidget {
                     height: 10,
                   ),
                   mybutton(() async {
-                    showLoaderDialog(context, "Adding..");
-                    User u = User(
-                        userID: id.text,
-                        name: name.text,
-                        password: password.text,
-                        role: Provider.of<UserViewModel>(context, listen: false)
-                            .selectedrole);
-                    await UserViewModel()
-                        .insertUserdata(
-                            u,
-                            Provider.of<UserViewModel>(context, listen: false)
-                                .file!)
-                        .then((value) {
-                      if (value == "okay") {
-                        ScaffoldMessenger.of(context).showSnackBar(snack_bar(
-                            "${context.read<UserViewModel>().selectedrole} added..",
-                            true));
-                      } else if (value == "ae") {
-                        ScaffoldMessenger.of(context).showSnackBar(snack_bar(
-                            "${context.read<UserViewModel>().selectedrole} already exists..",
-                            false));
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(snack_bar("$value", false));
-                      }
-                      Navigator.pop(context);
-                    });
+                    if (Provider.of<UserViewModel>(context, listen: false)
+                                .file !=
+                            null &&
+                        name.text.isNotEmpty &&
+                        password.text.isNotEmpty &&
+                        id.text.isNotEmpty) {
+                      showLoaderDialog(context, "Adding..");
+                      User u = User(
+                          userID: id.text,
+                          name: name.text,
+                          password: password.text,
+                          role:
+                              Provider.of<UserViewModel>(context, listen: false)
+                                  .selectedrole);
+                      await UserViewModel()
+                          .insertUserdata(
+                              u,
+                              Provider.of<UserViewModel>(context, listen: false)
+                                  .file!)
+                          .then((value) {
+                        if (value == "Added") {
+                          ScaffoldMessenger.of(context).showSnackBar(snack_bar(
+                              "${context.read<UserViewModel>().selectedrole} added..",
+                              true));
+                        } else if (value == "Already Exists") {
+                          ScaffoldMessenger.of(context).showSnackBar(snack_bar(
+                              "${context.read<UserViewModel>().selectedrole} already exists..",
+                              false));
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snack_bar("$value", false));
+                        }
+                        Navigator.pop(context);
+                      });
+                    }
                   }, "Submit", CupertinoIcons.arrow_right),
                 ],
               ),

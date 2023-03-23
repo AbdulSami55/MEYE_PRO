@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live_streaming/Screens/onboding/components/sign_in_form.dart';
 import 'package:live_streaming/utilities/constants.dart';
-import 'package:live_streaming/view_models/Admin/User/user_view_model.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/view_models/signin_view_model.dart';
 import 'package:live_streaming/widget/components/schedule.dart';
@@ -15,7 +13,7 @@ class TeacherDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<SignInViewModel>();
     return Scaffold(
-      backgroundColor: backgroundColorLight,
+      backgroundColor: backgroundColor,
       body: CustomScrollView(
         slivers: [
           stdteacherappbar(context),

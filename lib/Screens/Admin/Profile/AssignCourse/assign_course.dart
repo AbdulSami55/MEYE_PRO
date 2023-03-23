@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:live_streaming/Screens/Admin/Profile/AssignCourse/student_list.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Admin/Profile/section_offer_view_model.dart';
-import 'package:live_streaming/view_models/Admin/User/student_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/components/apploading.dart';
 import 'package:live_streaming/widget/components/errormessage.dart';

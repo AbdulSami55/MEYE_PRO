@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show Color;
+import 'package:flutter/material.dart' show Color, Stack;
 
 class Course {
   final String title, description, iconSrc;

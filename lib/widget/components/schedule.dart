@@ -21,7 +21,7 @@ Widget ScheduleTable(
   }
 
   return Container(
-    color: backgroundColorLight,
+    color: backgroundColor,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,

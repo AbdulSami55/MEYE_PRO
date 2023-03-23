@@ -7,11 +7,12 @@ class CourseCard extends StatelessWidget {
   const CourseCard({
     Key? key,
     required this.title,
+    required this.instructor,
     this.color = containerCardColor,
-    this.iconSrc = "assets/avaters/Avatar 2.jpg",
+    this.iconSrc = "assets/avaters/Avatar 3.jpg",
   }) : super(key: key);
 
-  final String title, iconSrc;
+  final String title, iconSrc, instructor;
   final Color color;
 
   @override
@@ -41,7 +42,7 @@ class CourseCard extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  text_medium("Teach By: Mr Umer",
+                  text_medium("Instructor: $instructor",
                       color: Colors.white38, font: 15),
                   const Spacer(),
                   text_medium("Attendance: 97%", color: Colors.white)
@@ -49,7 +50,15 @@ class CourseCard extends StatelessWidget {
               ),
             ),
           ),
-          CircleAvatar(radius: 30, backgroundImage: AssetImage(iconSrc)),
+          iconSrc == ""
+              ? const CircleAvatar(
+                  radius: 33,
+                  backgroundImage: AssetImage("assets/avaters/Avatar 2.jpg"),
+                )
+              : CircleAvatar(
+                  radius: 33,
+                  backgroundImage:
+                      NetworkImage("$getuserimage" "Teacher/$iconSrc")),
         ],
       ),
     );

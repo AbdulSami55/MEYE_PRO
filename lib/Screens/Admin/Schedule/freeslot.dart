@@ -17,8 +17,9 @@ import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 
 class FreeSlotView extends StatelessWidget {
-  FreeSlotView({super.key, required this.user});
+  FreeSlotView({super.key, required this.user,required this.discipline});
   User user;
+  String discipline;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class FreeSlotView extends StatelessWidget {
                       create: (context) => ReScheduleViewModel(),
                       child: Consumer<ReScheduleViewModel>(
                         builder: (context, provider, child) =>
-                            ScheduleTable(context, provider, venueViewModel),
+                            ScheduleTable(context, provider, venueViewModel,discipline),
                       ),
                     )),
               ],
@@ -95,7 +96,7 @@ class FreeSlotView extends StatelessWidget {
   }
 
   Widget ScheduleTable(BuildContext context,
-      ReScheduleViewModel rescheduleviewmodel, VenueViewModel venueViewModel) {
+      ReScheduleViewModel rescheduleviewmodel, VenueViewModel venueViewModel,String discipline) {
     if (rescheduleviewmodel.loading || venueViewModel.loading) {
       return apploading();
     } else if (rescheduleviewmodel.userError != null ||
@@ -189,6 +190,7 @@ class FreeSlotView extends StatelessWidget {
                               user: user,
                               venue: rescheduleviewmodel.selectedvalue!,
                               daytime: rescheduleviewmodel.Daytime,
+                              discipline: discipline,
                             ))));
               } else {
                 ScaffoldMessenger.of(context)
