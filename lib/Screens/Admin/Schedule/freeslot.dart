@@ -17,7 +17,7 @@ import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 
 class FreeSlotView extends StatelessWidget {
-  FreeSlotView({super.key, required this.user,required this.discipline});
+  FreeSlotView({super.key, required this.user, required this.discipline});
   User user;
   String discipline;
 
@@ -45,8 +45,8 @@ class FreeSlotView extends StatelessWidget {
                     child: ChangeNotifierProvider(
                       create: (context) => ReScheduleViewModel(),
                       child: Consumer<ReScheduleViewModel>(
-                        builder: (context, provider, child) =>
-                            ScheduleTable(context, provider, venueViewModel,discipline),
+                        builder: (context, provider, child) => ScheduleTable(
+                            context, provider, venueViewModel, discipline),
                       ),
                     )),
               ],
@@ -95,10 +95,13 @@ class FreeSlotView extends StatelessWidget {
     );
   }
 
-  Widget ScheduleTable(BuildContext context,
-      ReScheduleViewModel rescheduleviewmodel, VenueViewModel venueViewModel,String discipline) {
+  Widget ScheduleTable(
+      BuildContext context,
+      ReScheduleViewModel rescheduleviewmodel,
+      VenueViewModel venueViewModel,
+      String discipline) {
     if (rescheduleviewmodel.loading || venueViewModel.loading) {
-      return apploading();
+      return apploading(context);
     } else if (rescheduleviewmodel.userError != null ||
         venueViewModel.userError != null) {
       return ErrorMessage(rescheduleviewmodel.userError == null

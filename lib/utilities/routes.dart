@@ -68,12 +68,12 @@ final GoRouter router = GoRouter(
                   isRuleSetting: state.params['isRuleSetting'],
                 ))),
         GoRoute(
-            path: 'StudentCourseOffered/:lstcourse/:sectionOfferId',
+            path: 'StudentCourseOffered/:lstcourse/:sectionOfferId/:discipline',
             name: 'StudentCourseOffered',
             builder: ((context, state) => StudentCourseOffered(
-                  lstcourse: state.params['lstcourse']!,
-                  sectionOfferId: state.params['sectionOfferId']!,
-                )))
+                lstcourse: state.params['lstcourse']!,
+                sectionOfferId: state.params['sectionOfferId']!,
+                discipline: state.params['discipline'])))
       ],
     ),
   ],

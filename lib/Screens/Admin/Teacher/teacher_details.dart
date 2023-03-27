@@ -35,15 +35,15 @@ class TeacherDetails extends StatelessWidget {
                 child: Padding(padding: EdgeInsets.zero)),
         searchBar(isTeacher: true),
         SliverToBoxAdapter(
-          child: _ui(userViewModel),
+          child: _ui(userViewModel, context),
         ),
       ]),
     );
   }
 
-  _ui(UserViewModel userViewModel) {
+  _ui(UserViewModel userViewModel, BuildContext context) {
     if (userViewModel.isloading) {
-      return apploading();
+      return apploading(context);
     }
     if (userViewModel.userError != null) {
       return ErrorMessage(userViewModel.userError!.message.toString());
@@ -52,30 +52,33 @@ class TeacherDetails extends StatelessWidget {
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
         itemCount: userViewModel.lstuser.length,
-        itemBuilder: (context, index) => userViewModel.lstuser[index].role ==
-                "Teacher"
-            ? InkWell(
-                onTap: () => isSchedule == true
-                    ? schedulebottomSheet(context, userViewModel.lstuser[index])
-                    : isRuleSetting != null
-                        ? context.push(routesRuleSetting,
-                            extra: userViewModel.lstuser[index])
-                        : bottomSheet(context, userViewModel.lstuser[index]),
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: CircleAvatar(
-                          radius: 33,
-                          backgroundImage: NetworkImage(
-                              "$getuserimage${userViewModel.lstuser[index].role}/${userViewModel.lstuser[index].image}")),
-                      title: text_medium(
-                          userViewModel.lstuser[index].name.toString()),
-                    ),
-                    const Divider()
-                  ],
-                ),
-              )
-            : const Padding(padding: EdgeInsets.zero));
+        itemBuilder: (context, index) => InkWell(
+              onTap: () => isSchedule == true
+                  ? schedulebottomSheet(context, userViewModel.lstuser[index])
+                  : isRuleSetting != null
+                      ? context.push(routesRuleSetting,
+                          extra: userViewModel.lstuser[index])
+                      : bottomSheet(context, userViewModel.lstuser[index]),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: userViewModel.lstuser[index].image == null
+                        ? const CircleAvatar(
+                            radius: 33,
+                            backgroundImage:
+                                AssetImage("assets/avaters/Avatar Default.jpg"),
+                          )
+                        : CircleAvatar(
+                            radius: 33,
+                            backgroundImage: NetworkImage(
+                                "$getuserimage${userViewModel.lstuser[index].role}/${userViewModel.lstuser[index].image}")),
+                    title: text_medium(
+                        userViewModel.lstuser[index].name.toString()),
+                  ),
+                  const Divider()
+                ],
+              ),
+            ));
   }
 
   Future<dynamic> schedulebottomSheet(BuildContext context, User user) {

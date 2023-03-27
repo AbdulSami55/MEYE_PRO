@@ -27,7 +27,7 @@ Future<dynamic> delete_camera(BuildContext context, int id, int dvrID,
                 Camera c = Camera(
                     id: id, dvrID: dvrID, venueID: venueID, portNumber: no);
 
-                var res = await CameraServies.delete(c);
+                var res = await CameraServices.delete(c);
                 cameraViewModel.lstchannel.add(c.portNumber.toString());
                 Navigator.pop(context);
                 if (res is Success) {

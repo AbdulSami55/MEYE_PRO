@@ -37,7 +37,7 @@ class AssignCourse extends StatelessWidget {
 
   Widget _ui(BuildContext context, SectionOfferViewModel provider) {
     if (provider.isloading) {
-      return apploading();
+      return apploading(context);
     }
     if (provider.userError != null) {
       return ErrorMessage(provider.userError!.message.toString());
@@ -91,7 +91,8 @@ class AssignCourse extends StatelessWidget {
                   .where((element) => element.isSelected)
                   .toList()
                   .map((e) => e.courseName)
-                  .toList())
+                  .toList()),
+              'discipline': provider.selectedValue
             });
           }, "Next", Icons.navigate_next_outlined))
     ]);

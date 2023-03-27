@@ -6,7 +6,7 @@ import 'package:live_streaming/view_models/signin_view_model.dart';
 import 'package:provider/provider.dart';
 import '../../utilities/constants.dart';
 
-SliverAppBar stdteacherappbar(BuildContext context) {
+SliverAppBar stdteacherappbar(BuildContext context, {bool isteacher = false}) {
   final provider = context.watch<SignInViewModel>();
   return SliverAppBar(
     backgroundColor: backgroundColor,
@@ -48,6 +48,13 @@ SliverAppBar stdteacherappbar(BuildContext context) {
       ),
     ],
     automaticallyImplyLeading: false,
-    title: student_text(context, "${provider.user.name}", 30),
+    title: student_text(
+        context,
+        isteacher
+            ? provider.user.name!.split(' ')[0] == "Dr."
+                ? "${provider.user.name}"
+                : "Mr ${provider.user.name}"
+            : "${provider.user.name}",
+        30),
   );
 }

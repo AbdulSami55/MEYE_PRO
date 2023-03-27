@@ -5,7 +5,7 @@ import '../../Model/Admin/camera.dart';
 import '../../utilities/constants.dart';
 import '../api_status.dart';
 
-class CameraServies {
+class CameraServices {
   static Future<Object> post(Camera c) async {
     try {
       var response = await http.post(Uri.parse(addcameraurl),

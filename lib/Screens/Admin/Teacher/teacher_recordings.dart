@@ -64,7 +64,7 @@ class TeacherRecordingView extends StatelessWidget {
   Widget _recordings(BuildContext context,
       TeacherRecordingsViewModel teacherRecordingsViewModel) {
     if (teacherRecordingsViewModel.loading) {
-      return apploading();
+      return apploading(context);
     } else if (teacherRecordingsViewModel.userError != null) {
       return ErrorMessage(
           teacherRecordingsViewModel.userError!.message.toString());

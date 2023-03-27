@@ -1,10 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_streaming/Screens/Tecaher/attendance.dart';
 import 'package:live_streaming/Screens/Tecaher/home_screen.dart';
+import 'package:live_streaming/view_models/Teacher/attendance.dart';
 import 'package:live_streaming/view_models/handle_bottom_nav.dart';
 import 'package:provider/provider.dart';
 import '../../utilities/constants.dart';
@@ -16,6 +19,7 @@ class TeacherBottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> lst = [const TeacherDashboard(), const AttendanceCamera()];
     final provider = context.watch<BottomNavViewModel>();
+    final providerAttendance = context.watch<AttendanceViewModel>();
     return Scaffold(
         backgroundColor: backgroundColor,
         body: lst[provider.teacherSelectedValue],
@@ -53,6 +57,7 @@ class TeacherBottomNav extends StatelessWidget {
                       XFile? img = await ImagePicker()
                           .pickImage(source: ImageSource.camera);
                       if (img != null) {
+                        providerAttendance.markAttendance(File(img.path));
                         provider.setTeacherSelectValue(1);
                       }
                     },

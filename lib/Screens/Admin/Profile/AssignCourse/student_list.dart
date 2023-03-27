@@ -18,10 +18,11 @@ import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
 
 class StudentCourseOffered extends StatelessWidget {
-  StudentCourseOffered({super.key, this.lstcourse, this.sectionOfferId});
+  StudentCourseOffered(
+      {super.key, this.lstcourse, this.sectionOfferId, this.discipline});
   String? lstcourse;
   String? sectionOfferId;
-
+  String? discipline;
   List<String> getCourse(List lst) {
     return lst.map((e) => e.toString()).toList();
   }
@@ -86,7 +87,7 @@ class StudentCourseOffered extends StatelessWidget {
   Widget _ui(BuildContext context, StudentViewModel provider,
       List<int> tempSectionOfferId) {
     if (provider.isloading) {
-      return apploading();
+      return apploading(context);
     }
     if (provider.userError != null) {
       return ErrorMessage(provider.userError!.message.toString());
@@ -112,7 +113,8 @@ class StudentCourseOffered extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: studentView(provider, index, tempSectionOfferId),
+                        child: studentView(
+                            provider, index, tempSectionOfferId, discipline!),
                       ),
                       const Divider(
                         height: 2,
@@ -124,8 +126,8 @@ class StudentCourseOffered extends StatelessWidget {
     );
   }
 
-  ListTile studentView(
-      StudentViewModel provider, int index, List<int> tempSectionOfferId) {
+  ListTile studentView(StudentViewModel provider, int index,
+      List<int> tempSectionOfferId, String discipline) {
     return ListTile(
       leading: CircleAvatar(
           radius: 33,
@@ -135,7 +137,7 @@ class StudentCourseOffered extends StatelessWidget {
       trailing: Builder(builder: (context) {
         return InkWell(
           onTap: () {
-            provider.changeStudent(index, tempSectionOfferId);
+            provider.changeStudent(index, tempSectionOfferId, discipline);
           },
           child: context.watch<StudentViewModel>().lstStudent[index].isSelected!
               ? Container(

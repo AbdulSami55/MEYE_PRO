@@ -32,13 +32,14 @@ class StudentViewModel with ChangeNotifier {
     _lstStudent = lst;
   }
 
-  changeStudent(int index, List<int> sectionOfferId) {
+  changeStudent(int index, List<int> sectionOfferId, String discipline) {
     _lstStudent[index].isSelected = !_lstStudent[index].isSelected!;
     if (_lstStudent[index].isSelected!) {
       Enroll e = Enroll(
           id: 0,
           sectionOfferId: sectionOfferId,
-          studentId: _lstStudent[index].aridNo);
+          studentId: _lstStudent[index].aridNo,
+          discipline: discipline);
       _lstEnroll.add(e);
     } else {
       _lstEnroll.remove(_lstEnroll

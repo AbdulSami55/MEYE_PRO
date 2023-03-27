@@ -29,8 +29,13 @@ Padding Teachertopcard(BuildContext context, String image, String name,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child:
-                CircleAvatar(radius: 33, backgroundImage: NetworkImage(image)),
+            child: image == ""
+                ? const CircleAvatar(
+                    radius: 33,
+                    backgroundImage:
+                        AssetImage("assets/avaters/Avatar Default.jpg"))
+                : CircleAvatar(
+                    radius: 33, backgroundImage: NetworkImage(image)),
           ),
           const SizedBox(
             width: 5,

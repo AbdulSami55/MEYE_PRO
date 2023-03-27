@@ -11,6 +11,8 @@ const Color primaryColor = Colors.green;
 Color? backgroundColor = Colors.grey[300];
 const Color containerColor = Colors.white;
 const Color containerCardColor = Color(0xFF7553F6);
+const Color teacherCardColor1 = Color(0xFF80A4FF);
+const Color teacherCardColor2 = Color(0xFF9CC5FF);
 //------------------------Font Size---------------------------
 const MediumFontSize = 25;
 //-------------------------Errors------------------------------
@@ -20,7 +22,7 @@ const INVALID_FORMAT = 102;
 const UNKNOWN_ERROR = 103;
 //------------------------------------URLS---------------------
 
-const String baseUrl = 'http://192.168.0.115:8000';
+const String baseUrl = 'http://192.168.0.102:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';
@@ -47,6 +49,7 @@ const String getvideo = '$baseUrl/video?path=';
 const String getSectionOfferCoursesurl = '$baseUrl/api/section-offer-details';
 const String enrollStudenturl = '$baseUrl/api/student-enroll';
 const String getCourseurl = '$baseUrl/api/get-student-courses';
+const String markAttendanceurl = '$baseUrl/api/mark-attendance';
 //----------------------------------------------------Routes-----------------------------------
 
 const String routesStudentDashboard = '/StudentDashboard';

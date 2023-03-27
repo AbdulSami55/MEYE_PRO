@@ -117,7 +117,7 @@ Future<dynamic> add_camera(
                               .toString(),
                     );
 
-                    var res = await CameraServies.post(c);
+                    var res = await CameraServices.post(c);
 
                     if (res is Success) {
                       Navigator.pop(context);

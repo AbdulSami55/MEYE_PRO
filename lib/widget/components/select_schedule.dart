@@ -16,7 +16,7 @@ Widget selectScheduleTable(
     {bool? isRule, String? discipline}) {
   timetableViewModel.emptylst();
   if (timetableViewModel.loading) {
-    return apploading();
+    return apploading(context);
   } else if (timetableViewModel.userError != null) {
     return ErrorMessage(timetableViewModel.userError!.message.toString());
   } else if (timetableViewModel.lsttimetable.isEmpty) {

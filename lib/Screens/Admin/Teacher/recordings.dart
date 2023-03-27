@@ -83,8 +83,8 @@ class VideoPlay extends StatelessWidget {
       floating: false,
       elevation: 0,
       backgroundColor: backgroundColor,
-      expandedHeight: MediaQuery.of(context).size.height * 0.33,
-      collapsedHeight: MediaQuery.of(context).size.height * 0.3,
+      expandedHeight: MediaQuery.of(context).size.height * 0.4,
+      collapsedHeight: MediaQuery.of(context).size.height * 0.4,
       flexibleSpace: FlexibleSpaceBar(
         background: ChangeNotifierProvider.value(
           value: teacherRecordingsViewModel,

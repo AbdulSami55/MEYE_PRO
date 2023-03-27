@@ -19,7 +19,7 @@ class StudentDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColorLight,
+      backgroundColor: backgroundColor,
       body: CustomScrollView(slivers: [
         stdteacherappbar(context),
         SliverToBoxAdapter(
@@ -45,7 +45,7 @@ class StudentDashboard extends StatelessWidget {
             child: Consumer<CourseViewModel>(
                 builder: ((context, courseProvider, child) {
               if (courseProvider.isloading) {
-                return apploading();
+                return apploading(context);
               } else if (courseProvider.userError != null) {
                 return ErrorMessage(
                     courseProvider.userError!.message.toString());

@@ -83,7 +83,8 @@ class DVRDetails extends StatelessWidget {
                 ),
               ),
               SliverToBoxAdapter(
-                child: _ui(dvrViewModel, ip, host, channel, pass, name),
+                child:
+                    _ui(dvrViewModel, ip, host, channel, pass, name, context),
               ),
             ]),
             TeacherDetails(),
@@ -100,9 +101,10 @@ class DVRDetails extends StatelessWidget {
       TextEditingController host,
       TextEditingController channel,
       TextEditingController pass,
-      TextEditingController name) {
+      TextEditingController name,
+      BuildContext context) {
     if (dvrViewModel.loading) {
-      return apploading();
+      return apploading(context);
     }
     if (dvrViewModel.userError != null) {
       return ErrorMessage(dvrViewModel.userError!.message.toString());

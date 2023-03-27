@@ -134,7 +134,7 @@ Future<dynamic> update_camera(
                               .toString(),
                     );
 
-                    var res = await CameraServies.put(c);
+                    var res = await CameraServices.put(c);
 
                     if (res is Failure) {
                       Navigator.pop(context);

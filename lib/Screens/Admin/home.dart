@@ -57,7 +57,7 @@ class _HomeState extends State<Home> {
 
   _ui(LiveStreamViewModel provider, BuildContext context) {
     if (provider.loading) {
-      return apploading();
+      return apploading(context);
     }
     return SingleChildScrollView(
       child: Column(

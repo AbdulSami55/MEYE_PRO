@@ -74,7 +74,7 @@ class CameraViewModel extends ChangeNotifier {
 
   getCameraData() async {
     setloading(true);
-    var response = await CameraServies.getCamera(dvrID!);
+    var response = await CameraServices.getCamera(dvrID!);
     if (response is Success) {
       setCameraList(response.response as List<Camera>);
     }

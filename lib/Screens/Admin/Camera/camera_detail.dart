@@ -166,11 +166,11 @@ class CameraDetails extends StatelessWidget {
     CameraViewModel cameraViewModel,
   ) {
     if (cameraViewModel.loading) {
-      return apploading();
+      return apploading(context);
     } else if (cameraViewModel.userError != null) {
       return ErrorMessage(cameraViewModel.userError!.message.toString());
     } else if (Provider.of<VenueViewModel>(context).lstvenue.isEmpty) {
-      return apploading();
+      return apploading(context);
     } else if (cameraViewModel.lstCamera.isEmpty) {
       return Center(
           child: Text(

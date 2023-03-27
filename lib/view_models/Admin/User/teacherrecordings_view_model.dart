@@ -49,9 +49,14 @@ class TeacherRecordingsViewModel with ChangeNotifier {
 
   setPlayer(String path) async {
     setloading(true);
+    if (_videoController != null) {
+      _videoController.dispose();
+    }
+
     _videoController = VideoPlayerController.network(path);
     _initializeVideoPlayerFuture = videoController.initialize();
     _initializeVideoPlayerFuture?.then((value) => setloading(false));
+    _videoController.play();
   }
 
   setIsShow() {

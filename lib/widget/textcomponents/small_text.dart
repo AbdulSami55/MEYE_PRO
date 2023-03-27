@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-Text textSmall(String text) {
+Text textSmall(String text, {Color? color}) {
   return Text(
     text,
-    style: const TextStyle(
-      color: Colors.black54,
+    style: TextStyle(
+      color: color ?? Colors.black54,
     ),
   );
 }
