@@ -22,7 +22,7 @@ const INVALID_FORMAT = 102;
 const UNKNOWN_ERROR = 103;
 //------------------------------------URLS---------------------
 
-const String baseUrl = 'http://192.168.0.102:8000';
+const String baseUrl = 'http://192.168.43.192:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';
@@ -50,6 +50,9 @@ const String getSectionOfferCoursesurl = '$baseUrl/api/section-offer-details';
 const String enrollStudenturl = '$baseUrl/api/student-enroll';
 const String getCourseurl = '$baseUrl/api/get-student-courses';
 const String markAttendanceurl = '$baseUrl/api/mark-attendance';
+const String addAttendanceurl = '$baseUrl/api/add-attendance';
+const String getCourseAttendanceurl = '$baseUrl/api/get-course-attendance';
+const String getTeacherCHRurl = '$baseUrl/api/get-teacher-chr';
 //----------------------------------------------------Routes-----------------------------------
 
 const String routesStudentDashboard = '/StudentDashboard';
@@ -64,3 +67,6 @@ const String routesAssignCourse = '/AssignCourse';
 const String routesRuleSetting = '/RuleSetting';
 const String routesTeacherDetails = 'TeacherDetails';
 const String routesStudentCourseOffered = 'StudentCourseOffered';
+const String routesCourseAttendance = '/CourseAttendance';
+const String routesTeacherChr = '/TeacherChr';
+const String routesTeacherChrDetails = '/TeacherChrDetails';

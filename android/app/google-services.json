@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "53399215816",
+    "project_id": "meyepro-c3f9a",
+    "storage_bucket": "meyepro-c3f9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53399215816:android:25479038f8dfb81f8ecffd",
+        "android_client_info": {
+          "package_name": "com.example.live_streaming"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53399215816-88bbsc7k4er9iehpt42bh35lctm0pni6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk2vpM10YsV4BAQB3tZKOaocNvjR7IKS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53399215816-88bbsc7k4er9iehpt42bh35lctm0pni6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "53399215816-b0qtlgcu1hagn1jf0l04936u0alc6fd6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.liveStreaming"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

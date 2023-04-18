@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:intl/intl.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
+import 'package:live_streaming/Screens/Tecaher/components/loading_bar.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/view_models/signin_view_model.dart';
@@ -190,26 +191,6 @@ class TeacherDashboard extends StatelessWidget {
                     ),
                   );
                 }))
-      ],
-    );
-  }
-
-  Column loadingBar(BuildContext context) {
-    return Column(
-      children: [
-        appShimmer(MediaQuery.of(context).size.width * 0.95, 100),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: appShimmer(MediaQuery.of(context).size.width * 0.95, 100),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: appShimmer(MediaQuery.of(context).size.width * 0.95, 100),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: appShimmer(MediaQuery.of(context).size.width * 0.95, 100),
-        ),
       ],
     );
   }

@@ -30,7 +30,9 @@ class RuleSetting extends StatelessWidget {
               children: [
                 Teachertopcard(
                     context,
-                    "$getuserimage${user.role}/${user.image}",
+                    user.image == null
+                        ? ""
+                        : "$getuserimage${user.role}/${user.image}",
                     user.name.toString(),
                     false,
                     () {}),

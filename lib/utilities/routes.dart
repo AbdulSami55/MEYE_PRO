@@ -8,11 +8,16 @@ import 'package:live_streaming/Screens/Admin/Profile/profile.dart';
 import 'package:live_streaming/Screens/Admin/Profile/rule_setting.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_details.dart';
 import 'package:live_streaming/Screens/Admin/live_stream_details.dart';
+import 'package:live_streaming/Screens/Student/course_attendance.dart';
 import 'package:live_streaming/Screens/Tecaher/attendance.dart';
 import 'package:live_streaming/Screens/Tecaher/bottom_nav.dart';
 import 'package:live_streaming/Screens/Tecaher/home_screen.dart';
 
 import 'package:live_streaming/Screens/Admin/bottomnav.dart';
+import 'package:live_streaming/Screens/Tecaher/teacher_chr.dart';
+import 'package:live_streaming/Screens/Tecaher/teacher_chr_details.dart';
+import 'package:live_streaming/view_models/Student/courses_view_model.dart';
+import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import '../Screens/onboding/onboding_screen.dart';
 import '../Screens/Student/home_screen.dart';
 
@@ -73,7 +78,23 @@ final GoRouter router = GoRouter(
             builder: ((context, state) => StudentCourseOffered(
                 lstcourse: state.params['lstcourse']!,
                 sectionOfferId: state.params['sectionOfferId']!,
-                discipline: state.params['discipline'])))
+                discipline: state.params['discipline']))),
+        GoRoute(
+            path: 'CourseAttendance',
+            builder: ((context, state) {
+              CourseViewModel courseViewModel = state.extra as CourseViewModel;
+              return CourseAttendanceScreen(provider: courseViewModel);
+            })),
+        GoRoute(
+            path: 'TeacherChr',
+            builder: ((context, state) => const TeacherCHRScreen())),
+        GoRoute(
+            path: 'TeacherChrDetails',
+            builder: ((context, state) {
+              TeacherCHRViewModel teacherCHRViewModel =
+                  state.extra as TeacherCHRViewModel;
+              return TeacherCHRDetailsScreen(provider: teacherCHRViewModel);
+            })),
       ],
     ),
   ],

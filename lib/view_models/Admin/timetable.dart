@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, empty_catches
 
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
@@ -92,7 +92,9 @@ class TimetableViewModel extends ChangeNotifier {
 
   void setloading(bool load) {
     _loading = load;
-    notifyListeners();
+    try {
+      notifyListeners();
+    } catch (e) {}
   }
 
   void setUserError(UserError userError) {

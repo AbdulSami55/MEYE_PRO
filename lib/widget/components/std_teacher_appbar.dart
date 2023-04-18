@@ -6,11 +6,13 @@ import 'package:live_streaming/view_models/signin_view_model.dart';
 import 'package:provider/provider.dart';
 import '../../utilities/constants.dart';
 
-SliverAppBar stdteacherappbar(BuildContext context, {bool isteacher = false}) {
+SliverAppBar stdteacherappbar(BuildContext context,
+    {bool isteacher = false, bool? isback}) {
   final provider = context.watch<SignInViewModel>();
   return SliverAppBar(
     backgroundColor: backgroundColor,
     pinned: true,
+    foregroundColor: shadowColorDark,
     actions: [
       Column(
         children: const [
@@ -47,7 +49,7 @@ SliverAppBar stdteacherappbar(BuildContext context, {bool isteacher = false}) {
         width: 10,
       ),
     ],
-    automaticallyImplyLeading: false,
+    automaticallyImplyLeading: isback ?? false,
     title: student_text(
         context,
         isteacher

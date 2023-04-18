@@ -192,10 +192,31 @@ Widget selectScheduleTable(
 
 Row ScheduleConditions(List<TimeTable> timeTable, BuildContext context,
     bool? isRule, String discipline) {
-  if (discipline != "") {}
+  if (discipline != "") {
+    return rowSchedule(
+        timeTable.where((e) => e.day == "Monday").isNotEmpty &&
+                timeTable.where((e) => e.discipline == discipline).isNotEmpty
+            ? "${timeTable.where((e) => e.day == "Monday").first.discipline}\n${timeTable.where((e) => e.day == "Monday").first.courseName}\n${timeTable.where((e) => e.day == "Monday").first.venue}"
+            : "",
+        timeTable.where((e) => e.day == "Tuesday").isNotEmpty
+            ? "${timeTable.where((e) => e.day == "Tuesday").first.discipline}\n${timeTable.where((e) => e.day == "Tuesday").first.courseName}\n${timeTable.where((e) => e.day == "Tuesday").first.venue}"
+            : "",
+        timeTable.where((e) => e.day == "Wednesday").isNotEmpty
+            ? "${timeTable.where((e) => e.day == "Wednesday").first.discipline}\n${timeTable.where((e) => e.day == "Wednesday").first.courseName}\n${timeTable.where((e) => e.day == "Wednesday").first.venue}"
+            : "",
+        timeTable.where((e) => e.day == "Thursday").isNotEmpty
+            ? "${timeTable.where((e) => e.day == "Thursday").first.discipline}\n${timeTable.where((e) => e.day == "Thursday").first.courseName}\n${timeTable.where((e) => e.day == "Thursday").first.venue}"
+            : "",
+        timeTable.where((e) => e.day == "Friday").isNotEmpty
+            ? "${timeTable.where((e) => e.day == "Friday").first.discipline}\n${timeTable.where((e) => e.day == "Friday").first.courseName}\n${timeTable.where((e) => e.day == "Friday").first.venue}"
+            : "",
+        timeTable,
+        context,
+        discipline,
+        isRule);
+  }
   return rowSchedule(
-      timeTable.where((e) => e.day == "Monday").isNotEmpty &&
-              timeTable.where((e) => e.discipline == discipline).isNotEmpty
+      timeTable.where((e) => e.day == "Monday").isNotEmpty
           ? "${timeTable.where((e) => e.day == "Monday").first.discipline}\n${timeTable.where((e) => e.day == "Monday").first.courseName}\n${timeTable.where((e) => e.day == "Monday").first.venue}"
           : "",
       timeTable.where((e) => e.day == "Tuesday").isNotEmpty
@@ -233,70 +254,131 @@ Row rowSchedule(
     BuildContext context,
     String? discipline,
     bool? isRule) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      const SizedBox(
-        width: 20,
-      ),
-      discipline == mondata.split('\n')[0]
-          ? rowData(
-              mondata,
-              timeTable.where((element) => element.day == "Monday").isNotEmpty
-                  ? timeTable.where((element) => element.day == "Monday").first
-                  : null,
-              context,
-              isRule,
-              discipline!)
-          : rowData("", null, context, isRule, discipline!),
-      discipline == tueData.split('\n')[0]
-          ? rowData(
-              tueData,
-              timeTable.where((element) => element.day == "Tuesday").isNotEmpty
-                  ? timeTable.where((element) => element.day == "Tuesday").first
-                  : null,
-              context,
-              isRule,
-              discipline)
-          : rowData("", null, context, isRule, discipline),
-      discipline == wedData.split('\n')[0]
-          ? rowData(
-              wedData,
-              timeTable
-                      .where((element) => element.day == "Wednesday")
-                      .isNotEmpty
-                  ? timeTable
-                      .where((element) => element.day == "Wednesday")
-                      .first
-                  : null,
-              context,
-              isRule,
-              discipline)
-          : rowData("", null, context, isRule, discipline),
-      discipline == thuData.split('\n')[0]
-          ? rowData(
-              thuData,
-              timeTable.where((element) => element.day == "Thursday").isNotEmpty
-                  ? timeTable
-                      .where((element) => element.day == "Thursday")
-                      .first
-                  : null,
-              context,
-              isRule,
-              discipline)
-          : rowData("", null, context, isRule, discipline),
-      discipline == friData.split('\n')[0]
-          ? rowData(
-              friData,
-              timeTable.where((element) => element.day == "Friday").isNotEmpty
-                  ? timeTable.where((element) => element.day == "Friday").first
-                  : null,
-              context,
-              isRule,
-              discipline)
-          : rowData("", null, context, isRule, discipline),
-    ],
-  );
+  if (isRule == true) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        const SizedBox(
+          width: 20,
+        ),
+        rowData(
+            mondata,
+            timeTable.where((element) => element.day == "Monday").isNotEmpty
+                ? timeTable.where((element) => element.day == "Monday").first
+                : null,
+            context,
+            isRule,
+            discipline ?? ""),
+        rowData(
+            tueData,
+            timeTable.where((element) => element.day == "Tuesday").isNotEmpty
+                ? timeTable.where((element) => element.day == "Tuesday").first
+                : null,
+            context,
+            isRule,
+            discipline ?? ""),
+        rowData(
+            wedData,
+            timeTable.where((element) => element.day == "Wednesday").isNotEmpty
+                ? timeTable.where((element) => element.day == "Wednesday").first
+                : null,
+            context,
+            isRule,
+            discipline ?? ""),
+        rowData(
+            thuData,
+            timeTable.where((element) => element.day == "Thursday").isNotEmpty
+                ? timeTable.where((element) => element.day == "Thursday").first
+                : null,
+            context,
+            isRule,
+            discipline ?? ""),
+        rowData(
+            friData,
+            timeTable.where((element) => element.day == "Friday").isNotEmpty
+                ? timeTable.where((element) => element.day == "Friday").first
+                : null,
+            context,
+            isRule,
+            discipline ?? "")
+      ],
+    );
+  } else {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        const SizedBox(
+          width: 20,
+        ),
+        discipline == mondata.split('\n')[0]
+            ? rowData(
+                mondata,
+                timeTable.where((element) => element.day == "Monday").isNotEmpty
+                    ? timeTable
+                        .where((element) => element.day == "Monday")
+                        .first
+                    : null,
+                context,
+                isRule,
+                discipline!)
+            : rowData("", null, context, isRule, discipline ?? ""),
+        discipline == tueData.split('\n')[0]
+            ? rowData(
+                tueData,
+                timeTable
+                        .where((element) => element.day == "Tuesday")
+                        .isNotEmpty
+                    ? timeTable
+                        .where((element) => element.day == "Tuesday")
+                        .first
+                    : null,
+                context,
+                isRule,
+                discipline ?? "")
+            : rowData("", null, context, isRule, discipline ?? ""),
+        discipline == wedData.split('\n')[0]
+            ? rowData(
+                wedData,
+                timeTable
+                        .where((element) => element.day == "Wednesday")
+                        .isNotEmpty
+                    ? timeTable
+                        .where((element) => element.day == "Wednesday")
+                        .first
+                    : null,
+                context,
+                isRule,
+                discipline ?? "")
+            : rowData("", null, context, isRule, discipline ?? ""),
+        discipline == thuData.split('\n')[0]
+            ? rowData(
+                thuData,
+                timeTable
+                        .where((element) => element.day == "Thursday")
+                        .isNotEmpty
+                    ? timeTable
+                        .where((element) => element.day == "Thursday")
+                        .first
+                    : null,
+                context,
+                isRule,
+                discipline ?? "")
+            : rowData("", null, context, isRule, discipline ?? ""),
+        discipline == friData.split('\n')[0]
+            ? rowData(
+                friData,
+                timeTable.where((element) => element.day == "Friday").isNotEmpty
+                    ? timeTable
+                        .where((element) => element.day == "Friday")
+                        .first
+                    : null,
+                context,
+                isRule,
+                discipline ?? "")
+            : rowData("", null, context, isRule, discipline ?? ""),
+      ],
+    );
+  }
 }
 
 Widget rowData(String data, TimeTable? timeTable, BuildContext context,

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_streaming/Screens/Tecaher/attendance.dart';
 import 'package:live_streaming/Screens/Tecaher/home_screen.dart';
+import 'package:live_streaming/Screens/Tecaher/teacher_chr.dart';
 import 'package:live_streaming/view_models/Teacher/attendance.dart';
 import 'package:live_streaming/view_models/handle_bottom_nav.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,11 @@ class TeacherBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> lst = [const TeacherDashboard(), const AttendanceCamera()];
+    List<Widget> lst = [
+      const TeacherDashboard(),
+      const AttendanceCamera(),
+      const TeacherCHRScreen()
+    ];
     final provider = context.watch<BottomNavViewModel>();
     final providerAttendance = context.watch<AttendanceViewModel>();
     return Scaffold(
@@ -63,7 +68,7 @@ class TeacherBottomNav extends StatelessWidget {
                     },
                     child: Opacity(
                         opacity: provider.teacherSelectedValue == 1 ? 1 : 0.5,
-                        child: bottomIcon(Icons.file_open)),
+                        child: bottomIcon(Icons.camera_alt_outlined)),
                   ),
                   InkWell(
                     onTap: () {

@@ -9,11 +9,13 @@ class CourseCard extends StatelessWidget {
     required this.title,
     required this.instructor,
     this.color = containerCardColor,
-    this.iconSrc = "assets/avaters/Avatar 3.jpg",
+    this.iconSrc = "assets/avaters/Avatar Default.jpg",
+    required this.percentage,
   }) : super(key: key);
 
   final String title, iconSrc, instructor;
   final Color color;
+  final double percentage;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class CourseCard extends StatelessWidget {
                   text_medium("Instructor: $instructor",
                       color: Colors.white38, font: 15),
                   const Spacer(),
-                  text_medium("Attendance: 97%", color: Colors.white)
+                  text_medium("Attendance: $percentage%", color: Colors.white)
                 ],
               ),
             ),
@@ -53,7 +55,8 @@ class CourseCard extends StatelessWidget {
           iconSrc == ""
               ? const CircleAvatar(
                   radius: 33,
-                  backgroundImage: AssetImage("assets/avaters/Avatar 2.jpg"),
+                  backgroundImage:
+                      AssetImage("assets/avaters/Avatar Default.jpg"),
                 )
               : CircleAvatar(
                   radius: 33,

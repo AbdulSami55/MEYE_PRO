@@ -1,8 +1,14 @@
+// ignore_for_file: use_build_context_synchronously, curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/attendance.dart';
+import 'package:live_streaming/view_models/handle_bottom_nav.dart';
 import 'package:live_streaming/widget/components/apploading.dart';
 import 'package:live_streaming/widget/components/errormessage.dart';
+import 'package:live_streaming/widget/progress_indicator.dart';
+import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
 import '../../widget/components/std_teacher_appbar.dart';
@@ -59,30 +65,58 @@ class AttendanceCamera extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     text_medium(attendanceViewModel.lstAttendance[index].name),
-                    text_medium(attendanceViewModel.lstAttendance[index].status
-                        ? 'P'
-                        : 'A')
+                    Builder(builder: (context) {
+                      return InkWell(
+                        onTap: () {
+                          attendanceViewModel.lstAttendance[index].status =
+                              !attendanceViewModel.lstAttendance[index].status;
+                          attendanceViewModel.updateListAttendance(
+                              attendanceViewModel.lstAttendance);
+                        },
+                        child: text_medium(
+                            attendanceViewModel.lstAttendance[index].status
+                                ? 'P'
+                                : 'A'),
+                      );
+                    })
                   ],
                 ),
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: 40,
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                  )
-                ],
-                border: Border.all(color: Colors.white, width: 1.0),
-                gradient: const LinearGradient(
-                  colors: [Colors.white, Colors.white],
-                  stops: [0.0, 1.0],
-                ),
-                borderRadius: BorderRadius.circular(20)),
-            child: Center(child: text_medium("Save")),
+          InkWell(
+            onTap: () async {
+              showLoaderDialog(context, "Uploading..");
+              String response = await attendanceViewModel
+                  .addAttendance(attendanceViewModel.lstAttendance);
+              Navigator.pop(context);
+              if (response == "Attendance Marked") {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(snack_bar(response, true));
+                context.read<BottomNavViewModel>().setTeacherSelectValue(0);
+                context.pushReplacement(routesTeacherBottomNavBar);
+              } else {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(snack_bar(response, false));
+              }
+            },
+            child: Container(
+              width: double.infinity,
+              height: 40,
+              decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                    )
+                  ],
+                  border: Border.all(color: Colors.white, width: 1.0),
+                  gradient: const LinearGradient(
+                    colors: [Colors.white, Colors.white],
+                    stops: [0.0, 1.0],
+                  ),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Center(child: text_medium("Save")),
+            ),
           )
         ],
       ),

@@ -39,10 +39,13 @@ class Profile extends StatelessWidget {
                     const SizedBox(
                       width: 20,
                     ),
-                    const Icon(
-                      Icons.person_outlined,
-                      size: 60,
-                      color: Colors.blueGrey,
+                    const CircleAvatar(
+                      radius: 40,
+                      child: Icon(
+                        Icons.person_outlined,
+                        size: 60,
+                        color: Colors.blueGrey,
+                      ),
                     ),
                     const SizedBox(
                       width: 20,
@@ -112,7 +115,10 @@ class Profile extends StatelessWidget {
                         thickness: 1,
                         height: 0,
                       ),
-                      profile_list_tile(context, "Log Out", Icons.logout),
+                      InkWell(
+                          onTap: () => context.pushReplacement('/'),
+                          child: profile_list_tile(
+                              context, "Log Out", Icons.logout)),
                     ],
                   ),
                 ),

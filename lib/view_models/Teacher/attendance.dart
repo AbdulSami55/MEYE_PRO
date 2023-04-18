@@ -32,6 +32,11 @@ class AttendanceViewModel with ChangeNotifier {
     _lstAttendance = temp;
   }
 
+  updateListAttendance(List<Attendance> lst) {
+    _lstAttendance = lst;
+    notifyListeners();
+  }
+
   setUserError(UserError userError) {
     _userError = userError;
   }
@@ -55,5 +60,13 @@ class AttendanceViewModel with ChangeNotifier {
       setUserError(userError);
     }
     setloading(false);
+  }
+
+  Future<String> addAttendance(List<Attendance> lst) async {
+    var response = await AttendanceServices.addAttendance(lst);
+    if (response is Success) {
+      return response.response as String;
+    }
+    return "Something Went Wrong";
   }
 }

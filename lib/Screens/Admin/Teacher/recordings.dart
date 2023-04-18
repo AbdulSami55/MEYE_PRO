@@ -57,6 +57,7 @@ class VideoPlay extends StatelessWidget {
                                   child: ListTile(
                                     leading: const Icon(
                                       Icons.play_arrow,
+                                      color: primaryColor,
                                       size: 50,
                                     ),
                                     title: text_medium(

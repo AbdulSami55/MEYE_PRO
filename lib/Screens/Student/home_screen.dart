@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Model/Student/student_courses.dart';
 import 'package:live_streaming/Screens/onboding/components/sign_in_form.dart';
 import 'package:live_streaming/utilities/constants.dart';
@@ -53,23 +56,40 @@ class StudentDashboard extends StatelessWidget {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: courseProvider.lstcourses.map((course) {
-                    index++;
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: CourseCard(
-                        title: course.courseName,
-                        iconSrc: course.image,
-                        instructor: course.teacherName,
-                        color: index % 3 == 0
-                            ? const Color(0xFF7553F6)
-                            : index % 3 == 1
-                                ? const Color(0xFF80A4FF)
-                                : const Color(0xFF9CC5FF),
-                      ),
-                    );
-                  }).toList(),
-                ),
+                    children: courseProvider.lstcourses
+                        .asMap()
+                        .map((key, value) {
+                          StudentCourses course =
+                              courseProvider.lstcourses[key];
+                          return MapEntry(
+                              key,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: InkWell(
+                                  onTap: () {
+                                    courseProvider.selectedIndex = key;
+                                    courseProvider.getCourseAttendace(
+                                        providr.user.userID.toString(),
+                                        course.courseName);
+                                    context.push(routesCourseAttendance,
+                                        extra: courseProvider);
+                                  },
+                                  child: CourseCard(
+                                    title: course.courseName,
+                                    iconSrc: course.image,
+                                    instructor: course.teacherName,
+                                    color: index % 3 == 0
+                                        ? const Color(0xFF7553F6)
+                                        : index % 3 == 1
+                                            ? const Color(0xFF80A4FF)
+                                            : const Color(0xFF9CC5FF),
+                                    percentage: course.percentage,
+                                  ),
+                                ),
+                              ));
+                        })
+                        .values
+                        .toList()),
               );
             }))),
         Padding(

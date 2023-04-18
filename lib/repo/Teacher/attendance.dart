@@ -28,4 +28,23 @@ class AttendanceServices {
           code: UNKNOWN_ERROR, errorResponse: "Something Went Wrong");
     }
   }
+
+  static Future<Object> addAttendance(List<Attendance> lst) async {
+    try {
+      var response = await http.post(Uri.parse(addAttendanceurl),
+          headers: {'Content-Type': 'application/json'},
+          body: attendanceToJson(lst));
+      if (response.statusCode == 200) {
+        return Success(response: jsonDecode(response.body));
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Response");
+    } on HttpException {
+      return Failure(code: NO_INTERNET, errorResponse: 'No Internet');
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: 'Invalid Format');
+    } catch (e) {
+      return Failure(
+          code: UNKNOWN_ERROR, errorResponse: "Something Went Wrong");
+    }
+  }
 }

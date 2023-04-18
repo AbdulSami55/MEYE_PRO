@@ -79,10 +79,15 @@ class FreeSlotView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                  radius: 33,
-                  backgroundImage:
-                      NetworkImage("$getuserimage${user.role}/${user.image}")),
+              child: user.image == null
+                  ? const CircleAvatar(
+                      radius: 33,
+                      backgroundImage:
+                          AssetImage("assets/avaters/Avatar Default.jpg"))
+                  : CircleAvatar(
+                      radius: 33,
+                      backgroundImage: NetworkImage(
+                          "$getuserimage${user.role}/${user.image}")),
             ),
             const SizedBox(
               width: 5,
