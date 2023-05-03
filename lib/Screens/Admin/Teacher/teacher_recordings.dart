@@ -10,11 +10,11 @@ import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
+import 'package:live_streaming/widget/topbar.dart';
 import 'package:provider/provider.dart';
 import '../../../utilities/constants.dart';
 import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
-import '../../../widget/teachertopbar.dart';
 
 class TeacherRecordingView extends StatelessWidget {
   TeacherRecordingView({super.key, required this.user});
@@ -23,37 +23,44 @@ class TeacherRecordingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColorLight,
       body: CustomScrollView(
         slivers: [
-          appbar("Teacher Recordings"),
+          appbar("Teacher Recordings", isGreen: true),
           SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Teachertopcard(
-                    context,
-                    "$getuserimage${user.role}/${user.image}",
-                    user.name.toString(),
-                    false,
-                    () {}),
-                const SizedBox(
-                  height: 30,
+            child: Container(
+              color: primaryColor,
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: backgroundColorLight,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(32.0),
+                        topRight: Radius.circular(32.0))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    topBar(
+                      context,
+                      "$getuserimage${user.role}/${user.image}",
+                      user.name.toString(),
+                    ),
+                    ChangeNotifierProvider(
+                      create: ((context) =>
+                          TeacherRecordingsViewModel(user.name!)),
+                      child: Container(
+                        color: backgroundColorLight,
+                        child: Consumer<TeacherRecordingsViewModel>(
+                            builder: (context, provider, child) {
+                          return _recordings(
+                            context,
+                            provider,
+                          );
+                        }),
+                      ),
+                    ),
+                  ],
                 ),
-                ChangeNotifierProvider(
-                  create: ((context) => TeacherRecordingsViewModel(user.name!)),
-                  child: Container(
-                    color: backgroundColor,
-                    child: Consumer<TeacherRecordingsViewModel>(
-                        builder: (context, provider, child) {
-                      return _recordings(
-                        context,
-                        provider,
-                      );
-                    }),
-                  ),
-                ),
-              ],
+              ),
             ),
           )
         ],
@@ -64,63 +71,90 @@ class TeacherRecordingView extends StatelessWidget {
   Widget _recordings(BuildContext context,
       TeacherRecordingsViewModel teacherRecordingsViewModel) {
     if (teacherRecordingsViewModel.loading) {
-      return apploading(context);
+      return SizedBox(
+        child: ListView.separated(
+          shrinkWrap: true,
+          itemBuilder: (con, ind) => Container(
+            color: backgroundColorLight,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.10,
+                ),
+                appShimmer(MediaQuery.of(context).size.width * 0.80,
+                    MediaQuery.of(context).size.height * 0.10),
+              ],
+            ),
+          ),
+          itemCount: 10,
+          separatorBuilder: (BuildContext context, int index) {
+            return const Divider();
+          },
+        ),
+      );
     } else if (teacherRecordingsViewModel.userError != null) {
       return ErrorMessage(
           teacherRecordingsViewModel.userError!.message.toString());
-    } else if (teacherRecordingsViewModel.tempTeacherRecordings.isEmpty) {
-      return Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.25,
-          ),
-          ErrorMessage("NO Data"),
-        ],
+    } else if (teacherRecordingsViewModel.teacherrecordings.isEmpty) {
+      return Container(
+        color: backgroundColorLight,
+        child: Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.25,
+            ),
+            ErrorMessage("NO Data"),
+          ],
+        ),
       );
     }
-    return Column(
-      children: [
-        searchbar(context),
-        ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: teacherRecordingsViewModel.tempTeacherRecordings.length,
-            itemBuilder: ((context, index) {
-              Recordings teacherRecordings =
-                  teacherRecordingsViewModel.tempTeacherRecordings[index];
-              return Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      teacherRecordingsViewModel
-                          .setPlayer('$getvideo${teacherRecordings.fileName}');
-                      teacherRecordingsViewModel
-                          .setSelectedVideo(teacherRecordings);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => VideoPlay(
-                                    teacherRecordingsViewModel:
-                                        teacherRecordingsViewModel,
-                                  ))));
-                    },
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.play_arrow,
-                        color: primaryColor,
-                        size: 50,
+    return Container(
+      color: backgroundColorLight,
+      child: Column(
+        children: [
+          searchbar(context),
+          ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemCount:
+                  teacherRecordingsViewModel.tempTeacherRecordings.length,
+              itemBuilder: ((context, index) {
+                Recordings teacherRecordings =
+                    teacherRecordingsViewModel.tempTeacherRecordings[index];
+                return Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        teacherRecordingsViewModel.setPlayer(
+                            '$getvideo${teacherRecordings.fileName}');
+                        teacherRecordingsViewModel
+                            .setSelectedVideo(teacherRecordings);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => VideoPlay(
+                                      teacherRecordingsViewModel:
+                                          teacherRecordingsViewModel,
+                                    ))));
+                      },
+                      child: ListTile(
+                        leading: const Icon(
+                          Icons.play_arrow,
+                          color: primaryColor,
+                          size: 50,
+                        ),
+                        title: text_medium(
+                            "${teacherRecordings.date.toString().split(' ')[0]}\n${teacherRecordings.fileName.split(',')[2]}"),
+                        subtitle: Text(
+                            "Course Name: ${teacherRecordings.courseName}\nSection : ${teacherRecordings.discipline}"),
                       ),
-                      title: text_medium(
-                          "${teacherRecordings.date.toString().split(' ')[0]}\n${teacherRecordings.fileName.split(',')[2]}"),
-                      subtitle: Text(
-                          "Course Name: ${teacherRecordings.courseName}\nSection : ${teacherRecordings.discipline}"),
                     ),
-                  ),
-                  const Divider()
-                ],
-              );
-            })),
-      ],
+                    const Divider()
+                  ],
+                );
+              })),
+        ],
+      ),
     );
   }
 
@@ -140,7 +174,7 @@ class TeacherRecordingView extends StatelessWidget {
                     .setFilter(value);
               },
               decoration: BoxDecoration(
-                color: backgroundColorLight,
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(15),
               ),
             ),

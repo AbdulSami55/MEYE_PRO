@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 
-SnackBar snack_bar(String text, bool isgreen) {
+SnackBar snack_bar(
+  String text,
+  bool isgreen,
+) {
   return SnackBar(
     content: Text(
       text,

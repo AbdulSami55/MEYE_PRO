@@ -13,15 +13,34 @@ Widget ScheduleTable(
     BuildContext context, TimetableViewModel timetableViewModel,
     {bool? iswhite}) {
   if (timetableViewModel.loading) {
-    return apploading(context);
+    return Row(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.10,
+        ),
+        appShimmer(MediaQuery.of(context).size.width * 0.80,
+            MediaQuery.of(context).size.height * 0.60),
+      ],
+    );
   } else if (timetableViewModel.userError != null) {
     return ErrorMessage(timetableViewModel.userError!.message.toString());
   } else if (timetableViewModel.lsttimetable.isEmpty) {
     return large_text("No Schedule Set");
   }
 
+  List<String> days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  List<String> daysHeader = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+
+  List<Map<String, dynamic>> timeTable = [
+    {'start': '08:30', 'end': '10:00'},
+    {'start': '10:00', 'end': '11:30'},
+    {'start': '11:30', 'end': '01:00'},
+    {'start': '01:30', 'end': '03:00'},
+    {'start': '03:00', 'end': '04:30'}
+  ];
+
   return Container(
-    color: backgroundColor,
+    color: backgroundColorLight,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,177 +48,87 @@ Widget ScheduleTable(
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.12,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 40,
-              ),
-              timeSchedule("08:30-\n10:00", iswhite),
-              const SizedBox(
-                height: 40,
-              ),
-              timeSchedule("10:00-\n11:30", iswhite),
-              const SizedBox(
-                height: 35,
-              ),
-              timeSchedule("11:30-\n01:00", iswhite),
-              const SizedBox(
-                height: 25,
-              ),
-              timeSchedule("01:30-\n03:00", iswhite),
-              const SizedBox(
-                height: 40,
-              ),
-              timeSchedule("03:00-\n04:30", iswhite),
-            ],
-          ),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: timeTable
+                  .asMap()
+                  .map((i, e) => MapEntry(i,
+                      timeSchedule("${e['start']}-\n${e['end']}", iswhite, i)))
+                  .values
+                  .toList()),
         ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.85,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
+        Row(
+          children: [
+            const SizedBox(
+              width: 20,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.80,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  scheduleColumn("Mon"),
-                  scheduleColumn("Tue"),
-                  scheduleColumn("Wed"),
-                  scheduleColumn("Thu"),
-                  scheduleColumn("Fri"),
+                  Row(
+                      children:
+                          daysHeader.map((e) => scheduleColumn(e)).toList()),
+                  Column(
+                      children: timeTable
+                          .map((e) => timetableViewModel.lsttimetable
+                                      .where((element) =>
+                                          element.starttime.toString() ==
+                                          e['start'])
+                                      .isNotEmpty &&
+                                  timetableViewModel.lsttimetable
+                                      .where((element) =>
+                                          element.endtime.toString() ==
+                                          e['end'])
+                                      .isNotEmpty
+                              ? ScheduleConditions(
+                                  timetableViewModel.lsttimetable
+                                      .where((element) =>
+                                          element.starttime.toString() ==
+                                          e['start'])
+                                      .toList(),
+                                  days)
+                              : Row(
+                                  children:
+                                      days.map((e) => rowData("")).toList(),
+                                ))
+                          .toList())
                 ],
               ),
-              timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "08:30")
-                          .isNotEmpty &&
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.endtime.toString() == "10:00")
-                          .isNotEmpty
-                  ? ScheduleConditions(
-                      timetableViewModel,
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "08:30")
-                          .toList())
-                  : rowSchedule("", "", "", "", ""),
-              timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "10:00")
-                          .isNotEmpty &&
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.endtime.toString() == "11:30")
-                          .isNotEmpty
-                  ? ScheduleConditions(
-                      timetableViewModel,
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "10:00")
-                          .toList())
-                  : rowSchedule("", "", "", "", ""),
-              timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "11:30")
-                          .isNotEmpty &&
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.endtime.toString() == "01:00")
-                          .isNotEmpty
-                  ? ScheduleConditions(
-                      timetableViewModel,
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "11:30")
-                          .toList())
-                  : rowSchedule("", "", "", "", ""),
-              timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "01:30")
-                          .isNotEmpty &&
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.endtime.toString() == "03:00")
-                          .isNotEmpty
-                  ? ScheduleConditions(
-                      timetableViewModel,
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "01:30")
-                          .toList())
-                  : rowSchedule("", "", "", "", ""),
-              timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "03:00")
-                          .isNotEmpty &&
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.endtime.toString() == "04:30")
-                          .isNotEmpty
-                  ? ScheduleConditions(
-                      timetableViewModel,
-                      timetableViewModel.lsttimetable
-                          .where((element) =>
-                              element.starttime.toString() == "03:00")
-                          .toList())
-                  : rowSchedule("", "", "", "", ""),
-            ],
-          ),
+            ),
+          ],
         )
       ],
     ),
   );
 }
 
-Row ScheduleConditions(
-    TimetableViewModel timetableViewModel, List<TimeTable> timeTable) {
-  return rowSchedule(
-    timeTable.where((e) => e.day == "Monday").isNotEmpty
-        ? "${timeTable.where((e) => e.day == "Monday").first.discipline}\n${timeTable.where((e) => e.day == "Monday").first.courseName}\n${timeTable.where((e) => e.day == "Monday").first.venue}"
-        : "",
-    timeTable.where((e) => e.day == "Tuesday").isNotEmpty
-        ? "${timeTable.where((e) => e.day == "Tuesday").first.discipline}\n${timeTable.where((e) => e.day == "Tuesday").first.courseName}\n${timeTable.where((e) => e.day == "Tuesday").first.venue}"
-        : "",
-    timeTable.where((e) => e.day == "Wednesday").isNotEmpty
-        ? "${timeTable.where((e) => e.day == "Wednesday").first.discipline}\n${timeTable.where((e) => e.day == "Wednesday").first.courseName}\n${timeTable.where((e) => e.day == "Wednesday").first.venue}"
-        : "",
-    timeTable.where((e) => e.day == "Thursday").isNotEmpty
-        ? "${timeTable.where((e) => e.day == "Thursday").first.discipline}\n${timeTable.where((e) => e.day == "Thursday").first.courseName}\n${timeTable.where((e) => e.day == "Thursday").first.venue}"
-        : "",
-    timeTable.where((e) => e.day == "Friday").isNotEmpty
-        ? "${timeTable.where((e) => e.day == "Friday").first.discipline}\n${timeTable.where((e) => e.day == "Friday").first.courseName}\n${timeTable.where((e) => e.day == "Friday").first.venue}"
-        : "",
-  );
-}
-
-Padding timeSchedule(String time, bool? iswhite) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 8.0),
-    child: Text(
-      time,
-      style: TextStyle(color: iswhite != null ? Colors.white : Colors.black),
-    ),
-  );
-}
-
-Row rowSchedule(String mondata, String tueData, String wedData, String thuData,
-    String friData) {
+Row ScheduleConditions(List<TimeTable> timeTable, List<String> days) {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
+      children: days
+          .map((d) => timeTable.where((element) => element.day == d).isEmpty
+              ? rowData("")
+              : rowData(
+                  "${timeTable.where((e) => e.day == d).first.discipline}\n${timeTable.where((e) => e.day == d).first.courseName}\n${timeTable.where((e) => e.day == d).first.venue}"))
+          .toList());
+}
+
+Column timeSchedule(String time, bool? iswhite, int i) {
+  return Column(
     children: [
-      const SizedBox(
-        width: 20,
+      SizedBox(
+        height: i < 2 ? 40 : 30,
       ),
-      rowData(mondata),
-      rowData(tueData),
-      rowData(wedData),
-      rowData(thuData),
-      rowData(friData),
+      Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Text(
+          time,
+          style:
+              TextStyle(color: iswhite != null ? Colors.white : Colors.black),
+        ),
+      ),
     ],
   );
 }

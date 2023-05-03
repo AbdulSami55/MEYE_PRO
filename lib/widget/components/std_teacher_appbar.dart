@@ -7,12 +7,13 @@ import 'package:provider/provider.dart';
 import '../../utilities/constants.dart';
 
 SliverAppBar stdteacherappbar(BuildContext context,
-    {bool isteacher = false, bool? isback}) {
+    {bool isteacher = false, bool? isback, Color? appBarColor}) {
   final provider = context.watch<SignInViewModel>();
   return SliverAppBar(
-    backgroundColor: backgroundColor,
+    backgroundColor: appBarColor ?? backgroundColor,
     pinned: true,
-    foregroundColor: shadowColorDark,
+    foregroundColor:
+        appBarColor != null ? backgroundColorLight : shadowColorDark,
     actions: [
       Column(
         children: const [
@@ -39,10 +40,15 @@ SliverAppBar stdteacherappbar(BuildContext context,
         onTap: () => context.go(routesSignin),
         child: Padding(
           padding: const EdgeInsets.only(top: 8.0, bottom: 2),
-          child: CircleAvatar(
-              radius: 20,
-              backgroundImage: NetworkImage(
-                  "$getuserimage${provider.user.role}/${provider.user.image}")),
+          child: provider.user.image == ""
+              ? const CircleAvatar(
+                  radius: 33,
+                  backgroundImage:
+                      AssetImage("assets/avaters/Avatar Default.jpg"))
+              : CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(
+                      "$getuserimage${provider.user.role}/${provider.user.image}")),
         ),
       ),
       const SizedBox(
@@ -57,6 +63,7 @@ SliverAppBar stdteacherappbar(BuildContext context,
                 ? "${provider.user.name}"
                 : "Mr ${provider.user.name}"
             : "${provider.user.name}",
-        30),
+        30,
+        color: appBarColor != null ? backgroundColorLight : shadowColorDark),
   );
 }

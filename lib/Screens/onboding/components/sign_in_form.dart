@@ -60,6 +60,8 @@ class SignInForm extends StatelessWidget {
                 context.go(routesTeacherBottomNavBar);
               } else if (provider.user.role == "Student") {
                 context.go(routesStudentDashboard);
+              } else if (provider.user.role == "Director") {
+                context.go(routesDirectorDashboard);
               }
             }
           } else {

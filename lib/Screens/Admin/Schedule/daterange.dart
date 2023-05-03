@@ -1,8 +1,12 @@
 // ignore_for_file: must_be_immutable, non_constant_identifier_names, unused_local_variable
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Screens/Admin/Schedule/freeslot.dart';
+import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
@@ -82,12 +86,20 @@ class DateRangeView extends StatelessWidget {
                                 .split(' ')[0]
                                 .split('-')[2]
                                 .toString());
+                            int selectendyear = int.parse(
+                                enddate.split(' ')[0].split('-')[0].toString());
+                            int selectendmonth = int.parse(
+                                enddate.split(' ')[0].split('-')[1].toString());
+                            int selectendday = int.parse(
+                                enddate.split(' ')[0].split('-')[2].toString());
                             final DateTime date1 =
                                 DateTime(year, month, day, 0, 0, 0);
                             final DateTime date2 = DateTime(
                                 selectyear, selectmonth, selectday, 0, 0, 0);
+                            final DateTime date3 = DateTime(selectendyear,
+                                selectendmonth, selectendday, 0, 0, 0);
                             final Duration durdef = date2.difference(date1);
-
+                            final int durdays = date3.difference(date2).inDays;
                             if (enddate == "null)") {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   snack_bar("Select End Date", false));
@@ -95,15 +107,21 @@ class DateRangeView extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(snack_bar(
                                   "Start Date Must be Greater than Current Date",
                                   false));
+                            } else if (durdays > 6) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  snack_bar("Duration must be less than 7 days",
+                                      false));
                             } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) => FreeSlotView(
-                                          user: user,
-                                          discipline:
-                                              provider.selectedDiscipline ??
-                                                  ""))));
+                              context.read<ReScheduleViewModel>().getdata(
+                                  startdate,
+                                  enddate,
+                                  provider.selectedDiscipline ?? "");
+                              context.pushNamed(routesFreeSlotView, params: {
+                                'user': jsonEncode(user),
+                                'discipline': provider.selectedDiscipline ?? "",
+                                'startdate': startdate,
+                                'enddate': enddate
+                              });
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(

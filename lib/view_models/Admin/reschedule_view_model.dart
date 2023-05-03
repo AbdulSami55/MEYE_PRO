@@ -14,6 +14,7 @@ class ReScheduleViewModel extends ChangeNotifier {
   var _lsttimetable = <TimeTable>[];
   UserError? _userError;
   Venue? _selectedvalue;
+  int teacherSlotId = -1;
   String Daytime = '';
   String mon8 = "",
       mon10 = "",
@@ -46,10 +47,7 @@ class ReScheduleViewModel extends ChangeNotifier {
   bool get loading => _loading;
   Venue? get selectedvalue => _selectedvalue;
 
-  ReScheduleViewModel() {
-    getdata();
-  }
-  void setlsttimetable(List<TimeTable> lst) async {
+  void setlsttimetable(List<TimeTable> lst, String discipline) async {
     _lsttimetable = lst;
   }
 
@@ -67,12 +65,12 @@ class ReScheduleViewModel extends ChangeNotifier {
     _userError = userError;
   }
 
-  void getdata() async {
+  void getdata(String startdate, String enddate, String discipline) async {
     setUserError(null);
     setloading(true);
-    var response = await RescheduleServies.getTimetable();
+    var response = await RescheduleServies.getTimetable(startdate, enddate);
     if (response is Success) {
-      setlsttimetable(response.response as List<TimeTable>);
+      setlsttimetable(response.response as List<TimeTable>, discipline);
     }
     if (response is Failure) {
       UserError userError =
@@ -80,6 +78,22 @@ class ReScheduleViewModel extends ChangeNotifier {
       setUserError(userError);
     }
     setloading(false);
+  }
+
+  Future<String> checkTeacherRescheduleClass(String teacherName) async {
+    teacherSlotId = -1;
+    var response =
+        await RescheduleServies.checkTeacherRescheduleClass(teacherName);
+    if (response is Success) {
+      if (response.response.toString() != 'No Class Missed') {
+        teacherSlotId = response.response as int;
+        return 'okay';
+      }
+      return response.response as String;
+    } else if (response is Failure) {
+      return response.errorResponse.toString();
+    }
+    return "Something Went Wrong";
   }
 
   Future insertdata(Schedule schedule) async {

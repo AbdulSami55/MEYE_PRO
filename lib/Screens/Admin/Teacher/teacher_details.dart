@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,8 +6,12 @@ import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Screens/Admin/Schedule/daterange.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_recordings.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_schedule.dart';
+import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/components/search_bar.dart';
+import 'package:live_streaming/widget/progress_indicator.dart';
+import 'package:live_streaming/widget/snack_bar.dart';
+import 'package:live_streaming/widget/textcomponents/small_text.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utilities/constants.dart';
@@ -92,10 +96,40 @@ class TeacherDetails extends StatelessWidget {
                       top: 12.0, bottom: 12.0, left: 16.0),
                   child: large_text("Schedule")),
               InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => DateRangeView(user: user)))),
+                onTap: () async {
+                  showLoaderDialog(context, "Loading..");
+                  String response = await context
+                      .read<ReScheduleViewModel>()
+                      .checkTeacherRescheduleClass(user.name.toString());
+
+                  if (response == 'okay') {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => DateRangeView(user: user))));
+                  } else {
+                    Navigator.pop(context);
+                    showDialog(
+                        context: context,
+                        builder: ((context) => AlertDialog(
+                              title: text_medium("Error"),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Center(child: text_medium(response)),
+                                ],
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Ok"))
+                              ],
+                            )));
+                  }
+                },
                 child: ListTile(
                     leading: const Icon(Icons.grid_view_sharp),
                     title: text_medium("Reschdule")),

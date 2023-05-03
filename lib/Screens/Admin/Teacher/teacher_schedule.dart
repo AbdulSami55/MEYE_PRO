@@ -6,6 +6,8 @@ import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/components/schedule.dart';
 import 'package:live_streaming/widget/teachertopbar.dart';
+import 'package:live_streaming/widget/textcomponents/medium_text.dart';
+import 'package:live_streaming/widget/topbar.dart';
 import 'package:provider/provider.dart';
 import '../../../utilities/constants.dart';
 
@@ -16,36 +18,38 @@ class TeacherScheduleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: primaryColor,
       body: CustomScrollView(
         slivers: [
-          appbar("Teacher Schedule"),
+          appbar("Teacher Schedule", isGreen: true),
           SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Teachertopcard(
-                    context,
-                    user.image == null
-                        ? ""
-                        : "$getuserimage${user.role}/${user.image}",
-                    user.name.toString(),
-                    false,
-                    () {}),
-                const SizedBox(
-                  height: 30,
-                ),
-                ChangeNotifierProvider(
-                  create: ((context) => TimetableViewModel(user.name!)),
-                  child: Container(
-                    color: backgroundColor,
-                    child: Consumer<TimetableViewModel>(
-                        builder: (context, provider, child) {
-                      return ScheduleTable(context, provider);
-                    }),
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                  color: backgroundColorLight,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(32.0),
+                      topRight: Radius.circular(32.0))),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-              ],
+                  topBar(context, "$getuserimage${user.role}/${user.image}",
+                      user.name.toString()),
+                  ChangeNotifierProvider(
+                    create: ((context) => TimetableViewModel(user.name!)),
+                    child: Container(
+                      color: backgroundColor,
+                      child: Consumer<TimetableViewModel>(
+                          builder: (context, provider, child) {
+                        return ScheduleTable(context, provider);
+                      }),
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         ],

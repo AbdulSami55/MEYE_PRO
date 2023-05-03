@@ -32,7 +32,9 @@ class _HomeState extends State<Home> {
       backgroundColor: backgroundColor,
       body: CustomScrollView(
         slivers: [
-          appbar("Live Stream", automaticallyImplyLeading: false),
+          appbar("Live Stream",
+              automaticallyImplyLeading: false,
+              backgroundColor: backgroundColor),
           SliverToBoxAdapter(
             child: ChangeNotifierProvider(
               create: (_) => LiveStreamViewModel(),

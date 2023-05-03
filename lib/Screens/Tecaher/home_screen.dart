@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:intl/intl.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
+import 'package:live_streaming/Screens/Tecaher/components/card_text.dart';
 import 'package:live_streaming/Screens/Tecaher/components/loading_bar.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
@@ -195,16 +196,5 @@ class TeacherDashboard extends StatelessWidget {
     );
   }
 
-  Row cardText(String title, String text) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const SizedBox(
-          width: 5,
-        ),
-        text_medium(title, color: containerColor),
-        textSmall(text, color: backgroundColorLight)
-      ],
-    );
-  }
+ 
 }

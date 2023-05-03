@@ -72,12 +72,22 @@ class TeacherScheduleScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             text_medium(user.name.toString(),
                                 color: shadowColorLight),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            text_medium(discipline, color: shadowColorLight),
+                            const SizedBox(
+                              height: 5,
+                            ),
                             text_medium(venue.name.toString(),
                                 color: shadowColorLight),
+                            const SizedBox(
+                              height: 5,
+                            ),
                           ],
                         ),
                       ],
@@ -94,7 +104,9 @@ class TeacherScheduleScreen extends StatelessWidget {
                     child: Consumer<TimetableViewModel>(
                         builder: (context, provider, child) {
                       return selectScheduleTable(context, provider,
-                          discipline: discipline);
+                          discipline: discipline,
+                          venue: venue.name,
+                          daytime: daytime);
                     }),
                   ),
                 ),

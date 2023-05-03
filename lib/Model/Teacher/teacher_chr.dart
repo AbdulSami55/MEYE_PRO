@@ -1,27 +1,32 @@
+// To parse this JSON data, do
+//
+//     final teacherChr = teacherChrFromMap(jsonString);
+
 import 'dart:convert';
 
-List<TeacherChr> teacherChrFromJson(String str) =>
+List<TeacherChr> teacherChrFromMap(String str) =>
     List<TeacherChr>.from(json.decode(str).map((x) => TeacherChr.fromMap(x)));
 
-String teacherChrToJson(List<TeacherChr> data) =>
+String teacherChrToMap(List<TeacherChr> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toMap())));
 
 class TeacherChr {
   TeacherChr(
-      {required this.courseName,
+      {required this.id,
+      required this.courseName,
       required this.day,
       required this.discipline,
       required this.startTime,
       required this.endTime,
       required this.totalTimeIn,
       required this.totalTimeOut,
-      required this.timein,
-      required this.timeout,
-      required this.sit,
-      required this.stand,
-      required this.mobile,
-      required this.status});
+      required this.status,
+      required this.date,
+      required this.teacherChrActivityDetails,
+      required this.teacherName,
+      required this.image});
 
+  int id;
   String courseName;
   String day;
   String discipline;
@@ -30,13 +35,13 @@ class TeacherChr {
   String totalTimeIn;
   String totalTimeOut;
   String status;
-  DateTime timein;
-  DateTime timeout;
-  int sit;
-  int stand;
-  int mobile;
+  String date;
+  String teacherName;
+  String image;
+  List<TeacherChrActivityDetail> teacherChrActivityDetails;
 
   factory TeacherChr.fromMap(Map<String, dynamic> json) => TeacherChr(
+      id: json["id"],
       courseName: json["courseName"],
       day: json["day"],
       discipline: json["discipline"],
@@ -44,14 +49,16 @@ class TeacherChr {
       endTime: json["endTime"],
       totalTimeIn: json["totalTimeIn"],
       totalTimeOut: json["totalTimeOut"],
-      timein: DateTime.parse(json["timein"]),
-      timeout: DateTime.parse(json["timeout"]),
-      sit: json["sit"],
-      stand: json["stand"],
-      mobile: json["mobile"],
-      status: json['status']);
+      status: json["status"],
+      date: json["date"],
+      teacherChrActivityDetails: List<TeacherChrActivityDetail>.from(
+          json["teacherCHRActivityDetails"]
+              .map((x) => TeacherChrActivityDetail.fromMap(x))),
+      teacherName: json['teacherName'],
+      image: json['image'] ?? '');
 
   Map<String, dynamic> toMap() => {
+        "id": id,
         "courseName": courseName,
         "day": day,
         "discipline": discipline,
@@ -59,11 +66,45 @@ class TeacherChr {
         "endTime": endTime,
         "totalTimeIn": totalTimeIn,
         "totalTimeOut": totalTimeOut,
-        "timein": timein.toIso8601String(),
-        "timeout": timeout.toIso8601String(),
+        "status": status,
+        "date": date,
+        "teacherCHRActivityDetails":
+            List<dynamic>.from(teacherChrActivityDetails.map((x) => x.toMap())),
+        'teacherName': teacherName,
+        'image': image
+      };
+}
+
+class TeacherChrActivityDetail {
+  TeacherChrActivityDetail({
+    required this.timein,
+    required this.timeout,
+    required this.sit,
+    required this.stand,
+    required this.mobile,
+  });
+
+  DateTime? timein;
+  DateTime? timeout;
+  int? sit;
+  int? stand;
+  int? mobile;
+
+  factory TeacherChrActivityDetail.fromMap(Map<String, dynamic> json) =>
+      TeacherChrActivityDetail(
+        timein: json["timein"] == null ? null : DateTime.parse(json["timein"]),
+        timeout:
+            json["timeout"] == null ? null : DateTime.parse(json["timeout"]),
+        sit: json["sit"],
+        stand: json["stand"],
+        mobile: json["mobile"],
+      );
+
+  Map<String, dynamic> toMap() => {
+        "timein": timein?.toIso8601String(),
+        "timeout": timeout?.toIso8601String(),
         "sit": sit,
         "stand": stand,
         "mobile": mobile,
-        "status": status
       };
 }

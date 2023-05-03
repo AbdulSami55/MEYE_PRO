@@ -28,11 +28,30 @@ class RescheduleServies {
     }
   }
 
-  static Future<Object> getTimetable() async {
+  static Future<Object> getTimetable(String startdate, String enddate) async {
     try {
-      var response = await http.get(Uri.parse(gettimetable));
+      var response = await http.get(Uri.parse(
+          "$getTimeTableByDateurl?startdate=$startdate&enddate=$enddate"));
       if (response.statusCode == 200) {
         return Success(response: timeTableFromJson(response.body));
+      }
+      return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Response");
+    } on HttpException {
+      return Failure(code: NO_INTERNET, errorResponse: 'No Internet');
+    } on FormatException {
+      return Failure(code: INVALID_FORMAT, errorResponse: 'Invalid Format');
+    } catch (e) {
+      return Failure(
+          code: UNKNOWN_ERROR, errorResponse: "Something Went Wrong");
+    }
+  }
+
+  static Future<Object> checkTeacherRescheduleClass(String teacherName) async {
+    try {
+      var response = await http.get(Uri.parse(
+          "$getcheckTeacherRescheduleClassurl?teacherName=$teacherName"));
+      if (response.statusCode == 200) {
+        return Success(response: jsonDecode(response.body));
       }
       return Failure(code: INVALID_RESPONSE, errorResponse: "Invalid Response");
     } on HttpException {

@@ -18,9 +18,13 @@ class VideoPlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColorLight,
       body: CustomScrollView(
-        slivers: [appbar("Video"), videoScreen(context), videoList()],
+        slivers: [
+          appbar("Video", backgroundColor: backgroundColorLight),
+          videoScreen(context),
+          videoList()
+        ],
       ),
     );
   }
@@ -31,47 +35,51 @@ class VideoPlay extends StatelessWidget {
           value: teacherRecordingsViewModel,
           child: Consumer<TeacherRecordingsViewModel>(
               builder: (context, provider, child) {
-            return Column(
-              children: [
-                ListView.builder(
-                    padding: EdgeInsets.zero,
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount:
-                        teacherRecordingsViewModel.tempTeacherRecordings.length,
-                    itemBuilder: ((context, index) {
-                      Recordings teacherRecordings = teacherRecordingsViewModel
-                          .tempTeacherRecordings[index];
+            return Container(
+              color: backgroundColorLight,
+              child: Column(
+                children: [
+                  ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: teacherRecordingsViewModel
+                          .tempTeacherRecordings.length,
+                      itemBuilder: ((context, index) {
+                        Recordings teacherRecordings =
+                            teacherRecordingsViewModel
+                                .tempTeacherRecordings[index];
 
-                      return teacherRecordings !=
-                              teacherRecordingsViewModel.selectedVideo
-                          ? Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    teacherRecordingsViewModel.setPlayer(
-                                        '$getvideo${teacherRecordings.fileName}');
-                                    teacherRecordingsViewModel
-                                        .setSelectedVideo(teacherRecordings);
-                                  },
-                                  child: ListTile(
-                                    leading: const Icon(
-                                      Icons.play_arrow,
-                                      color: primaryColor,
-                                      size: 50,
+                        return teacherRecordings !=
+                                teacherRecordingsViewModel.selectedVideo
+                            ? Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      teacherRecordingsViewModel.setPlayer(
+                                          '$getvideo${teacherRecordings.fileName}');
+                                      teacherRecordingsViewModel
+                                          .setSelectedVideo(teacherRecordings);
+                                    },
+                                    child: ListTile(
+                                      leading: const Icon(
+                                        Icons.play_arrow,
+                                        color: primaryColor,
+                                        size: 50,
+                                      ),
+                                      title: text_medium(
+                                          "${teacherRecordings.date.toString().split(' ')[0]}\n${teacherRecordings.fileName.split(',')[2]}"),
+                                      subtitle: Text(
+                                          "${teacherRecordings.courseName}\n${teacherRecordings.discipline}"),
                                     ),
-                                    title: text_medium(
-                                        "${teacherRecordings.date.toString().split(' ')[0]}\n${teacherRecordings.fileName.split(',')[2]}"),
-                                    subtitle: Text(
-                                        "${teacherRecordings.courseName}\n${teacherRecordings.discipline}"),
                                   ),
-                                ),
-                                const Divider()
-                              ],
-                            )
-                          : const Padding(padding: EdgeInsets.zero);
-                    })),
-              ],
+                                  const Divider()
+                                ],
+                              )
+                            : const Padding(padding: EdgeInsets.zero);
+                      })),
+                ],
+              ),
             );
           })),
     );
@@ -83,9 +91,13 @@ class VideoPlay extends StatelessWidget {
       pinned: true,
       floating: false,
       elevation: 0,
-      backgroundColor: backgroundColor,
-      expandedHeight: MediaQuery.of(context).size.height * 0.4,
-      collapsedHeight: MediaQuery.of(context).size.height * 0.4,
+      backgroundColor: backgroundColorLight,
+      expandedHeight: MediaQuery.of(context).size.height > 500
+          ? MediaQuery.of(context).size.height * 0.3
+          : MediaQuery.of(context).size.height * 0.4,
+      collapsedHeight: MediaQuery.of(context).size.height > 500
+          ? MediaQuery.of(context).size.height * 0.3
+          : MediaQuery.of(context).size.height * 0.4,
       flexibleSpace: FlexibleSpaceBar(
         background: ChangeNotifierProvider.value(
           value: teacherRecordingsViewModel,

@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable, non_constant_identifier_names, unused_local_variable
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
@@ -17,15 +19,21 @@ import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 
 class FreeSlotView extends StatelessWidget {
-  FreeSlotView({super.key, required this.user, required this.discipline});
-  User user;
+  FreeSlotView(
+      {super.key,
+      required this.userValue,
+      required this.discipline,
+      required this.startdate,
+      required this.enddate});
+  String userValue;
   String discipline;
+  String startdate;
+  String enddate;
 
   @override
   Widget build(BuildContext context) {
     final venueViewModel = context.watch<VenueViewModel>();
-    String startdate = "";
-    String enddate = "";
+    User user = User.fromJson(jsonDecode(userValue));
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -36,18 +44,15 @@ class FreeSlotView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                topbar(context),
+                topbar(context, user, discipline),
                 const SizedBox(
                   height: 30,
                 ),
                 Container(
                     color: backgroundColor,
-                    child: ChangeNotifierProvider(
-                      create: (context) => ReScheduleViewModel(),
-                      child: Consumer<ReScheduleViewModel>(
-                        builder: (context, provider, child) => ScheduleTable(
-                            context, provider, venueViewModel, discipline),
-                      ),
+                    child: Consumer<ReScheduleViewModel>(
+                      builder: (context, provider, child) => ScheduleTable(
+                          context, provider, venueViewModel, discipline, user),
                     )),
               ],
             ),
@@ -57,7 +62,7 @@ class FreeSlotView extends StatelessWidget {
     );
   }
 
-  Padding topbar(BuildContext context) {
+  Padding topbar(BuildContext context, User user, String discipline) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Container(
@@ -93,7 +98,21 @@ class FreeSlotView extends StatelessWidget {
               width: 5,
               height: 20,
             ),
-            text_medium(user.name.toString())
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                 text_medium(user.name.toString(),
+                                color: shadowColorLight),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            text_medium(discipline, color: shadowColorLight),
+                            const SizedBox(
+                              height: 5,
+                            ),
+              ],
+            ),
           ],
         ),
       ),
@@ -104,7 +123,8 @@ class FreeSlotView extends StatelessWidget {
       BuildContext context,
       ReScheduleViewModel rescheduleviewmodel,
       VenueViewModel venueViewModel,
-      String discipline) {
+      String discipline,
+      User user) {
     if (rescheduleviewmodel.loading || venueViewModel.loading) {
       return apploading(context);
     } else if (rescheduleviewmodel.userError != null ||
@@ -245,6 +265,8 @@ class FreeSlotView extends StatelessWidget {
       if (t.starttime.toString() == time) {
         if (t.day == "Monday") {
           Venue v = vmonlst.where((element) => element.name == t.venue).first;
+          monlst.remove(v.name);
+          v = vmonlst.where((element) => element.name == t.venue).first;
           monlst.remove(v.name);
         } else if (t.day == "Tuesday") {
           Venue v = vtuelst.where((element) => element.name == t.venue).first;
