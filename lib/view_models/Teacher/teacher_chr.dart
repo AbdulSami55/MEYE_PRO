@@ -12,6 +12,8 @@ class TeacherCHRViewModel with ChangeNotifier {
   UserError? _userError;
   int selectedIndex = -1;
   int selectedTab = 0;
+  bool isTable = false;
+  int selectedFilter = 0;
   ScreenshotController _screenshotController = ScreenshotController();
 
   List<TeacherChr> get lstTeacherChr => _lstTeacherChr;
@@ -28,6 +30,16 @@ class TeacherCHRViewModel with ChangeNotifier {
   }
   setListTeacherChr(List<TeacherChr> lst) {
     _lstTeacherChr = lst;
+  }
+
+  setIsTable() {
+    isTable = !isTable;
+    notifyListeners();
+  }
+
+  setSelectedFilter(int val) {
+    selectedFilter = val;
+    notifyListeners();
   }
 
   setSelectedTab(int val) {

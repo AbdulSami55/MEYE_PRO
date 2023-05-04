@@ -1,8 +1,4 @@
 // ignore_for_file: must_be_immutable, use_build_context_synchronously
-
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Teacher/teacher_chr.dart';
 import 'package:live_streaming/Screens/Student/components/text.dart';
@@ -10,19 +6,8 @@ import 'package:live_streaming/Screens/Tecaher/components/card_text.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
-import 'package:live_streaming/widget/mybutton.dart';
-import 'package:live_streaming/widget/progress_indicator.dart';
-import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
-import 'package:live_streaming/widget/textcomponents/small_text.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:pdf/widgets.dart' as pw;
-
-import '../../view_models/signin_view_model.dart';
 
 class TeacherCHRDetails extends StatelessWidget {
   TeacherCHRDetails({super.key, required this.provider});
@@ -56,7 +41,7 @@ class TeacherCHRDetails extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 20.0, top: 8.0, bottom: 8.0, right: 8.0),
+                        left: 20.0, top: 32.0, bottom: 8.0, right: 8.0),
                     child: Screenshot(
                       controller: provider.screenshotController,
                       child: Container(
@@ -88,6 +73,12 @@ class TeacherCHRDetails extends StatelessWidget {
                                                   "${getuserimage}Teacher/${teacherChr.image}")),
                                     ),
                                   ],
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Divider(
+                                  color: shadowColorDark,
                                 ),
                               ),
                               Row(
@@ -146,98 +137,98 @@ class TeacherCHRDetails extends StatelessWidget {
                                   )
                                 ],
                               ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8.0),
-                                child: Divider(
-                                  color: shadowColorDark,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  text_medium("TimeIn"),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  text_medium("TimeOut"),
-                                  // text_medium("Sit"),
-                                  // text_medium("Stand"),
-                                  // text_medium("Mobile")
-                                ],
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 8.0, bottom: 6.0),
-                                child: Divider(
-                                  color: shadowColorDark,
-                                ),
-                              ),
-                              ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: teacherChr
-                                      .teacherChrActivityDetails.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: ((context, index) {
-                                    TeacherChrActivityDetail
-                                        teacherChrActivityDetail = teacherChr
-                                            .teacherChrActivityDetails[index];
-                                    return teacherChrActivityDetail.sit == null
-                                        ? const Padding(
-                                            padding: EdgeInsets.zero)
-                                        : Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  const SizedBox(
-                                                    width: 20,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 80,
-                                                    child: textSmall(
-                                                        teacherChrActivityDetail
-                                                            .timein
-                                                            .toString()
-                                                            .split('.')[0]
-                                                            .split(' ')[1]),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 55,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 80,
-                                                    child: textSmall(
-                                                        teacherChrActivityDetail
-                                                            .timeout
-                                                            .toString()
-                                                            .split('.')[0]
-                                                            .split(' ')[1]),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  // textSmall(teacherChrActivityDetail.sit
-                                                  //     .toString()),
-                                                  // const SizedBox(
-                                                  //   width: 35,
-                                                  // ),
-                                                  // textSmall(teacherChrActivityDetail.stand
-                                                  //     .toString()),
-                                                  // const SizedBox(
-                                                  //   width: 50,
-                                                  // ),
-                                                  // textSmall(teacherChrActivityDetail.mobile
-                                                  //     .toString())
-                                                ],
-                                              ),
-                                              const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 16.0))
-                                            ],
-                                          );
-                                  })),
+                              // const Padding(
+                              //   padding: EdgeInsets.symmetric(vertical: 8.0),
+                              //   child: Divider(
+                              //     color: shadowColorDark,
+                              //   ),
+                              // ),
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceEvenly,
+                              //   children: [
+                              //     text_medium("TimeIn"),
+                              //     const SizedBox(
+                              //       width: 5,
+                              //     ),
+                              //     text_medium("TimeOut"),
+                              //     // text_medium("Sit"),
+                              //     // text_medium("Stand"),
+                              //     // text_medium("Mobile")
+                              //   ],
+                              // ),
+                              // const Padding(
+                              //   padding: EdgeInsets.only(top: 8.0, bottom: 6.0),
+                              //   child: Divider(
+                              //     color: shadowColorDark,
+                              //   ),
+                              // ),
+                              // ListView.builder(
+                              //     padding: EdgeInsets.zero,
+                              //     itemCount: teacherChr
+                              //         .teacherChrActivityDetails.length,
+                              //     shrinkWrap: true,
+                              //     itemBuilder: ((context, index) {
+                              //       TeacherChrActivityDetail
+                              //           teacherChrActivityDetail = teacherChr
+                              //               .teacherChrActivityDetails[index];
+                              //       return teacherChrActivityDetail.sit == null
+                              //           ? const Padding(
+                              //               padding: EdgeInsets.zero)
+                              //           : Column(
+                              //               children: [
+                              //                 Row(
+                              //                   mainAxisAlignment:
+                              //                       MainAxisAlignment
+                              //                           .spaceEvenly,
+                              //                   children: [
+                              //                     const SizedBox(
+                              //                       width: 20,
+                              //                     ),
+                              //                     SizedBox(
+                              //                       width: 80,
+                              //                       child: textSmall(
+                              //                           teacherChrActivityDetail
+                              //                               .timein
+                              //                               .toString()
+                              //                               .split('.')[0]
+                              //                               .split(' ')[1]),
+                              //                     ),
+                              //                     const SizedBox(
+                              //                       width: 55,
+                              //                     ),
+                              //                     SizedBox(
+                              //                       width: 80,
+                              //                       child: textSmall(
+                              //                           teacherChrActivityDetail
+                              //                               .timeout
+                              //                               .toString()
+                              //                               .split('.')[0]
+                              //                               .split(' ')[1]),
+                              //                     ),
+                              //                     const SizedBox(
+                              //                       width: 5,
+                              //                     ),
+                              //                     // textSmall(teacherChrActivityDetail.sit
+                              //                     //     .toString()),
+                              //                     // const SizedBox(
+                              //                     //   width: 35,
+                              //                     // ),
+                              //                     // textSmall(teacherChrActivityDetail.stand
+                              //                     //     .toString()),
+                              //                     // const SizedBox(
+                              //                     //   width: 50,
+                              //                     // ),
+                              //                     // textSmall(teacherChrActivityDetail.mobile
+                              //                     //     .toString())
+                              //                   ],
+                              //                 ),
+                              //                 const Padding(
+                              //                     padding: EdgeInsets.only(
+                              //                         top: 16.0))
+                              //               ],
+                              //             );
+                              //     })),
                             ],
                           ),
                         ),
@@ -249,56 +240,56 @@ class TeacherCHRDetails extends StatelessWidget {
             ),
           ),
         ),
-        SliverToBoxAdapter(
-          child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: mybutton(() async {
-                showLoaderDialog(context, "Generating..");
-                await provider.screenshotController
-                    .capture(delay: const Duration(milliseconds: 10))
-                    .then((capturedImage) async {
-                  await getPdf(context, capturedImage, provider);
-                }).catchError((onError) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(snack_bar("Something went wrong.", false));
-                });
-                Navigator.pop(context);
-              }, "Generate PDF", Icons.picture_as_pdf)),
-        )
+        // SliverToBoxAdapter(
+        //   child: Padding(
+        //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        //       child: mybutton(() async {
+        //         showLoaderDialog(context, "Generating..");
+        //         await provider.screenshotController
+        //             .capture(delay: const Duration(milliseconds: 10))
+        //             .then((capturedImage) async {
+        //           await getPdf(context, capturedImage, provider);
+        //         }).catchError((onError) {
+        //           ScaffoldMessenger.of(context)
+        //               .showSnackBar(snack_bar("Something went wrong.", false));
+        //         });
+        //         Navigator.pop(context);
+        //       }, "Generate PDF", Icons.picture_as_pdf)),
+        // )
       ]),
     );
   }
 
-  Future getPdf(BuildContext context, Uint8List? screenShot,
-      TeacherCHRViewModel provider) async {
-    if (screenShot != null) {
-      pw.Document pdf = pw.Document();
-      pdf.addPage(
-        pw.Page(
-          pageFormat: PdfPageFormat.a4,
-          build: (context) {
-            return pw.Expanded(
-              child:
-                  pw.Image(pw.MemoryImage(screenShot), fit: pw.BoxFit.contain),
-            );
-          },
-        ),
-      );
-      List<int> bytes = await pdf.save();
-      final path = (await getExternalStorageDirectory())!.path;
-      File pdfFile = File(
-          "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${context.read<SignInViewModel>().user.name} ${provider.lstTeacherChr[provider.selectedIndex].status} ${provider.lstTeacherChr[provider.selectedIndex].discipline}.pdf");
+  // Future getPdf(BuildContext context, Uint8List? screenShot,
+  //     TeacherCHRViewModel provider) async {
+  //   if (screenShot != null) {
+  //     pw.Document pdf = pw.Document();
+  //     pdf.addPage(
+  //       pw.Page(
+  //         pageFormat: PdfPageFormat.a4,
+  //         build: (context) {
+  //           return pw.Expanded(
+  //             child:
+  //                 pw.Image(pw.MemoryImage(screenShot), fit: pw.BoxFit.contain),
+  //           );
+  //         },
+  //       ),
+  //     );
+  //     List<int> bytes = await pdf.save();
+  //     final path = (await getExternalStorageDirectory())!.path;
+  //     File pdfFile = File(
+  //         "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${context.read<SignInViewModel>().user.name} ${provider.lstTeacherChr[provider.selectedIndex].status} ${provider.lstTeacherChr[provider.selectedIndex].discipline}.pdf");
 
-      await pdfFile.writeAsBytes(bytes, flush: true);
-      await OpenFile.open(
-          "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${context.read<SignInViewModel>().user.name} ${provider.lstTeacherChr[provider.selectedIndex].status} ${provider.lstTeacherChr[provider.selectedIndex].discipline}.pdf");
-      ScaffoldMessenger.of(context)
-          .showSnackBar(snack_bar("PDF Generated", true));
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(snack_bar("Something went wrong", false));
-    }
-  }
+  //     await pdfFile.writeAsBytes(bytes, flush: true);
+  //     await OpenFile.open(
+  //         "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${context.read<SignInViewModel>().user.name} ${provider.lstTeacherChr[provider.selectedIndex].status} ${provider.lstTeacherChr[provider.selectedIndex].discipline}.pdf");
+  //     ScaffoldMessenger.of(context)
+  //         .showSnackBar(snack_bar("PDF Generated", true));
+  //   } else {
+  //     ScaffoldMessenger.of(context)
+  //         .showSnackBar(snack_bar("Something went wrong", false));
+  //   }
+  // }
 
   Row cardRow(String title1, String subtitle1) {
     return Row(

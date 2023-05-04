@@ -9,7 +9,6 @@ import 'package:live_streaming/widget/components/errormessage.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
-import 'package:live_streaming/widget/textcomponents/small_text.dart';
 import 'package:provider/provider.dart';
 
 class TeacherCHRScreen extends StatelessWidget {

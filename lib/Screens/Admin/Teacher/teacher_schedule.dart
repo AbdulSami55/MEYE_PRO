@@ -5,8 +5,6 @@ import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/components/schedule.dart';
-import 'package:live_streaming/widget/teachertopbar.dart';
-import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:live_streaming/widget/topbar.dart';
 import 'package:provider/provider.dart';
 import '../../../utilities/constants.dart';

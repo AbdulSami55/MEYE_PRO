@@ -77,3 +77,4 @@ const String routesTeacherChrDetailsScreen = '/TeacherChrDetailsScreen';
 const String routesFreeSlotView = 'FreeSlotView';
 const String routesDirectorDashboard = '/DirectorDashboard';
 const String routesTeacherChrDetails = '/TeacherChrDetails';
+const String routesShortReport = '/ShortReport';

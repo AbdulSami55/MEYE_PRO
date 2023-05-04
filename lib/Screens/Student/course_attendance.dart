@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Student/courses_view_model.dart';
-import 'package:live_streaming/view_models/signin_view_model.dart';
 import 'package:live_streaming/widget/components/apploading.dart';
 import 'package:live_streaming/widget/components/errormessage.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';

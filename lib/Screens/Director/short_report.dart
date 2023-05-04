@@ -1,9 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Screens/Director/SwitchMode/date.dart';
 import 'package:live_streaming/Screens/Director/SwitchMode/teacher.dart';
 import 'package:live_streaming/Screens/Director/components/searchbar.dart';
-import 'package:live_streaming/Screens/Director/short_report.dart';
 import 'package:live_streaming/Screens/Tecaher/components/loading_bar.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
@@ -11,37 +12,18 @@ import 'package:live_streaming/widget/components/errormessage.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
-import 'package:provider/provider.dart';
 
-class DirectorDashboardScreen extends StatelessWidget {
-  const DirectorDashboardScreen({super.key});
-
+class ShortReportScreen extends StatelessWidget {
+  ShortReportScreen({super.key, required this.provider});
+  TeacherCHRViewModel provider;
   @override
   Widget build(BuildContext context) {
-    TeacherCHRViewModel teacherCHRViewModel =
-        TeacherCHRViewModel('', isDirector: true);
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: CustomScrollView(
-        slivers: [
-          stdteacherappbar(context, isteacher: true),
-          SliverToBoxAdapter(
-            child: ChangeNotifierProvider(
-                create: (_) => TeacherCHRViewModel('', isDirector: true),
-                child: Consumer<TeacherCHRViewModel>(
-                    builder: ((context, value, child) {
-                  teacherCHRViewModel = value;
-                  return _ui(context, value);
-                }))),
-          )
-        ],
-      ),
-      floatingActionButton: ChangeNotifierProvider.value(
-          value: teacherCHRViewModel,
-          child: FloatingActionButton(
-            onPressed: () => teacherCHRViewModel.setIsTable(),
-            child: const Icon(Icons.swap_vert_circle_sharp),
-          )),
+      body: CustomScrollView(slivers: [
+        stdteacherappbar(context, isteacher: true),
+        SliverToBoxAdapter(child: _ui(context, provider))
+      ]),
     );
   }
 
@@ -122,19 +104,12 @@ class DirectorDashboardScreen extends StatelessWidget {
                 ),
               ),
               searchbar(context),
-              provider.selectedTab == 0
-                  ? provider.isTable
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 12.0),
-                          child: date(context, provider),
-                        )
-                      : allTeacher(provider)
-                  : provider.isTable
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 12.0),
-                          child: date(context, provider),
-                        )
-                      : allTeacher(provider, isShortReport: true)
+              provider.isTable
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: date(context, provider),
+                    )
+                  : allTeacher(provider),
             ],
           );
   }

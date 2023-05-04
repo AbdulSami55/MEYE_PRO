@@ -10,10 +10,7 @@ import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/components/search_bar.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
-import 'package:live_streaming/widget/snack_bar.dart';
-import 'package:live_streaming/widget/textcomponents/small_text.dart';
 import 'package:provider/provider.dart';
-
 import '../../../utilities/constants.dart';
 import '../../../view_models/Admin/User/user_view_model.dart';
 import '../../../widget/components/apploading.dart';
