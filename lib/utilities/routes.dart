@@ -10,13 +10,11 @@ import 'package:live_streaming/Screens/Admin/Schedule/freeslot.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_details.dart';
 import 'package:live_streaming/Screens/Admin/live_stream_details.dart';
 import 'package:live_streaming/Screens/Director/home_screen.dart';
-import 'package:live_streaming/Screens/Director/short_report.dart';
 import 'package:live_streaming/Screens/Director/teacher_chr_details.dart';
 import 'package:live_streaming/Screens/Student/course_attendance.dart';
 import 'package:live_streaming/Screens/Tecaher/attendance.dart';
 import 'package:live_streaming/Screens/Tecaher/bottom_nav.dart';
 import 'package:live_streaming/Screens/Tecaher/home_screen.dart';
-
 import 'package:live_streaming/Screens/Admin/bottomnav.dart';
 import 'package:live_streaming/Screens/Tecaher/teacher_chr.dart';
 import 'package:live_streaming/Screens/Tecaher/teacher_chr_details.dart';
@@ -117,13 +115,6 @@ final GoRouter router = GoRouter(
               TeacherCHRViewModel teacherCHRViewModel =
                   state.extra as TeacherCHRViewModel;
               return TeacherCHRDetails(provider: teacherCHRViewModel);
-            })),
-        GoRoute(
-            path: 'ShortReport',
-            builder: ((context, state) {
-              TeacherCHRViewModel teacherCHRViewModel =
-                  state.extra as TeacherCHRViewModel;
-              return ShortReportScreen(provider: teacherCHRViewModel);
             })),
       ],
     ),

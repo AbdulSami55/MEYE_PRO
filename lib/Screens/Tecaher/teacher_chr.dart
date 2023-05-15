@@ -58,6 +58,7 @@ class TeacherCHRScreen extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       provider.selectedIndex = index;
+                      provider.setIsTeacherChr();
                       context.push(routesTeacherChrDetailsScreen,
                           extra: provider);
                     },

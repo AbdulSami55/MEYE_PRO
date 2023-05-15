@@ -21,7 +21,7 @@ class VideoPlay extends StatelessWidget {
       backgroundColor: backgroundColorLight,
       body: CustomScrollView(
         slivers: [
-          appbar("Video", backgroundColor: backgroundColorLight),
+          appbar("Video", bgColor: backgroundColorLight),
           videoScreen(context),
           videoList()
         ],

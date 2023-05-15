@@ -12,7 +12,10 @@ class TeacherCHRViewModel with ChangeNotifier {
   UserError? _userError;
   int selectedIndex = -1;
   int selectedTab = 0;
-  bool isTable = false;
+  bool isChr = true;
+  bool isTeacherChr = true;
+  bool isChrTable = false;
+  bool isActivtyTable = false;
   int selectedFilter = 0;
   ScreenshotController _screenshotController = ScreenshotController();
 
@@ -32,8 +35,23 @@ class TeacherCHRViewModel with ChangeNotifier {
     _lstTeacherChr = lst;
   }
 
-  setIsTable() {
-    isTable = !isTable;
+  setIsChrTable() {
+    isChrTable = !isChrTable;
+    notifyListeners();
+  }
+
+  setIsTeacherChr() {
+    isTeacherChr = !isTeacherChr;
+    notifyListeners();
+  }
+
+  setIsActivityTable() {
+    isActivtyTable = !isActivtyTable;
+    notifyListeners();
+  }
+
+  setIsChr() {
+    isChr = !isChr;
     notifyListeners();
   }
 

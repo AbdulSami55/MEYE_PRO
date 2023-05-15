@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
@@ -34,7 +35,11 @@ class FreeSlotView extends StatelessWidget {
   Widget build(BuildContext context) {
     final venueViewModel = context.watch<VenueViewModel>();
     User user = User.fromJson(jsonDecode(userValue));
-
+    final startDate = DateTime(int.parse(startdate.split('-')[0]),
+        int.parse(startdate.split('-')[1]), int.parse(startdate.split('-')[2]));
+    final endDate = DateTime(int.parse(enddate.split('-')[0]),
+        int.parse(enddate.split('-')[1]), int.parse(enddate.split('-')[2]));
+    List<String> dayNames = getDayNames(startDate, endDate);
     return Scaffold(
       backgroundColor: backgroundColor,
       body: CustomScrollView(
@@ -52,7 +57,12 @@ class FreeSlotView extends StatelessWidget {
                     color: backgroundColor,
                     child: Consumer<ReScheduleViewModel>(
                       builder: (context, provider, child) => ScheduleTable(
-                          context, provider, venueViewModel, discipline, user),
+                          context,
+                          provider,
+                          venueViewModel,
+                          discipline,
+                          user,
+                          dayNames),
                     )),
               ],
             ),
@@ -102,15 +112,14 @@ class FreeSlotView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 text_medium(user.name.toString(),
-                                color: shadowColorLight),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            text_medium(discipline, color: shadowColorLight),
-                            const SizedBox(
-                              height: 5,
-                            ),
+                text_medium(user.name.toString(), color: shadowColorLight),
+                const SizedBox(
+                  height: 5,
+                ),
+                text_medium(discipline, color: shadowColorLight),
+                const SizedBox(
+                  height: 5,
+                ),
               ],
             ),
           ],
@@ -124,7 +133,17 @@ class FreeSlotView extends StatelessWidget {
       ReScheduleViewModel rescheduleviewmodel,
       VenueViewModel venueViewModel,
       String discipline,
-      User user) {
+      User user,
+      List<String> dayNames) {
+    List<String> daysHeader = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+
+    List<Map<String, dynamic>> timeTable = [
+      {'start': '08:30', 'end': '10:00'},
+      {'start': '10:00', 'end': '11:30'},
+      {'start': '11:30', 'end': '01:00'},
+      {'start': '01:30', 'end': '03:00'},
+      {'start': '03:00', 'end': '04:30'}
+    ];
     if (rescheduleviewmodel.loading || venueViewModel.loading) {
       return apploading(context);
     } else if (rescheduleviewmodel.userError != null ||
@@ -145,31 +164,14 @@ class FreeSlotView extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.13,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  timeSchedule("08:30-\n10:00"),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  timeSchedule("10:00-\n11:30"),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  timeSchedule("11:30-\n01:00"),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  timeSchedule("01:30-\n03:00"),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  timeSchedule("03:00-\n04:30"),
-                ],
-              ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: timeTable
+                      .asMap()
+                      .map((i, e) => MapEntry(i,
+                          timeSchedule("${e['start']}-\n${e['end']}", null, i)))
+                      .values
+                      .toList()),
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.85,
@@ -182,23 +184,18 @@ class FreeSlotView extends StatelessWidget {
                       const SizedBox(
                         width: 20,
                       ),
-                      scheduleColumn("Mon"),
-                      scheduleColumn("Tue"),
-                      scheduleColumn("Wed"),
-                      scheduleColumn("Thu"),
-                      scheduleColumn("Fri"),
+                      Row(
+                        children:
+                            daysHeader.map((e) => scheduleColumn(e)).toList(),
+                      ),
                     ],
                   ),
-                  ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "08:30"),
-                  ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "10:00"),
-                  ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "11:30"),
-                  ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "01:30"),
-                  ScheduleConditions(
-                      rescheduleviewmodel, venueViewModel, "03:00"),
+                  Column(
+                    children: timeTable
+                        .map((e) => ScheduleConditions(rescheduleviewmodel,
+                            venueViewModel, e['start'], daysHeader, dayNames))
+                        .toList(),
+                  )
                 ],
               ),
             )
@@ -229,8 +226,12 @@ class FreeSlotView extends StatelessWidget {
     );
   }
 
-  Row ScheduleConditions(ReScheduleViewModel rescheduleviewmodel,
-      VenueViewModel venueViewModel, String time) {
+  Row ScheduleConditions(
+      ReScheduleViewModel rescheduleviewmodel,
+      VenueViewModel venueViewModel,
+      String time,
+      List<String> days,
+      List<String> dayNames) {
     List<String> monlst = [];
     List<String> tuelst = [];
     List<String> wedlst = [];
@@ -284,37 +285,72 @@ class FreeSlotView extends StatelessWidget {
       }
     }
 
-    return rowSchedule(monlst, tuelst, wedlst, thulst, frilst, time,
-        rescheduleviewmodel, venueViewModel);
-  }
+    if (!dayNames.contains("Monday") || monlst.length==1) {
+      monlst = [];
+      vmonlst = [];
+    }
+    if (!dayNames.contains("Tuesday")|| tuelst.length==1) {
+      tuelst = [];
+      vtuelst = [];
+    }
+    if (!dayNames.contains("Wednesday")|| wedlst.length==1) {
+      wedlst = [];
+      vwedlst = [];
+    }
+    if (!dayNames.contains("Thursday")|| thulst.length==1) {
+      thulst = [];
+      vthulst = [];
+    }
+    if (!dayNames.contains("Friday")|| frilst.length==1) {
+      frilst = [];
+      vfrilst = [];
+    }
 
-  Padding timeSchedule(String time) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: Text(time),
-    );
-  }
 
-  Row rowSchedule(
-      List<String> mondata,
-      List<String> tueData,
-      List<String> wedData,
-      List<String> thuData,
-      List<String> friData,
-      String time,
-      ReScheduleViewModel reScheduleViewModel,
-      VenueViewModel venueViewModel) {
+    // return rowSchedule(monlst, tuelst, wedlst, thulst, frilst, time,
+    //     rescheduleviewmodel, venueViewModel);
+
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const SizedBox(
           width: 20,
         ),
-        rowData(mondata, "Mon", time, reScheduleViewModel, venueViewModel),
-        rowData(tueData, "Tue", time, reScheduleViewModel, venueViewModel),
-        rowData(wedData, "Wed", time, reScheduleViewModel, venueViewModel),
-        rowData(thuData, "Thu", time, reScheduleViewModel, venueViewModel),
-        rowData(friData, "Fri", time, reScheduleViewModel, venueViewModel),
+        Row(
+          children: days
+              .map((e) => rowData(
+                  e == "Mon"
+                      ? monlst
+                      : e == "Tue"
+                          ? tuelst
+                          : e == "Wed"
+                              ? wedlst
+                              : e == "Thu"
+                                  ? thulst
+                                  : frilst,
+                  e,
+                  time,
+                  rescheduleviewmodel,
+                  venueViewModel))
+              .toList(),
+        ),
+      ],
+    );
+  }
+
+  Column timeSchedule(String time, bool? iswhite, int i) {
+    return Column(
+      children: [
+        SizedBox(
+          height: i == 0 ? 40 : 25,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(
+            time,
+            style:
+                TextStyle(color: iswhite != null ? Colors.white : Colors.black),
+          ),
+        ),
       ],
     );
   }
@@ -647,5 +683,20 @@ class FreeSlotView extends StatelessWidget {
           color: primaryColor,
         ),
         child: Center(child: text_medium(text, color: backgroundColorLight)));
+  }
+
+  List<String> getDayNames(DateTime start, DateTime end) {
+    final dayNames = <String>[];
+    final dateFormat = DateFormat('EEEE');
+
+    DateTime currentDate = start;
+
+    while (currentDate.isBefore(end) || currentDate.isAtSameMomentAs(end)) {
+      final dayName = dateFormat.format(currentDate);
+      dayNames.add(dayName);
+      currentDate = currentDate.add(const Duration(days: 1));
+    }
+
+    return dayNames;
   }
 }

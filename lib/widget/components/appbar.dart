@@ -3,12 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../utilities/constants.dart';
 
 SliverAppBar appbar(String text,
-    {bool? automaticallyImplyLeading, bool? isGreen, Color? backgroundColor}) {
+    {bool? automaticallyImplyLeading, bool? isGreen, Color? bgColor}) {
   return SliverAppBar(
     automaticallyImplyLeading: automaticallyImplyLeading ?? true,
     foregroundColor: isGreen != null ? backgroundColorLight : shadowColorDark,
     backgroundColor:
-        backgroundColor ?? (isGreen != null ? primaryColor : backgroundColor),
+        bgColor ?? (isGreen != null ? primaryColor : backgroundColor),
     snap: false,
     pinned: true,
     floating: false,

@@ -5,7 +5,7 @@ import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:live_streaming/widget/textcomponents/small_text.dart';
 
-Widget date(BuildContext context, TeacherCHRViewModel provider,
+Widget chrTable(BuildContext context, TeacherCHRViewModel provider,
     {bool? isShortReport}) {
   return Container(
     width: MediaQuery.of(context).size.width * 1,

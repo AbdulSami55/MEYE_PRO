@@ -16,6 +16,16 @@ class TeacherCHRDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TeacherChr teacherChr = provider.lstTeacherChr[provider.selectedIndex];
+    int sit = 0;
+    int stand = 0;
+    int mobile = 0;
+
+    for (TeacherChrActivityDetail tad in teacherChr.teacherChrActivityDetails) {
+      sit += tad.sit ?? 0;
+      stand += tad.stand ?? 0;
+      mobile += tad.mobile ?? 0;
+    }
+
     return Scaffold(
       backgroundColor: backgroundColorLight,
       body: CustomScrollView(slivers: [
@@ -37,7 +47,12 @@ class TeacherCHRDetails extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 20.0, top: 8.0, bottom: 8.0, right: 8.0),
-                    child: student_text(context, "Class Held Report", 30),
+                    child: student_text(
+                        context,
+                        provider.isChr
+                            ? "Class Held Report"
+                            : "Activity Report",
+                        30),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -60,17 +75,28 @@ class TeacherCHRDetails extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     text_medium(teacherChr.teacherName),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: teacherChr.image == ''
-                                          ? const CircleAvatar(
-                                              radius: 33,
-                                              backgroundImage: AssetImage(
-                                                  "assets/avaters/Avatar Default.jpg"))
-                                          : CircleAvatar(
-                                              radius: 33,
-                                              backgroundImage: NetworkImage(
-                                                  "${getuserimage}Teacher/${teacherChr.image}")),
+                                    Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: teacherChr.image == ''
+                                              ? const CircleAvatar(
+                                                  radius: 33,
+                                                  backgroundImage: AssetImage(
+                                                      "assets/avaters/Avatar Default.jpg"))
+                                              : CircleAvatar(
+                                                  radius: 33,
+                                                  backgroundImage: NetworkImage(
+                                                      "${getuserimage}Teacher/${teacherChr.image}")),
+                                        ),
+                                        text_medium(teacherChr.status,
+                                            color: teacherChr.status == 'Held'
+                                                ? primaryColor
+                                                : teacherChr.status ==
+                                                        'Not Held'
+                                                    ? Colors.red
+                                                    : Colors.redAccent)
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -98,15 +124,19 @@ class TeacherCHRDetails extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      cardRow('Time In: ',
-                                          "${teacherChr.totalTimeIn} Min"),
+                                      provider.isChr
+                                          ? cardRow('Time In: ',
+                                              "${teacherChr.totalTimeIn} Min")
+                                          : cardRow('Sit: ', "$sit Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      cardRow(
-                                        'Time: ',
-                                        "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
-                                      ),
+                                      provider.isChr
+                                          ? cardRow(
+                                              'Time: ',
+                                              "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
+                                            )
+                                          : cardRow('Mobile: ', "$mobile Min"),
                                     ],
                                   ),
                                   const SizedBox(
@@ -124,15 +154,19 @@ class TeacherCHRDetails extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      cardRow('Time Out: ',
-                                          "${teacherChr.totalTimeOut} Min"),
+                                      provider.isChr
+                                          ? cardRow('Time Out: ',
+                                              "${teacherChr.totalTimeOut} Min")
+                                          : cardRow('Stand: ', "$stand Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      cardRow(
-                                        'Status: ',
-                                        teacherChr.status,
-                                      ),
+                                      provider.isChr
+                                          ? cardRow("", "")
+                                          : cardRow(
+                                              'Time: ',
+                                              "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
+                                            ),
                                     ],
                                   )
                                 ],

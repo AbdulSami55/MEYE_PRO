@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 class RuleSettingViewModel with ChangeNotifier {
   bool _first = false;
   bool _last = false;
+  bool _mid = false;
   bool _full = false;
 
   bool get first => _first;
   bool get last => _last;
+  bool get mid => _mid;
   bool get full => _full;
 
   setFirst(bool val) {
@@ -16,6 +18,11 @@ class RuleSettingViewModel with ChangeNotifier {
 
   setLast(bool val) {
     _last = val;
+    notifyListeners();
+  }
+
+  setMid(bool val) {
+    _mid = val;
     notifyListeners();
   }
 

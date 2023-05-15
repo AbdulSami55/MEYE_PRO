@@ -85,6 +85,10 @@ class DateRangeView extends StatelessWidget {
                                 .split(' ')[0]
                                 .split('-')[2]
                                 .toString());
+
+                            if (enddate == "null)") {
+                              enddate = startdate;
+                            }
                             int selectendyear = int.parse(
                                 enddate.split(' ')[0].split('-')[0].toString());
                             int selectendmonth = int.parse(
@@ -106,7 +110,7 @@ class DateRangeView extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(snack_bar(
                                   "Start Date Must be Greater than Current Date",
                                   false));
-                            } else if (durdays > 6) {
+                            } else if (durdays > 6 || durdef.inDays > 6) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   snack_bar("Duration must be less than 7 days",
                                       false));

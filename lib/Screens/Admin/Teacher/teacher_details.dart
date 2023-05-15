@@ -29,9 +29,7 @@ class TeacherDetails extends StatelessWidget {
       backgroundColor: backgroundColor,
       body: CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
         isRuleSetting != null
-            ? appbar(
-                "Teacher Details",
-              )
+            ? appbar("Teacher Details", bgColor: backgroundColor)
             : const SliverToBoxAdapter(
                 child: Padding(padding: EdgeInsets.zero)),
         searchBar(isTeacher: true),

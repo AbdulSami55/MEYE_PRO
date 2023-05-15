@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:go_router/go_router.dart';
-import 'package:live_streaming/Screens/Director/SwitchMode/date.dart';
-import 'package:live_streaming/Screens/Director/SwitchMode/teacher.dart';
+import 'package:live_streaming/Screens/Director/SwitchMode/activity_table.dart';
+import 'package:live_streaming/Screens/Director/SwitchMode/table.dart';
+import 'package:live_streaming/Screens/Director/SwitchMode/card.dart';
 import 'package:live_streaming/Screens/Director/components/searchbar.dart';
-import 'package:live_streaming/Screens/Director/short_report.dart';
 import 'package:live_streaming/Screens/Tecaher/components/loading_bar.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
@@ -38,10 +39,43 @@ class DirectorDashboardScreen extends StatelessWidget {
       ),
       floatingActionButton: ChangeNotifierProvider.value(
           value: teacherCHRViewModel,
-          child: FloatingActionButton(
-            onPressed: () => teacherCHRViewModel.setIsTable(),
-            child: const Icon(Icons.swap_vert_circle_sharp),
-          )),
+          child: Consumer<TeacherCHRViewModel>(
+              builder: (context, provider, child) {
+            return SpeedDial(
+              animatedIcon: AnimatedIcons.menu_close,
+              animatedIconTheme: const IconThemeData(size: 22.0),
+              children: [
+                SpeedDialChild(
+                  child: const Icon(Icons.grid_view_sharp),
+                  label: provider.isChr
+                      ? provider.isChrTable
+                          ? 'Switch back from DataTable'
+                          : 'Switch to DataTable'
+                      : provider.isActivtyTable
+                          ? 'Switch back from DataTable'
+                          : 'Switch to DataTable',
+                  onTap: () {
+                    if (teacherCHRViewModel.isChr) {
+                      teacherCHRViewModel.setIsChrTable();
+                      provider.setIsChrTable();
+                    } else {
+                      teacherCHRViewModel.setIsActivityTable();
+                      provider.setIsActivityTable();
+                    }
+                  },
+                ),
+                SpeedDialChild(
+                  child: const Icon(Icons.receipt_rounded),
+                  label:
+                      provider.isChr ? 'Switch to Activity' : 'Switch to Chr',
+                  onTap: () {
+                    teacherCHRViewModel.setIsChr();
+                    provider.setIsChr();
+                  },
+                ),
+              ],
+            );
+          })),
     );
   }
 
@@ -77,8 +111,6 @@ class DirectorDashboardScreen extends StatelessWidget {
                         child: InkWell(
                           onTap: () {
                             provider.setSelectedTab(0);
-                            context.push(routesDirectorDashboard,
-                                extra: provider);
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.42,
@@ -100,7 +132,6 @@ class DirectorDashboardScreen extends StatelessWidget {
                         child: InkWell(
                           onTap: () {
                             provider.setSelectedTab(1);
-                            context.push(routesShortReport, extra: provider);
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.42,
@@ -123,18 +154,34 @@ class DirectorDashboardScreen extends StatelessWidget {
               ),
               searchbar(context),
               provider.selectedTab == 0
-                  ? provider.isTable
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 12.0),
-                          child: date(context, provider),
-                        )
-                      : allTeacher(provider)
-                  : provider.isTable
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 12.0),
-                          child: date(context, provider),
-                        )
-                      : allTeacher(provider, isShortReport: true)
+                  ? provider.isChr
+                      ? provider.isChrTable
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: chrTable(context, provider),
+                            )
+                          : allTeacher(provider)
+                      : provider.isActivtyTable
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: activityTable(context, provider),
+                            )
+                          : allTeacher(provider)
+                  : provider.isChr
+                      ? provider.isChrTable
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: chrTable(context, provider,
+                                  isShortReport: true),
+                            )
+                          : allTeacher(provider, isShortReport: true)
+                      : provider.isActivtyTable
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: activityTable(context, provider,
+                                  isShortReport: true),
+                            )
+                          : allTeacher(provider, isShortReport: true)
             ],
           );
   }

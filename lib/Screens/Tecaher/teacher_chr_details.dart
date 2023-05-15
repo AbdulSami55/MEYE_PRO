@@ -7,8 +7,6 @@ import 'package:live_streaming/Screens/Tecaher/components/card_text.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
-import 'package:live_streaming/widget/textcomponents/medium_text.dart';
-import 'package:live_streaming/widget/textcomponents/small_text.dart';
 import 'package:screenshot/screenshot.dart';
 
 class TeacherCHRDetailsScreen extends StatelessWidget {
@@ -18,6 +16,15 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TeacherChr teacherChr = provider.lstTeacherChr[provider.selectedIndex];
+    int sit = 0;
+    int stand = 0;
+    int mobile = 0;
+
+    for (TeacherChrActivityDetail tad in teacherChr.teacherChrActivityDetails) {
+      sit += tad.sit ?? 0;
+      stand += tad.stand ?? 0;
+      mobile += tad.mobile ?? 0;
+    }
     return Scaffold(
       backgroundColor: backgroundColorLight,
       body: CustomScrollView(slivers: [
@@ -39,7 +46,7 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 20.0, top: 8.0, bottom: 8.0, right: 8.0),
-                    child: student_text(context, "Class Held Report", 30),
+                    child: student_text(context,provider.isTeacherChr? "Class Held Report":"Activity Report" , 30),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -72,15 +79,31 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      cardRow('Time In: ',
-                                          "${teacherChr.totalTimeIn} Min"),
+                                      provider.isTeacherChr
+                                          ? cardRow('Time In: ',
+                                              "${teacherChr.totalTimeIn} Min")
+                                          : cardRow('Sit: ', "$sit Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      cardRow(
-                                        'Time: ',
-                                        "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
+                                      provider.isTeacherChr
+                                          ? cardRow(
+                                              'Time: ',
+                                              "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
+                                            )
+                                          : cardRow('Mobile: ', "$mobile Min"),
+                                      const SizedBox(
+                                        height: 10,
                                       ),
+                                      provider.isTeacherChr
+                                          ? cardRow(
+                                              '',
+                                              "",
+                                            )
+                                          : cardRow(
+                                              'Time: ',
+                                              "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
+                                            )
                                     ],
                                   ),
                                   const SizedBox(
@@ -98,8 +121,10 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      cardRow('Time Out: ',
-                                          "${teacherChr.totalTimeOut} Min"),
+                                      provider.isTeacherChr
+                                          ? cardRow('Time Out: ',
+                                              "${teacherChr.totalTimeOut} Min")
+                                          : cardRow('Stand: ', "$stand Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -107,97 +132,109 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                         'Status: ',
                                         teacherChr.status,
                                       ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      provider.isTeacherChr
+                                          ? cardRow(
+                                              '',
+                                              "",
+                                            )
+                                          : cardRow(
+                                              ' ',
+                                              "",
+                                            )
                                     ],
                                   )
                                 ],
                               ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8.0),
-                                child: Divider(
-                                  color: shadowColorDark,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  text_medium("TimeIn"),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  text_medium("TimeOut"),
-                                  // text_medium("Sit"),
-                                  // text_medium("Stand"),
-                                  // text_medium("Mobile")
-                                ],
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 8.0, bottom: 6.0),
-                                child: Divider(
-                                  color: shadowColorDark,
-                                ),
-                              ),
-                              ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: teacherChr
-                                      .teacherChrActivityDetails.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: ((context, index) {
-                                    TeacherChrActivityDetail
-                                        teacherChrActivityDetail = teacherChr
-                                            .teacherChrActivityDetails[index];
-                                    return Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            SizedBox(
-                                              width: 80,
-                                              child: textSmall(
-                                                  teacherChrActivityDetail
-                                                      .timein
-                                                      .toString()
-                                                      .split('.')[0]
-                                                      .split(' ')[1]),
-                                            ),
-                                            const SizedBox(
-                                              width: 55,
-                                            ),
-                                            SizedBox(
-                                              width: 80,
-                                              child: textSmall(
-                                                  teacherChrActivityDetail
-                                                      .timeout
-                                                      .toString()
-                                                      .split('.')[0]
-                                                      .split(' ')[1]),
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            // textSmall(teacherChrActivityDetail.sit
-                                            //     .toString()),
-                                            // const SizedBox(
-                                            //   width: 35,
-                                            // ),
-                                            // textSmall(teacherChrActivityDetail.stand
-                                            //     .toString()),
-                                            // const SizedBox(
-                                            //   width: 50,
-                                            // ),
-                                            // textSmall(teacherChrActivityDetail.mobile
-                                            //     .toString())
-                                          ],
-                                        ),
-                                        const Padding(
-                                            padding: EdgeInsets.only(top: 16.0))
-                                      ],
-                                    );
-                                  })),
+                              // const Padding(
+                              //   padding: EdgeInsets.symmetric(vertical: 8.0),
+                              //   child: Divider(
+                              //     color: shadowColorDark,
+                              //   ),
+                              // ),
+                              //  Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceEvenly,
+                              // children: [
+                              //   text_medium("TimeIn"),
+                              //   const SizedBox(
+                              //     width: 5,
+                              //   ),
+                              //   text_medium("TimeOut"),
+                              // text_medium("Sit"),
+                              // text_medium("Stand"),
+                              // text_medium("Mobile")
+                              //    ],
+                              //  ),
+                              // const Padding(
+                              //   padding: EdgeInsets.only(top: 8.0, bottom: 6.0),
+                              //   child: Divider(
+                              //     color: shadowColorDark,
+                              //   ),
+                              // ),
+                              // ListView.builder(
+                              //     padding: EdgeInsets.zero,
+                              //     itemCount: teacherChr
+                              //         .teacherChrActivityDetails.length,
+                              //     shrinkWrap: true,
+                              //     itemBuilder: ((context, index) {
+                              //       TeacherChrActivityDetail
+                              //           teacherChrActivityDetail = teacherChr
+                              //               .teacherChrActivityDetails[index];
+                              //       return Column(
+                              //         children: [
+                              //           Row(
+                              //             mainAxisAlignment:
+                              //                 MainAxisAlignment.spaceEvenly,
+                              //             children: [
+                              //               const SizedBox(
+                              //                 width: 20,
+                              //               ),
+                              //               SizedBox(
+                              //                 width: 80,
+                              //                 child: textSmall(
+                              //                     teacherChrActivityDetail
+                              //                         .timein
+                              //                         .toString()
+                              //                         .split('.')[0]
+                              //                         .split(' ')[1]),
+                              //               ),
+                              //               const SizedBox(
+                              //                 width: 55,
+                              //               ),
+                              //               SizedBox(
+                              //                 width: 80,
+                              //                 child: textSmall(
+                              //                     teacherChrActivityDetail
+                              //                         .timeout
+                              //                         .toString()
+                              //                         .split('.')[0]
+                              //                         .split(' ')[1]),
+                              //               ),
+                              //               const SizedBox(
+                              //                 width: 5,
+                              //               ),
+                              //               // textSmall(teacherChrActivityDetail.sit
+                              //               //     .toString()),
+                              //               // const SizedBox(
+                              //               //   width: 35,
+                              //               // ),
+                              //               // textSmall(teacherChrActivityDetail.stand
+                              //               //     .toString()),
+                              //               // const SizedBox(
+                              //               //   width: 50,
+                              //               // ),
+                              //               // textSmall(teacherChrActivityDetail.mobile
+                              //               //     .toString())
+                              //             ],
+                              //           ),
+                              //           const Padding(
+                              //               padding: EdgeInsets.only(top: 16.0))
+                              //         ],
+                              //       );
+                              //     })),
                             ],
                           ),
                         ),
