@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Teacher/teacher_chr.dart';
 import 'package:live_streaming/Screens/Student/components/text.dart';
-import 'package:live_streaming/Screens/Tecaher/components/card_text.dart';
+import 'package:live_streaming/Screens/Teacher/components/card_text.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
@@ -16,15 +16,6 @@ class TeacherCHRDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TeacherChr teacherChr = provider.lstTeacherChr[provider.selectedIndex];
-    int sit = 0;
-    int stand = 0;
-    int mobile = 0;
-
-    for (TeacherChrActivityDetail tad in teacherChr.teacherChrActivityDetails) {
-      sit += tad.sit ?? 0;
-      stand += tad.stand ?? 0;
-      mobile += tad.mobile ?? 0;
-    }
 
     return Scaffold(
       backgroundColor: backgroundColorLight,
@@ -127,7 +118,8 @@ class TeacherCHRDetails extends StatelessWidget {
                                       provider.isChr
                                           ? cardRow('Time In: ',
                                               "${teacherChr.totalTimeIn} Min")
-                                          : cardRow('Sit: ', "$sit Min"),
+                                          : cardRow(
+                                              'Sit: ', "${teacherChr.sit} Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -136,7 +128,8 @@ class TeacherCHRDetails extends StatelessWidget {
                                               'Time: ',
                                               "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
                                             )
-                                          : cardRow('Mobile: ', "$mobile Min"),
+                                          : cardRow('Mobile: ',
+                                              "${teacherChr.mobile} Min"),
                                     ],
                                   ),
                                   const SizedBox(
@@ -157,7 +150,8 @@ class TeacherCHRDetails extends StatelessWidget {
                                       provider.isChr
                                           ? cardRow('Time Out: ',
                                               "${teacherChr.totalTimeOut} Min")
-                                          : cardRow('Stand: ', "$stand Min"),
+                                          : cardRow('Stand: ',
+                                              "${teacherChr.stand} Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),

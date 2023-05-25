@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:live_streaming/Model/Student/course_attendance.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Student/courses_view_model.dart';
+import 'package:live_streaming/view_models/signin_view_model.dart';
+import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/components/apploading.dart';
 import 'package:live_streaming/widget/components/errormessage.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
 import 'package:live_streaming/widget/teachertopbar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
+import 'package:live_streaming/widget/textcomponents/small_text.dart';
+import 'package:live_streaming/widget/topbar.dart';
 import 'package:provider/provider.dart';
 
 class CourseAttendanceScreen extends StatelessWidget {
@@ -15,29 +20,39 @@ class CourseAttendanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.watch<SignInViewModel>();
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColorLight,
       body: CustomScrollView(
         slivers: [
-          stdteacherappbar(context, isback: true),
+          appbar(userProvider.user.name.toString(), isGreen: true),
           SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Teachertopcard(
-                    context,
-                    provider.lstcourses[provider.selectedIndex].image == ""
-                        ? ""
-                        : "${getuserimage}Teacher/${provider.lstcourses[provider.selectedIndex].image}",
-                    provider.lstcourses[provider.selectedIndex].teacherName,
-                    false,
-                    () {}),
-                ChangeNotifierProvider<CourseViewModel>.value(
-                  value: provider,
-                  child: Consumer<CourseViewModel>(
-                      builder: ((context, provider, child) =>
-                          _ui(context, provider))),
+            child: Container(
+              color: primaryColor,
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: backgroundColorLight,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(32.0),
+                        topRight: Radius.circular(32.0))),
+                child: Column(
+                  children: [
+                    topBar(
+                        context,
+                        provider.lstcourses[provider.selectedIndex].image == ""
+                            ? ""
+                            : "${getuserimage}Teacher/${provider.lstcourses[provider.selectedIndex].image}",
+                        provider
+                            .lstcourses[provider.selectedIndex].teacherName),
+                    ChangeNotifierProvider<CourseViewModel>.value(
+                      value: provider,
+                      child: Consumer<CourseViewModel>(
+                          builder: ((context, provider, child) =>
+                              _ui(context, provider))),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           )
         ],
@@ -56,36 +71,36 @@ class CourseAttendanceScreen extends StatelessWidget {
         : Padding(
             padding: const EdgeInsets.only(top: 16.0),
             child: SingleChildScrollView(
-                child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: courseProvider.lstCourseAttendance.length,
-                    itemBuilder: (context, index) => Container(
-                          color:
-                              courseProvider.lstCourseAttendance[index].status
-                                  ? Colors.transparent
-                                  : Colors.redAccent,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    text_medium(courseProvider
-                                        .lstCourseAttendance[index].date),
-                                    text_medium(courseProvider
-                                            .lstCourseAttendance[index].status
-                                        ? "P"
-                                        : "A")
-                                  ],
-                                ),
-                              ),
-                              const Divider()
-                            ],
-                          ),
-                        ))),
-          );
+                child: DataTable(
+                    headingRowColor: MaterialStateColor.resolveWith(
+                        (states) => primaryColor),
+                    dataRowHeight: 50,
+                    columnSpacing: 70,
+                    columns: [
+                      DataColumn(
+                        label: text_medium('Sr. No', color: containerColor),
+                      ),
+                      DataColumn(
+                          label: text_medium('Date', color: containerColor)),
+                      DataColumn(
+                          label: text_medium('Status', color: containerColor)),
+                    ],
+                    rows: provider.lstCourseAttendance
+                        .asMap()
+                        .map((k, v) => MapEntry(k, rowData(v, k)))
+                        .values
+                        .toList())));
+  }
+
+  DataRow rowData(CourseAttendance v, int k) {
+    return DataRow(
+        color: v.status == false
+            ? MaterialStateProperty.all(Colors.redAccent)
+            : MaterialStateProperty.all(containerColor),
+        cells: [
+          DataCell(textSmall("${k + 1}")),
+          DataCell(textSmall(v.date.toString())),
+          DataCell(textSmall(v.status ? 'P' : 'A')),
+        ]);
   }
 }

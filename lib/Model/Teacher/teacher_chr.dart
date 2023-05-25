@@ -24,7 +24,10 @@ class TeacherChr {
       required this.date,
       required this.teacherChrActivityDetails,
       required this.teacherName,
-      required this.image});
+      required this.image,
+      required this.sit,
+      required this.stand,
+      required this.mobile});
 
   int id;
   String courseName;
@@ -38,6 +41,9 @@ class TeacherChr {
   String date;
   String teacherName;
   String image;
+  int sit;
+  int stand;
+  int mobile;
   List<TeacherChrActivityDetail> teacherChrActivityDetails;
 
   factory TeacherChr.fromMap(Map<String, dynamic> json) => TeacherChr(
@@ -51,6 +57,9 @@ class TeacherChr {
       totalTimeOut: json["totalTimeOut"],
       status: json["status"],
       date: json["date"],
+      sit: int.parse(json['sit']),
+      stand: int.parse(json['stand']),
+      mobile: int.parse(json['mobile']),
       teacherChrActivityDetails: List<TeacherChrActivityDetail>.from(
           json["teacherCHRActivityDetails"]
               .map((x) => TeacherChrActivityDetail.fromMap(x))),

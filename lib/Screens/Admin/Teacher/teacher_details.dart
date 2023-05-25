@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
-import 'package:live_streaming/Screens/Admin/Schedule/daterange.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_recordings.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_schedule.dart';
 import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
@@ -17,6 +16,7 @@ import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 import '../../../widget/textcomponents/large_text.dart';
 import '../../../widget/textcomponents/medium_text.dart';
+import '../Schedule/daterange.dart';
 
 class TeacherDetails extends StatelessWidget {
   TeacherDetails({super.key, this.isSchedule, this.isRuleSetting});
@@ -102,7 +102,10 @@ class TeacherDetails extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => DateRangeView(user: user))));
+                            builder: ((context) => DateRangeView(
+                                  user: user,
+                                  type: 'Reschedule',
+                                ))));
                   } else {
                     Navigator.pop(context);
                     showDialog(
@@ -130,9 +133,20 @@ class TeacherDetails extends StatelessWidget {
                     title: text_medium("Reschdule")),
               ),
               const Divider(),
-              ListTile(
-                leading: const Icon(Icons.schedule),
-                title: text_medium('Preschedule'),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => DateRangeView(
+                                user: user,
+                                type: 'Preschedule',
+                              ))));
+                },
+                child: ListTile(
+                  leading: const Icon(Icons.schedule),
+                  title: text_medium('Preschedule'),
+                ),
               ),
               const Divider(),
               ListTile(

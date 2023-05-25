@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:live_streaming/Screens/Tecaher/components/card_text.dart';
+import 'package:live_streaming/Screens/Teacher/components/card_text.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';

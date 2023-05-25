@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Teacher/teacher_chr.dart';
 import 'package:live_streaming/Screens/Student/components/text.dart';
-import 'package:live_streaming/Screens/Tecaher/components/card_text.dart';
+import 'package:live_streaming/Screens/Teacher/components/card_text.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
@@ -16,15 +16,7 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TeacherChr teacherChr = provider.lstTeacherChr[provider.selectedIndex];
-    int sit = 0;
-    int stand = 0;
-    int mobile = 0;
 
-    for (TeacherChrActivityDetail tad in teacherChr.teacherChrActivityDetails) {
-      sit += tad.sit ?? 0;
-      stand += tad.stand ?? 0;
-      mobile += tad.mobile ?? 0;
-    }
     return Scaffold(
       backgroundColor: backgroundColorLight,
       body: CustomScrollView(slivers: [
@@ -46,7 +38,12 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 20.0, top: 8.0, bottom: 8.0, right: 8.0),
-                    child: student_text(context,provider.isTeacherChr? "Class Held Report":"Activity Report" , 30),
+                    child: student_text(
+                        context,
+                        provider.isTeacherChr
+                            ? "Class Held Report"
+                            : "Activity Report",
+                        30),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -82,7 +79,8 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                       provider.isTeacherChr
                                           ? cardRow('Time In: ',
                                               "${teacherChr.totalTimeIn} Min")
-                                          : cardRow('Sit: ', "$sit Min"),
+                                          : cardRow(
+                                              'Sit: ', "${teacherChr.sit} Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -91,7 +89,8 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                               'Time: ',
                                               "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
                                             )
-                                          : cardRow('Mobile: ', "$mobile Min"),
+                                          : cardRow('Mobile: ',
+                                              "${teacherChr.mobile} Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -124,7 +123,8 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                       provider.isTeacherChr
                                           ? cardRow('Time Out: ',
                                               "${teacherChr.totalTimeOut} Min")
-                                          : cardRow('Stand: ', "$stand Min"),
+                                          : cardRow('Stand: ',
+                                              "${teacherChr.stand} Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),

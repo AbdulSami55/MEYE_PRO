@@ -22,7 +22,7 @@ const INVALID_FORMAT = 102;
 const UNKNOWN_ERROR = 103;
 //------------------------------------URLS---------------------
 
-const String baseUrl = 'http://192.168.0.112:8000';
+const String baseUrl = 'http://192.168.0.104:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';
@@ -40,10 +40,12 @@ const String getstudentimage =
     '$baseUrl/api/get-student-image/UserImages/Student/';
 const String gettimetableurl = '$baseUrl/api/timetable-details/';
 const String getteachertimetableurl = '$baseUrl/api/teacher-timetable-details/';
+const String getteacherrulestimetableurl = '$baseUrl/api/get-rules-timetable/';
 const String getteachurl = '$baseUrl/api/teach-details/';
 const String gettimetable = '$baseUrl/api/timetable-details';
 const String getTimeTableByDateurl = '$baseUrl/api/timetable-details-by-date';
 const String addreschedule = '$baseUrl/api/add-reschedule';
+const String addpreschedule = '$baseUrl/api/add-preschedule';
 const String getcheckTeacherRescheduleClassurl =
     '$baseUrl/api/check-teacher-reschedule';
 const String getteacherrecordings =
@@ -57,6 +59,7 @@ const String addAttendanceurl = '$baseUrl/api/add-attendance';
 const String getCourseAttendanceurl = '$baseUrl/api/get-course-attendance';
 const String getTeacherCHRurl = '$baseUrl/api/get-teacher-chr';
 const String getAllTeacherCHRurl = '$baseUrl/api/get-all-teacher-chr';
+const String addRulesurl = '$baseUrl/api/add-rules';
 //----------------------------------------------------Routes-----------------------------------
 
 const String routesStudentDashboard = '/StudentDashboard';

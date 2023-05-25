@@ -12,12 +12,12 @@ import 'package:live_streaming/Screens/Admin/live_stream_details.dart';
 import 'package:live_streaming/Screens/Director/home_screen.dart';
 import 'package:live_streaming/Screens/Director/teacher_chr_details.dart';
 import 'package:live_streaming/Screens/Student/course_attendance.dart';
-import 'package:live_streaming/Screens/Tecaher/attendance.dart';
-import 'package:live_streaming/Screens/Tecaher/bottom_nav.dart';
-import 'package:live_streaming/Screens/Tecaher/home_screen.dart';
+import 'package:live_streaming/Screens/Teacher/attendance.dart';
+import 'package:live_streaming/Screens/Teacher/bottom_nav.dart';
+import 'package:live_streaming/Screens/Teacher/home_screen.dart';
 import 'package:live_streaming/Screens/Admin/bottomnav.dart';
-import 'package:live_streaming/Screens/Tecaher/teacher_chr.dart';
-import 'package:live_streaming/Screens/Tecaher/teacher_chr_details.dart';
+import 'package:live_streaming/Screens/Teacher/teacher_chr.dart';
+import 'package:live_streaming/Screens/Teacher/teacher_chr_details.dart';
 import 'package:live_streaming/view_models/Student/courses_view_model.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import '../Screens/onboding/onboding_screen.dart';
@@ -98,13 +98,14 @@ final GoRouter router = GoRouter(
               return TeacherCHRDetailsScreen(provider: teacherCHRViewModel);
             })),
         GoRoute(
-            path: 'FreeSlotView/:user/:discipline/:startdate/:enddate',
+            path: 'FreeSlotView/:user/:discipline/:startdate/:enddate/:type',
             name: 'FreeSlotView',
             builder: ((context, state) => FreeSlotView(
                   userValue: state.params['user']!,
                   discipline: state.params['discipline']!,
                   startdate: state.params['startdate']!,
                   enddate: state.params['enddate']!,
+                  type: state.params['type']!,
                 ))),
         GoRoute(
             path: 'DirectorDashboard',

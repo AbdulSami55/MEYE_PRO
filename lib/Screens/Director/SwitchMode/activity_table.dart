@@ -7,22 +7,6 @@ import 'package:live_streaming/widget/textcomponents/small_text.dart';
 
 Widget activityTable(BuildContext context, TeacherCHRViewModel provider,
     {bool? isShortReport}) {
-  List<int> sit = [];
-  List<int> stand = [];
-  List<int> mobile = [];
-  for (TeacherChr t in provider.lstTeacherChr) {
-    int s = 0;
-    int st = 0;
-    int m = 0;
-    for (TeacherChrActivityDetail tad in t.teacherChrActivityDetails) {
-      s += tad.sit ?? 0;
-      st += tad.stand ?? 0;
-      m += tad.mobile ?? 0;
-    }
-    sit.add(s);
-    stand.add(st);
-    mobile.add(m);
-  }
   return Container(
     width: MediaQuery.of(context).size.width * 1,
     decoration: myBoxDecoration,
@@ -50,21 +34,19 @@ Widget activityTable(BuildContext context, TeacherCHRViewModel provider,
                   .where((element) => element.status == 'Not Held')
                   .toList()
                   .asMap()
-                  .map((k, v) =>
-                      MapEntry(k, rowData(v, k, sit[k], stand[k], mobile[k])))
+                  .map((k, v) => MapEntry(k, rowData(v, k)))
                   .values
                   .toList()
               : provider.lstTeacherChr
                   .asMap()
-                  .map((k, v) =>
-                      MapEntry(k, rowData(v, k, sit[k], stand[k], mobile[k])))
+                  .map((k, v) => MapEntry(k, rowData(v, k)))
                   .values
                   .toList()),
     ),
   );
 }
 
-DataRow rowData(TeacherChr v, int k, int sit, int stand, int mobile) {
+DataRow rowData(TeacherChr v, int k) {
   return DataRow(
       color: v.status == 'Not Held'
           ? MaterialStateProperty.all(Colors.redAccent)
@@ -74,9 +56,9 @@ DataRow rowData(TeacherChr v, int k, int sit, int stand, int mobile) {
         DataCell(textSmall(v.teacherName.toString())),
         DataCell(textSmall(v.courseName.toString())),
         DataCell(textSmall(v.date.toString())),
-        DataCell(textSmall(sit.toString())),
-        DataCell(textSmall(stand.toString())),
-        DataCell(textSmall(mobile.toString())),
+        DataCell(textSmall(v.sit.toString())),
+        DataCell(textSmall(v.stand.toString())),
+        DataCell(textSmall(v.mobile.toString())),
         DataCell(textSmall(v.status.toString()))
       ]);
 }

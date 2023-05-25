@@ -5,9 +5,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:live_streaming/Screens/Tecaher/attendance.dart';
-import 'package:live_streaming/Screens/Tecaher/home_screen.dart';
-import 'package:live_streaming/Screens/Tecaher/teacher_chr.dart';
+import 'package:live_streaming/Screens/Teacher/attendance.dart';
+import 'package:live_streaming/Screens/Teacher/home_screen.dart';
+import 'package:live_streaming/Screens/Teacher/teacher_chr.dart';
 import 'package:live_streaming/view_models/Teacher/attendance.dart';
 import 'package:live_streaming/view_models/handle_bottom_nav.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +26,7 @@ class TeacherBottomNav extends StatelessWidget {
     final provider = context.watch<BottomNavViewModel>();
     final providerAttendance = context.watch<AttendanceViewModel>();
     return Scaffold(
-        backgroundColor: backgroundColor,
+        backgroundColor: backgroundColorLight,
         body: lst[provider.teacherSelectedValue],
         bottomNavigationBar: Transform.translate(
           offset: const Offset(0, 10),
@@ -60,7 +60,7 @@ class TeacherBottomNav extends StatelessWidget {
                   InkWell(
                     onTap: () async {
                       XFile? img = await ImagePicker()
-                          .pickImage(source: ImageSource.camera);
+                          .pickImage(source: ImageSource.gallery);
                       if (img != null) {
                         providerAttendance.markAttendance(File(img.path));
                         provider.setTeacherSelectValue(1);

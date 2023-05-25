@@ -10,7 +10,7 @@ SliverAppBar stdteacherappbar(BuildContext context,
     {bool isteacher = false, bool? isback, Color? appBarColor}) {
   final provider = context.watch<SignInViewModel>();
   return SliverAppBar(
-    backgroundColor: appBarColor ?? backgroundColor,
+    backgroundColor: appBarColor ?? backgroundColorLight,
     pinned: true,
     foregroundColor:
         appBarColor != null ? backgroundColorLight : shadowColorDark,

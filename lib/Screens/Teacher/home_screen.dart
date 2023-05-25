@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:intl/intl.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
-import 'package:live_streaming/Screens/Tecaher/components/card_text.dart';
-import 'package:live_streaming/Screens/Tecaher/components/loading_bar.dart';
+import 'package:live_streaming/Screens/Teacher/components/card_text.dart';
+import 'package:live_streaming/Screens/Teacher/components/loading_bar.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/view_models/signin_view_model.dart';
@@ -20,7 +20,7 @@ class TeacherDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<SignInViewModel>();
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColorLight,
       body: CustomScrollView(
         slivers: [
           stdteacherappbar(context, isteacher: true),

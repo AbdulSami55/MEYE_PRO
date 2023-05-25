@@ -5,7 +5,7 @@ import 'package:live_streaming/Screens/Director/SwitchMode/activity_table.dart';
 import 'package:live_streaming/Screens/Director/SwitchMode/table.dart';
 import 'package:live_streaming/Screens/Director/SwitchMode/card.dart';
 import 'package:live_streaming/Screens/Director/components/searchbar.dart';
-import 'package:live_streaming/Screens/Tecaher/components/loading_bar.dart';
+import 'package:live_streaming/Screens/Teacher/components/loading_bar.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:live_streaming/widget/components/errormessage.dart';

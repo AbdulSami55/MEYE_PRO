@@ -1,23 +1,25 @@
-// ignore_for_file: must_be_immutable, non_constant_identifier_names, unused_local_variable
+// ignore_for_file: must_be_immutable, non_constant_identifier_names, unused_local_variable, use_build_context_synchronously
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:live_streaming/Model/Admin/schedule.dart';
 import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Model/Admin/venue.dart';
 import 'package:live_streaming/Screens/Admin/Schedule/teacher_schedule_select.dart';
+import 'package:live_streaming/utilities/constants.dart';
+import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
 import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
+import 'package:live_streaming/widget/components/apploading.dart';
+import 'package:live_streaming/widget/components/errormessage.dart';
 import 'package:live_streaming/widget/mybutton.dart';
+import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
-import '../../../utilities/constants.dart';
-import '../../../view_models/Admin/reschedule_view_model.dart';
-import '../../../widget/components/apploading.dart';
-import '../../../widget/components/errormessage.dart';
 
 class FreeSlotView extends StatelessWidget {
   FreeSlotView(
@@ -25,11 +27,13 @@ class FreeSlotView extends StatelessWidget {
       required this.userValue,
       required this.discipline,
       required this.startdate,
-      required this.enddate});
+      required this.enddate,
+      required this.type});
   String userValue;
   String discipline;
   String startdate;
   String enddate;
+  String type;
 
   @override
   Widget build(BuildContext context) {
@@ -39,32 +43,44 @@ class FreeSlotView extends StatelessWidget {
         int.parse(startdate.split('-')[1]), int.parse(startdate.split('-')[2]));
     final endDate = DateTime(int.parse(enddate.split('-')[0]),
         int.parse(enddate.split('-')[1]), int.parse(enddate.split('-')[2]));
-    List<String> dayNames = getDayNames(startDate, endDate);
+    List<Map<String, dynamic>> dayNamesAndDate =
+        getDayNamesAndDate(startDate, endDate);
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColorLight,
       body: CustomScrollView(
         slivers: [
-          appbar("Free Slot"),
+          appbar("Free Slot", bgColor: primaryColor, isGreen: true),
           SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                topbar(context, user, discipline),
-                const SizedBox(
-                  height: 30,
+            child: Container(
+              color: primaryColor,
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: backgroundColorLight,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(32.0),
+                        topRight: Radius.circular(32.0))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    topbar(context, user, discipline),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                        color: backgroundColorLight,
+                        child: Consumer<ReScheduleViewModel>(
+                          builder: (context, provider, child) => ScheduleTable(
+                              context,
+                              provider,
+                              venueViewModel,
+                              discipline,
+                              user,
+                              dayNamesAndDate,
+                              type),
+                        )),
+                  ],
                 ),
-                Container(
-                    color: backgroundColor,
-                    child: Consumer<ReScheduleViewModel>(
-                      builder: (context, provider, child) => ScheduleTable(
-                          context,
-                          provider,
-                          venueViewModel,
-                          discipline,
-                          user,
-                          dayNames),
-                    )),
-              ],
+              ),
             ),
           )
         ],
@@ -75,18 +91,8 @@ class FreeSlotView extends StatelessWidget {
   Padding topbar(BuildContext context, User user, String discipline) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Container(
+      child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.15,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: backgroundColorLight,
-            boxShadow: [
-              BoxShadow(
-                  spreadRadius: 3,
-                  blurRadius: 7,
-                  offset: const Offset(0, 7),
-                  color: Colors.grey.withOpacity(0.5))
-            ]),
         child: Row(
           children: [
             const SizedBox(
@@ -134,7 +140,8 @@ class FreeSlotView extends StatelessWidget {
       VenueViewModel venueViewModel,
       String discipline,
       User user,
-      List<String> dayNames) {
+      List<Map<String, dynamic>> dayNamesAndDate,
+      String type) {
     List<String> daysHeader = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
     List<Map<String, dynamic>> timeTable = [
@@ -143,6 +150,14 @@ class FreeSlotView extends StatelessWidget {
       {'start': '11:30', 'end': '01:00'},
       {'start': '01:30', 'end': '03:00'},
       {'start': '03:00', 'end': '04:30'}
+    ];
+
+    List<Map<String, dynamic>> timeTable1 = [
+      {'start': '08:30:00', 'end': '10:00:00'},
+      {'start': '10:00:00', 'end': '11:30:00'},
+      {'start': '11:30:00', 'end': '01:00:00'},
+      {'start': '01:30:00', 'end': '03:00:00'},
+      {'start': '03:00:00', 'end': '04:30:00'}
     ];
     if (rescheduleviewmodel.loading || venueViewModel.loading) {
       return apploading(context);
@@ -192,8 +207,13 @@ class FreeSlotView extends StatelessWidget {
                   ),
                   Column(
                     children: timeTable
-                        .map((e) => ScheduleConditions(rescheduleviewmodel,
-                            venueViewModel, e['start'], daysHeader, dayNames))
+                        .map((e) => ScheduleConditions(
+                            rescheduleviewmodel,
+                            venueViewModel,
+                            e['start'],
+                            daysHeader,
+                            dayNamesAndDate,
+                            timeTable1))
                         .toList(),
                   )
                 ],
@@ -208,15 +228,74 @@ class FreeSlotView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: mybutton(() {
               if (rescheduleviewmodel.selectedvalue != null) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => TeacherScheduleScreen(
-                              user: user,
-                              venue: rescheduleviewmodel.selectedvalue!,
-                              daytime: rescheduleviewmodel.Daytime,
-                              discipline: discipline,
-                            ))));
+                if (type == 'Reschedule') {
+                  showDialog(
+                      context: context,
+                      builder: ((context) => Consumer<ReScheduleViewModel>(
+                          builder: (context, provider, child) => AlertDialog(
+                                content: text_medium("Are You Sure?"),
+                                title: text_medium("Warning!",
+                                    color: shadowColorDark, font: 14),
+                                actions: [
+                                  OutlinedButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text("No")),
+                                  ElevatedButton(
+                                      onPressed: () async {
+                                        showLoaderDialog(context, "Loading..");
+
+                                        Schedule schedule = Schedule(
+                                            id: 0,
+                                            status: false,
+                                            teacherSlotId: context
+                                                .read<ReScheduleViewModel>()
+                                                .teacherSlotId,
+                                            venueName: rescheduleviewmodel
+                                                .selectedvalue!.name,
+                                            starttime: rescheduleviewmodel
+                                                .Daytime.split(',')[1],
+                                            endtime: rescheduleviewmodel.Daytime
+                                                .split(',')[2],
+                                            day: rescheduleviewmodel.Daytime
+                                                .split(',')[0],
+                                            date: rescheduleviewmodel.Daytime
+                                                .split(',')[3]);
+
+                                        await provider.insertdata(schedule);
+
+                                        if (provider.userError != null) {
+                                          Navigator.pop(context);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snack_bar(
+                                                  provider.userError!.message
+                                                      .toString(),
+                                                  false));
+                                          Navigator.pop(context);
+                                        } else {
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snack_bar(
+                                                  "Class Rescheduled", true));
+                                        }
+                                      },
+                                      child: const Text("Yes")),
+                                ],
+                              ))));
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => TeacherScheduleScreen(
+                                user: user,
+                                venue: rescheduleviewmodel.selectedvalue!,
+                                daytime: rescheduleviewmodel.Daytime,
+                                discipline: discipline,
+                              ))));
+                }
               } else {
                 ScaffoldMessenger.of(context)
                     .showSnackBar(snack_bar("Select any Slot", false));
@@ -231,7 +310,8 @@ class FreeSlotView extends StatelessWidget {
       VenueViewModel venueViewModel,
       String time,
       List<String> days,
-      List<String> dayNames) {
+      List<Map<String, dynamic>> dayNamesAndDate,
+      List<Map<String, dynamic>> timeTable) {
     List<String> monlst = [];
     List<String> tuelst = [];
     List<String> wedlst = [];
@@ -285,27 +365,43 @@ class FreeSlotView extends StatelessWidget {
       }
     }
 
-    if (!dayNames.contains("Monday") || monlst.length==1) {
+    rescheduleviewmodel.dayNamesAndDate = dayNamesAndDate;
+
+    if (!dayNamesAndDate
+            .where((element) => element['name'] == "Monday")
+            .isNotEmpty ||
+        monlst.length == 1) {
       monlst = [];
       vmonlst = [];
     }
-    if (!dayNames.contains("Tuesday")|| tuelst.length==1) {
+    if (!dayNamesAndDate
+            .where((element) => element['name'] == "Tuesday")
+            .isNotEmpty ||
+        tuelst.length == 1) {
       tuelst = [];
       vtuelst = [];
     }
-    if (!dayNames.contains("Wednesday")|| wedlst.length==1) {
+    if (!dayNamesAndDate
+            .where((element) => element['name'] == "Wednesday")
+            .isNotEmpty ||
+        wedlst.length == 1) {
       wedlst = [];
       vwedlst = [];
     }
-    if (!dayNames.contains("Thursday")|| thulst.length==1) {
+    if (!dayNamesAndDate
+            .where((element) => element['name'] == "Thursday")
+            .isNotEmpty ||
+        thulst.length == 1) {
       thulst = [];
       vthulst = [];
     }
-    if (!dayNames.contains("Friday")|| frilst.length==1) {
+    if (!dayNamesAndDate
+            .where((element) => element['name'] == "Friday")
+            .isNotEmpty ||
+        frilst.length == 1) {
       frilst = [];
       vfrilst = [];
     }
-
 
     // return rowSchedule(monlst, tuelst, wedlst, thulst, frilst, time,
     //     rescheduleviewmodel, venueViewModel);
@@ -324,13 +420,15 @@ class FreeSlotView extends StatelessWidget {
                           ? tuelst
                           : e == "Wed"
                               ? wedlst
-                              : e == "Thu"
+                              : e == days[3]
                                   ? thulst
                                   : frilst,
                   e,
                   time,
                   rescheduleviewmodel,
-                  venueViewModel))
+                  venueViewModel,
+                  days,
+                  timeTable))
               .toList(),
         ),
       ],
@@ -355,217 +453,239 @@ class FreeSlotView extends StatelessWidget {
     );
   }
 
-  Widget rowData(List<String> lst, String day, String time,
-      ReScheduleViewModel reScheduleViewModel, VenueViewModel venueViewModel) {
+  Widget rowData(
+      List<String> lst,
+      String day,
+      String time,
+      ReScheduleViewModel reScheduleViewModel,
+      VenueViewModel venueViewModel,
+      List<String> days,
+      List<Map<String, dynamic>> timeTable) {
     return Consumer<ReScheduleViewModel>(builder: (context, provider, child) {
       time = "$time:00";
+
       return Container(
           height: 70,
           width: 55,
           decoration: BoxDecoration(
-              color: backgroundColor,
+              color: backgroundColorLight,
               border: Border.all(
                 color: backgroundColor2,
               )),
           child: DropdownButton<String>(
             isExpanded: true,
             underline: const SizedBox(),
-            value: day == "Mon" && time == "08:30:00"
+            value: day == days[0] && time == timeTable[0]['start']
                 ? reScheduleViewModel.mon8
-                : day == "Tue" && time == "08:30:00"
+                : day == days[1] && time == timeTable[0]['start']
                     ? reScheduleViewModel.tue8
-                    : day == "Wed" && time == "08:30:00"
+                    : day == days[2] && time == timeTable[0]['start']
                         ? reScheduleViewModel.wed8
-                        : day == "Thu" && time == "08:30:00"
+                        : day == days[3] && time == timeTable[0]['start']
                             ? reScheduleViewModel.thu8
-                            : day == "Fri" && time == "08:30:00"
+                            : day == days[4] && time == timeTable[0]['start']
                                 ? reScheduleViewModel.fri8
-                                : day == "Mon" && time == "10:00:00"
+                                : day == days[0] &&
+                                        time == timeTable[1]['start']
                                     ? reScheduleViewModel.mon10
-                                    : day == "Tue" && time == "10:00:00"
+                                    : day == days[1] &&
+                                            time == timeTable[1]['start']
                                         ? reScheduleViewModel.tue10
-                                        : day == "Wed" && time == "10:00:00"
+                                        : day == days[2] &&
+                                                time == timeTable[1]['start']
                                             ? reScheduleViewModel.wed10
-                                            : day == "Thu" && time == "10:00:00"
+                                            : day == days[3] &&
+                                                    time ==
+                                                        timeTable[1]['start']
                                                 ? reScheduleViewModel.thu10
-                                                : day == "Fri" &&
-                                                        time == "10:00:00"
+                                                : day == days[4] &&
+                                                        time ==
+                                                            timeTable[1]
+                                                                ['start']
                                                     ? reScheduleViewModel.fri10
-                                                    : day == "Mon" &&
-                                                            time == "11:30:00"
+                                                    : day == days[0] &&
+                                                            time ==
+                                                                timeTable[2]
+                                                                    ['start']
                                                         ? reScheduleViewModel
                                                             .mon11
-                                                        : day == "Tue" &&
+                                                        : day == days[1] &&
                                                                 time ==
-                                                                    "11:30:00"
+                                                                    timeTable[2]
+                                                                        [
+                                                                        'start']
                                                             ? reScheduleViewModel
                                                                 .tue11
-                                                            : day == "Wed" &&
+                                                            : day == days[2] &&
                                                                     time ==
-                                                                        "11:30:00"
+                                                                        timeTable[2]
+                                                                            [
+                                                                            'start']
                                                                 ? reScheduleViewModel
                                                                     .wed11
-                                                                : day == "Thu" &&
+                                                                : day == days[3] &&
                                                                         time ==
-                                                                            "11:30:00"
+                                                                            timeTable[2][
+                                                                                'start']
                                                                     ? reScheduleViewModel
                                                                         .thu11
-                                                                    : day == "Fri" &&
+                                                                    : day == days[4] &&
                                                                             time ==
-                                                                                "11:30:00"
+                                                                                timeTable[2][
+                                                                                    'start']
                                                                         ? reScheduleViewModel
                                                                             .fri11
-                                                                        : day == "Mon" &&
-                                                                                time == "01:30:00"
+                                                                        : day == days[0] &&
+                                                                                time == timeTable[3]['start']
                                                                             ? reScheduleViewModel.mon1
-                                                                            : day == "Tue" && time == "01:30:00"
+                                                                            : day == days[1] && time == timeTable[3]['start']
                                                                                 ? reScheduleViewModel.tue1
-                                                                                : day == "Wed" && time == "01:30:00"
+                                                                                : day == days[2] && time == timeTable[3]['start']
                                                                                     ? reScheduleViewModel.wed1
-                                                                                    : day == "Thu" && time == "01:30:00"
+                                                                                    : day == days[3] && time == timeTable[3]['start']
                                                                                         ? reScheduleViewModel.thu1
-                                                                                        : day == "Fri" && time == "01:30:00"
+                                                                                        : day == days[4] && time == timeTable[3]['start']
                                                                                             ? reScheduleViewModel.fri1
-                                                                                            : day == "Mon" && time == "03:00:00"
+                                                                                            : day == days[0] && time == timeTable[4]['start']
                                                                                                 ? reScheduleViewModel.mon3
-                                                                                                : day == "Tue" && time == "03:00:00"
+                                                                                                : day == days[1] && time == timeTable[4]['start']
                                                                                                     ? reScheduleViewModel.tue3
-                                                                                                    : day == "Wed" && time == "03:00:00"
+                                                                                                    : day == days[2] && time == timeTable[4]['start']
                                                                                                         ? reScheduleViewModel.wed3
-                                                                                                        : day == "Thu" && time == "03:00:00"
+                                                                                                        : day == days[3] && time == timeTable[4]['start']
                                                                                                             ? reScheduleViewModel.thu3
                                                                                                             : reScheduleViewModel.fri3,
             onChanged: reScheduleViewModel.mon8 != ""
-                ? day == "Mon" && time == "08:30:00"
+                ? day == days[0] && time == timeTable[0]['start']
                     ? ((value) => DropdownOnChanged(value ?? "", day, time,
-                        reScheduleViewModel, venueViewModel))
+                        reScheduleViewModel, venueViewModel, days, timeTable))
                     : null
                 : reScheduleViewModel.mon10 != ""
-                    ? day == "Mon" && time == "10:00:00"
-                        ? ((value) => DropdownOnChanged(value ?? "", day, time,
-                            reScheduleViewModel, venueViewModel))
+                    ? day == days[0] && time == timeTable[1]['start']
+                        ? ((value) => DropdownOnChanged(
+                            value ?? "",
+                            day,
+                            time,
+                            reScheduleViewModel,
+                            venueViewModel,
+                            days,
+                            timeTable))
                         : null
                     : reScheduleViewModel.mon11 != ""
-                        ? day == "Mon" && time == "11:30:00"
-                            ? ((value) => DropdownOnChanged(value ?? "", day,
-                                time, reScheduleViewModel, venueViewModel))
+                        ? day == days[0] && time == timeTable[2]['start']
+                            ? ((value) => DropdownOnChanged(
+                                value ?? "",
+                                day,
+                                time,
+                                reScheduleViewModel,
+                                venueViewModel,
+                                days,
+                                timeTable))
                             : null
                         : reScheduleViewModel.mon1 != ""
-                            ? day == "Mon" && time == "01:30:00"
+                            ? day == days[0] && time == timeTable[3]['start']
                                 ? ((value) => DropdownOnChanged(
                                     value ?? "",
                                     day,
                                     time,
                                     reScheduleViewModel,
-                                    venueViewModel))
+                                    venueViewModel,
+                                    days,
+                                    timeTable))
                                 : null
                             : reScheduleViewModel.mon3 != ""
-                                ? day == "Mon" && time == "03:00:00"
+                                ? day == days[0] &&
+                                        time == timeTable[4]['start']
                                     ? ((value) => DropdownOnChanged(
                                         value ?? "",
                                         day,
                                         time,
                                         reScheduleViewModel,
-                                        venueViewModel))
+                                        venueViewModel,
+                                        days,
+                                        timeTable))
                                     : null
                                 : reScheduleViewModel.tue8 != ""
-                                    ? day == "Tue" && time == "08:30:00"
-                                        ? ((value) => DropdownOnChanged(
-                                            value ?? "",
-                                            day,
-                                            time,
-                                            reScheduleViewModel,
-                                            venueViewModel))
+                                    ? day == days[1] && time == timeTable[0]['start']
+                                        ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                         : null
                                     : reScheduleViewModel.tue10 != ""
-                                        ? day == "Tue" && time == "10:00:00"
-                                            ? ((value) => DropdownOnChanged(
-                                                value ?? "",
-                                                day,
-                                                time,
-                                                reScheduleViewModel,
-                                                venueViewModel))
+                                        ? day == days[1] && time == timeTable[1]['start']
+                                            ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                             : null
                                         : reScheduleViewModel.tue11 != ""
-                                            ? day == "Tue" && time == "11:30:00"
-                                                ? ((value) => DropdownOnChanged(
-                                                    value ?? "",
-                                                    day,
-                                                    time,
-                                                    reScheduleViewModel,
-                                                    venueViewModel))
+                                            ? day == days[1] && time == timeTable[2]['start']
+                                                ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                 : null
                                             : reScheduleViewModel.tue1 != ""
-                                                ? day == "Tue" &&
-                                                        time == "01:30:00"
-                                                    ? ((value) =>
-                                                        DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                ? day == days[1] && time == timeTable[3]['start']
+                                                    ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                     : null
                                                 : reScheduleViewModel.tue3 != ""
-                                                    ? day == "Tue" && time == "03:00:00"
-                                                        ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                    ? day == days[1] && time == timeTable[4]['start']
+                                                        ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                         : null
                                                     : reScheduleViewModel.wed8 != ""
-                                                        ? day == "Wed" && time == "08:30:00"
-                                                            ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                        ? day == days[2] && time == timeTable[0]['start']
+                                                            ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                             : null
                                                         : reScheduleViewModel.wed10 != ""
-                                                            ? day == "Wed" && time == "10:00:00"
-                                                                ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                            ? day == days[2] && time == timeTable[1]['start']
+                                                                ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                 : null
                                                             : reScheduleViewModel.wed11 != ""
-                                                                ? day == "Wed" && time == "11:30:00"
-                                                                    ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                ? day == days[2] && time == timeTable[2]['start']
+                                                                    ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                     : null
                                                                 : reScheduleViewModel.wed1 != ""
-                                                                    ? day == "Wed" && time == "01:30:00"
-                                                                        ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                    ? day == days[2] && time == timeTable[3]['start']
+                                                                        ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                         : null
                                                                     : reScheduleViewModel.wed3 != ""
-                                                                        ? day == "Wed" && time == "03:00:00"
-                                                                            ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                        ? day == days[2] && time == timeTable[4]['start']
+                                                                            ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                             : null
                                                                         : reScheduleViewModel.thu8 != ""
-                                                                            ? day == "Thu" && time == "08:30:00"
-                                                                                ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                            ? day == days[3] && time == timeTable[0]['start']
+                                                                                ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                 : null
                                                                             : reScheduleViewModel.thu10 != ""
-                                                                                ? day == "Thu" && time == "10:00:00"
-                                                                                    ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                                ? day == days[3] && time == timeTable[1]['start']
+                                                                                    ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                     : null
                                                                                 : reScheduleViewModel.thu11 != ""
-                                                                                    ? day == "Thu" && time == "11:30:00"
-                                                                                        ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                                    ? day == days[3] && time == timeTable[2]['start']
+                                                                                        ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                         : null
                                                                                     : reScheduleViewModel.thu1 != ""
-                                                                                        ? day == "Thu" && time == "01:30:00"
-                                                                                            ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                                        ? day == days[3] && time == timeTable[3]['start']
+                                                                                            ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                             : null
                                                                                         : reScheduleViewModel.thu3 != ""
-                                                                                            ? day == "Thu" && time == "03:00:00"
-                                                                                                ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                                            ? day == days[3] && time == timeTable[4]['start']
+                                                                                                ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                                 : null
                                                                                             : reScheduleViewModel.fri8 != ""
-                                                                                                ? day == "Fri" && time == "08:30:00"
-                                                                                                    ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                                                ? day == days[4] && time == timeTable[0]['start']
+                                                                                                    ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                                     : null
                                                                                                 : reScheduleViewModel.fri10 != ""
-                                                                                                    ? day == "Fri" && time == "10:00:00"
-                                                                                                        ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                                                    ? day == days[4] && time == timeTable[1]['start']
+                                                                                                        ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                                         : null
                                                                                                     : reScheduleViewModel.fri11 != ""
-                                                                                                        ? day == "Fri" && time == "11:30:00"
-                                                                                                            ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                                                        ? day == days[4] && time == timeTable[2]['start']
+                                                                                                            ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                                             : null
                                                                                                         : reScheduleViewModel.fri1 != ""
-                                                                                                            ? day == "Fri" && time == "01:30:00"
-                                                                                                                ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                                                            ? day == days[4] && time == timeTable[3]['start']
+                                                                                                                ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                                                 : null
                                                                                                             : reScheduleViewModel.fri3 != ""
-                                                                                                                ? day == "Fri" && time == "03:00:00"
-                                                                                                                    ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel))
+                                                                                                                ? day == days[4] && time == timeTable[4]['start']
+                                                                                                                    ? ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable))
                                                                                                                     : null
-                                                                                                                : ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel)),
+                                                                                                                : ((value) => DropdownOnChanged(value ?? "", day, time, reScheduleViewModel, venueViewModel, days, timeTable)),
             items: lst
                 .map((e) => DropdownMenuItem(
                     value: e,
@@ -578,91 +698,120 @@ class FreeSlotView extends StatelessWidget {
     });
   }
 
-  void DropdownOnChanged(String value, String day, String time,
-      ReScheduleViewModel reScheduleViewModel, VenueViewModel venueViewModel) {
-    day == "Mon" && time == "08:30:00"
+  void DropdownOnChanged(
+      String value,
+      String day,
+      String time,
+      ReScheduleViewModel reScheduleViewModel,
+      VenueViewModel venueViewModel,
+      List<String> days,
+      List<Map<String, dynamic>> timeTable) {
+    day == days[0] && time == timeTable[0]['start']
         ? reScheduleViewModel.mon8 = value
-        : day == "Tue" && time == "08:30:00"
+        : day == days[1] && time == timeTable[0]['start']
             ? reScheduleViewModel.tue8 = value
-            : day == "Wed" && time == "08:30:00"
+            : day == days[2] && time == timeTable[0]['start']
                 ? reScheduleViewModel.wed8 = value
-                : day == "Thu" && time == "08:30:00"
+                : day == days[3] && time == timeTable[0]['start']
                     ? reScheduleViewModel.thu8 = value
-                    : day == "Fri" && time == "08:30:00"
+                    : day == days[4] && time == timeTable[0]['start']
                         ? reScheduleViewModel.fri8 = value
-                        : day == "Mon" && time == "10:00:00"
+                        : day == days[0] && time == timeTable[1]['start']
                             ? reScheduleViewModel.mon10 = value
-                            : day == "Tue" && time == "10:00:00"
+                            : day == days[1] && time == timeTable[1]['start']
                                 ? reScheduleViewModel.tue10 = value
-                                : day == "Wed" && time == "10:00:00"
+                                : day == days[2] &&
+                                        time == timeTable[1]['start']
                                     ? reScheduleViewModel.wed10 = value
-                                    : day == "Thu" && time == "10:00:00"
+                                    : day == days[3] &&
+                                            time == timeTable[1]['start']
                                         ? reScheduleViewModel.thu10 = value
-                                        : day == "Fri" && time == "10:00:00"
+                                        : day == days[4] &&
+                                                time == timeTable[1]['start']
                                             ? reScheduleViewModel.fri10 = value
-                                            : day == "Mon" && time == "11:30:00"
+                                            : day == days[0] &&
+                                                    time ==
+                                                        timeTable[2]['start']
                                                 ? reScheduleViewModel.mon11 =
                                                     value
-                                                : day == "Tue" &&
-                                                        time == "11:30:00"
+                                                : day == days[1] &&
+                                                        time ==
+                                                            timeTable[2]
+                                                                ['start']
                                                     ? reScheduleViewModel.tue11 =
                                                         value
-                                                    : day == "Wed" &&
-                                                            time == "11:30:00"
+                                                    : day == days[2] &&
+                                                            time ==
+                                                                timeTable[2]
+                                                                    ['start']
                                                         ? reScheduleViewModel
                                                             .wed11 = value
-                                                        : day == "Thu" &&
+                                                        : day == days[3] &&
                                                                 time ==
-                                                                    "11:30:00"
+                                                                    timeTable[2][
+                                                                        'start']
                                                             ? reScheduleViewModel
                                                                 .thu11 = value
-                                                            : day == "Fri" &&
+                                                            : day == days[4] &&
                                                                     time ==
-                                                                        "11:30:00"
+                                                                        timeTable[2][
+                                                                            'start']
                                                                 ? reScheduleViewModel
                                                                         .fri11 =
                                                                     value
-                                                                : day == "Mon" &&
+                                                                : day == days[0] &&
                                                                         time ==
-                                                                            "01:30:00"
+                                                                            timeTable[3][
+                                                                                'start']
                                                                     ? reScheduleViewModel
                                                                             .mon1 =
                                                                         value
-                                                                    : day == "Tue" &&
-                                                                            time ==
-                                                                                "01:30:00"
-                                                                        ? reScheduleViewModel.tue1 =
-                                                                            value
-                                                                        : day == "Wed" &&
-                                                                                time == "01:30:00"
+                                                                    : day == days[1] &&
+                                                                            time == timeTable[3]['start']
+                                                                        ? reScheduleViewModel.tue1 = value
+                                                                        : day == days[2] && time == timeTable[3]['start']
                                                                             ? reScheduleViewModel.wed1 = value
-                                                                            : day == "Thu" && time == "01:30:00"
+                                                                            : day == days[3] && time == timeTable[3]['start']
                                                                                 ? reScheduleViewModel.thu1 = value
-                                                                                : day == "Fri" && time == "01:30:00"
+                                                                                : day == days[4] && time == timeTable[3]['start']
                                                                                     ? reScheduleViewModel.fri1 = value
-                                                                                    : day == "Mon" && time == "03:00:00"
+                                                                                    : day == days[0] && time == timeTable[4]['start']
                                                                                         ? reScheduleViewModel.mon3 = value
-                                                                                        : day == "Tue" && time == "03:00:00"
+                                                                                        : day == "Tue" && time == timeTable[4]['start']
                                                                                             ? reScheduleViewModel.tue3 = value
-                                                                                            : day == "Wed" && time == "03:00:00"
+                                                                                            : day == days[2] && time == timeTable[4]['start']
                                                                                                 ? reScheduleViewModel.wed3 = value
-                                                                                                : day == "Thu" && time == "03:00:00"
+                                                                                                : day == days[3] && time == timeTable[4]['start']
                                                                                                     ? reScheduleViewModel.thu3 = value
                                                                                                     : reScheduleViewModel.fri3 = value;
     bool status = venueViewModel.lstvenue
         .where((element) => element.name == value)
         .isNotEmpty;
 
-    if (time == "08:30:00") {
-      reScheduleViewModel.Daytime = "$day,08:30,10:00";
-    } else if (time == "10:00:00") {
-      reScheduleViewModel.Daytime = "$day,10:00,11:30";
-    } else if (time == "11:30:00") {
-      reScheduleViewModel.Daytime = "$day,11:30,01:00";
-    } else if (time == "01:30:00") {
-      reScheduleViewModel.Daytime = "$day,01:00,03:00";
-    } else if (time == "03:00:00") {
-      reScheduleViewModel.Daytime = "$day,03:00,04:30";
+    String tempDay = day == 'Mon'
+        ? "Monday"
+        : day == 'Tue'
+            ? 'Tuesday'
+            : day == 'Wed'
+                ? 'Wednesday'
+                : day == 'Thu'
+                    ? 'Thursday'
+                    : 'Friday';
+    String date = reScheduleViewModel.dayNamesAndDate
+            .where((element) => element['name'] == tempDay)
+            .isEmpty
+        ? ""
+        : reScheduleViewModel.dayNamesAndDate
+            .where((element) => element['name'] == tempDay)
+            .first['date']
+            .toString()
+            .split(' ')[0];
+
+    for (var element in timeTable) {
+      if (time == element['start']) {
+        reScheduleViewModel.Daytime =
+            "$tempDay,${element['start'].split(':')[0]}:${element['start'].split(':')[1]},${element['end'].split(':')[0]}:${element['end'].split(':')[1]},$date";
+      }
     }
 
     if (status) {
@@ -685,18 +834,18 @@ class FreeSlotView extends StatelessWidget {
         child: Center(child: text_medium(text, color: backgroundColorLight)));
   }
 
-  List<String> getDayNames(DateTime start, DateTime end) {
-    final dayNames = <String>[];
+  List<Map<String, dynamic>> getDayNamesAndDate(DateTime start, DateTime end) {
+    final dayNamesAndDate = <Map<String, dynamic>>[];
     final dateFormat = DateFormat('EEEE');
 
     DateTime currentDate = start;
 
     while (currentDate.isBefore(end) || currentDate.isAtSameMomentAs(end)) {
       final dayName = dateFormat.format(currentDate);
-      dayNames.add(dayName);
+      dayNamesAndDate.add({'name': dayName, 'date': currentDate});
       currentDate = currentDate.add(const Duration(days: 1));
     }
 
-    return dayNames;
+    return dayNamesAndDate;
   }
 }

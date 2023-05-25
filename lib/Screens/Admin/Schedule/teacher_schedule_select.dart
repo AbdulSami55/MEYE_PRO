@@ -24,93 +24,90 @@ class TeacherScheduleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColorLight,
       body: CustomScrollView(
         slivers: [
-          appbar("Teacher Schedule"),
+          appbar("Teacher Schedule", bgColor: primaryColor, isGreen: true),
           SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: backgroundColorLight,
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 3,
-                              blurRadius: 7,
-                              offset: const Offset(0, 7),
-                              color: Colors.grey.withOpacity(0.5))
-                        ]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: user.image == null
-                              ? const CircleAvatar(
-                                  radius: 33,
-                                  backgroundImage: AssetImage(
-                                      "assets/avaters/Avatar Default.jpg"))
-                              : CircleAvatar(
-                                  radius: 33,
-                                  backgroundImage: NetworkImage(
-                                      "$getuserimage${user.role}/${user.image}")),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                          height: 20,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            text_medium(user.name.toString(),
-                                color: shadowColorLight),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            text_medium(discipline, color: shadowColorLight),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            text_medium(venue.name.toString(),
-                                color: shadowColorLight),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                          ],
-                        ),
-                      ],
+            child: Container(
+              color: primaryColor,
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: backgroundColorLight,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(32.0),
+                        topRight: Radius.circular(32.0))),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: user.image == null
+                                ? const CircleAvatar(
+                                    radius: 33,
+                                    backgroundImage: AssetImage(
+                                        "assets/avaters/Avatar Default.jpg"))
+                                : CircleAvatar(
+                                    radius: 33,
+                                    backgroundImage: NetworkImage(
+                                        "$getuserimage${user.role}/${user.image}")),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                            height: 20,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              text_medium(user.name.toString(),
+                                  color: shadowColorLight),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              text_medium(discipline, color: shadowColorLight),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              text_medium(venue.name.toString(),
+                                  color: shadowColorLight),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    ChangeNotifierProvider(
+                      create: ((context) => TimetableViewModel(user.name!)),
+                      child: Container(
+                        color: backgroundColor,
+                        child: Consumer<TimetableViewModel>(
+                            builder: (context, provider, child) {
+                          return selectScheduleTable(context, provider,
+                              discipline: discipline,
+                              venue: venue.name,
+                              daytime: daytime);
+                        }),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                ChangeNotifierProvider(
-                  create: ((context) => TimetableViewModel(user.name!)),
-                  child: Container(
-                    color: backgroundColor,
-                    child: Consumer<TimetableViewModel>(
-                        builder: (context, provider, child) {
-                      return selectScheduleTable(context, provider,
-                          discipline: discipline,
-                          venue: venue.name,
-                          daytime: daytime);
-                    }),
-                  ),
-                ),
-              ],
+              ),
             ),
           )
         ],

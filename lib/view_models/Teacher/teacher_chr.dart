@@ -16,6 +16,8 @@ class TeacherCHRViewModel with ChangeNotifier {
   bool isTeacherChr = true;
   bool isChrTable = false;
   bool isActivtyTable = false;
+  String isTeacherTableSwitch = "";
+
   int selectedFilter = 0;
   ScreenshotController _screenshotController = ScreenshotController();
 
@@ -40,13 +42,18 @@ class TeacherCHRViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  setIsTeacherChr() {
-    isTeacherChr = !isTeacherChr;
+  setIsTeacherChr(bool v) {
+    isTeacherChr = v;
     notifyListeners();
   }
 
   setIsActivityTable() {
     isActivtyTable = !isActivtyTable;
+    notifyListeners();
+  }
+
+  setIsTeacherTableSwitch(String v) {
+    isTeacherTableSwitch = v;
     notifyListeners();
   }
 

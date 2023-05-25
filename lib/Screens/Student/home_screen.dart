@@ -9,9 +9,7 @@ import 'package:live_streaming/widget/components/errormessage.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
 import 'package:provider/provider.dart';
 import 'components/course_card.dart';
-import 'components/secondary_course_card.dart';
 import 'components/text.dart';
-import 'course.dart';
 
 class StudentDashboard extends StatelessWidget {
   const StudentDashboard({super.key});
@@ -19,7 +17,7 @@ class StudentDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColorLight,
       body: CustomScrollView(slivers: [
         stdteacherappbar(context),
         SliverToBoxAdapter(
@@ -31,7 +29,6 @@ class StudentDashboard extends StatelessWidget {
 
   Widget ui(BuildContext context) {
     final providr = context.watch<SignInViewModel>();
-    int index = -1;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,7 +49,7 @@ class StudentDashboard extends StatelessWidget {
               }
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
+                child: Column(
                     children: courseProvider.lstcourses
                         .asMap()
                         .map((key, value) {
@@ -61,7 +58,7 @@ class StudentDashboard extends StatelessWidget {
                           return MapEntry(
                               key,
                               Padding(
-                                padding: const EdgeInsets.only(left: 20),
+                                padding: const EdgeInsets.all(8.0),
                                 child: InkWell(
                                   onTap: () {
                                     courseProvider.selectedIndex = key;
@@ -75,9 +72,9 @@ class StudentDashboard extends StatelessWidget {
                                     title: course.courseName,
                                     iconSrc: course.image,
                                     instructor: course.teacherName,
-                                    color: index % 3 == 0
+                                    color: key % 3 == 0
                                         ? const Color(0xFF7553F6)
-                                        : index % 3 == 1
+                                        : key % 3 == 1
                                             ? const Color(0xFF80A4FF)
                                             : const Color(0xFF9CC5FF),
                                     percentage: course.percentage,
@@ -89,27 +86,6 @@ class StudentDashboard extends StatelessWidget {
                         .toList()),
               );
             }))),
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text(
-            "Recent",
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall!
-                .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-        ),
-        ...recentCourses
-            .map((course) => Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  child: SecondaryCourseCard(
-                    title: course.title,
-                    iconsSrc: course.iconSrc,
-                    colorl: course.color,
-                  ),
-                ))
-            .toList(),
       ],
     );
   }

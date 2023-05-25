@@ -1,13 +1,14 @@
 import 'dart:convert';
 
-Schedule scheduleFromJson(String str) => Schedule.fromJson(json.decode(str));
+PreSchedule preScheduleFromJson(String str) =>
+    PreSchedule.fromJson(json.decode(str));
 
-String scheduleToJson(Schedule data) => json.encode(data.toJson());
+String preScheduleToJson(PreSchedule data) => json.encode(data.toJson());
 
-class Schedule {
-  Schedule(
+class PreSchedule {
+  PreSchedule(
       {this.id,
-      this.teacherSlotId,
+      this.timeTableId,
       this.venueName,
       this.starttime,
       this.endtime,
@@ -16,7 +17,7 @@ class Schedule {
       this.date});
 
   int? id;
-  int? teacherSlotId;
+  int? timeTableId;
   String? venueName;
   String? starttime;
   String? endtime;
@@ -24,9 +25,9 @@ class Schedule {
   bool? status;
   String? date;
 
-  factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
+  factory PreSchedule.fromJson(Map<String, dynamic> json) => PreSchedule(
       id: json["id"],
-      teacherSlotId: json["teacherSlotId"],
+      timeTableId: json["timeTableId"],
       venueName: json["venueName"],
       starttime: json["starttime"],
       endtime: json["endtime"],
@@ -36,7 +37,7 @@ class Schedule {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "teacherSlotId": teacherSlotId,
+        "timeTableId": timeTableId,
         "venueName": venueName,
         "starttime": starttime,
         "endtime": endtime,
