@@ -10,10 +10,10 @@ ListView allTeacher(TeacherCHRViewModel provider, {bool? isShortReport}) {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
-      itemCount: provider.lstTeacherChr.length,
+      itemCount: provider.lstTempTeacherChr.length,
       itemBuilder: ((context, index) {
         return isShortReport == true
-            ? provider.lstTeacherChr[index].status == 'Not Held'
+            ? provider.lstTempTeacherChr[index].status == 'Not Held'
                 ? mainBody(provider, index, context)
                 : const Padding(padding: EdgeInsets.zero)
             : mainBody(provider, index, context);
@@ -49,8 +49,8 @@ Padding mainBody(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    text_medium(provider.lstTeacherChr[index].teacherName),
-                    provider.lstTeacherChr[index].image == ''
+                    text_medium(provider.lstTempTeacherChr[index].teacherName),
+                    provider.lstTempTeacherChr[index].image == ''
                         ? const CircleAvatar(
                             radius: 33,
                             backgroundImage:
@@ -58,20 +58,21 @@ Padding mainBody(
                         : CircleAvatar(
                             radius: 33,
                             backgroundImage: NetworkImage(
-                                "${getuserimage}Teacher/${provider.lstTeacherChr[index].image}")),
+                                "${getuserimage}Teacher/${provider.lstTempTeacherChr[index].image}")),
                   ],
                 ),
               ),
-              cardText('Date: ', provider.lstTeacherChr[index].date),
-              const SizedBox(
-                height: 10,
-              ),
-              cardText('Course: ', provider.lstTeacherChr[index].courseName),
+              cardText('Date: ', provider.lstTempTeacherChr[index].date),
               const SizedBox(
                 height: 10,
               ),
               cardText(
-                  'Discipline: ', provider.lstTeacherChr[index].discipline),
+                  'Course: ', provider.lstTempTeacherChr[index].courseName),
+              const SizedBox(
+                height: 10,
+              ),
+              cardText(
+                  'Discipline: ', provider.lstTempTeacherChr[index].discipline),
               const SizedBox(
                 height: 10,
               ),
@@ -80,12 +81,14 @@ Padding mainBody(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: text_medium(provider.lstTeacherChr[index].status,
-                        color: provider.lstTeacherChr[index].status == 'Held'
-                            ? primaryColor
-                            : provider.lstTeacherChr[index].status == 'Not Held'
-                                ? Colors.red
-                                : Colors.redAccent),
+                    child: text_medium(provider.lstTempTeacherChr[index].status,
+                        color:
+                            provider.lstTempTeacherChr[index].status == 'Held'
+                                ? primaryColor
+                                : provider.lstTempTeacherChr[index].status ==
+                                        'Not Held'
+                                    ? Colors.red
+                                    : Colors.redAccent),
                   )
                 ],
               ),
@@ -93,9 +96,9 @@ Padding mainBody(
                 height: 4,
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
-                    color: provider.lstTeacherChr[index].status == 'Held'
+                    color: provider.lstTempTeacherChr[index].status == 'Held'
                         ? primaryColor
-                        : provider.lstTeacherChr[index].status == 'Not Held'
+                        : provider.lstTempTeacherChr[index].status == 'Not Held'
                             ? Colors.red
                             : Colors.redAccent,
                     borderRadius: const BorderRadius.only(

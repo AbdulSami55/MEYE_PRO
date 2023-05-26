@@ -10,11 +10,13 @@ import '../../../Model/Admin/dvr.dart';
 class DVRViewModel extends ChangeNotifier {
   bool _isloading = false;
   var _lstDVR = <DVR>[];
+  var _lstTempDVR = <DVR>[];
   UserError? _userError;
   DVR _adddvr = DVR();
 
   bool get loading => _isloading;
   List<DVR> get lstDVR => _lstDVR;
+  List<DVR> get lstTempDVR => _lstTempDVR;
   UserError? get userError => _userError;
   DVR get adddvr => _adddvr;
 
@@ -28,6 +30,21 @@ class DVRViewModel extends ChangeNotifier {
 
   void setDvrList(List<DVR> lst) {
     _lstDVR = lst;
+    _lstTempDVR = lst;
+  }
+
+  void searchDvr(String value) {
+    if (value.length > 1) {
+      _lstTempDVR = _lstDVR
+          .where((element) => element.name
+              .toString()
+              .toLowerCase()
+              .contains(value.toLowerCase()))
+          .toList();
+    } else {
+      _lstTempDVR = _lstDVR;
+    }
+    notifyListeners();
   }
 
   void setUserError(UserError userError) {

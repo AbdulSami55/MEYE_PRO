@@ -11,6 +11,7 @@ import '../../../Model/user_error.dart';
 class UserViewModel extends ChangeNotifier {
   bool _isloading = true;
   var _lstuser = <User>[];
+  var _lstTempUser = <User>[];
   File? _file;
   UserError? _userError;
   String _selectedrole = "Teacher";
@@ -19,6 +20,7 @@ class UserViewModel extends ChangeNotifier {
 
   String get selectedrole => _selectedrole;
   List<User> get lstuser => _lstuser;
+  List<User> get lstTempUser => _lstTempUser;
   bool get isloading => _isloading;
   bool get signinloading => _signinloading;
   UserError? get userError => _userError;
@@ -30,6 +32,21 @@ class UserViewModel extends ChangeNotifier {
   }
   void lstuserAdd(List<User> lst) {
     _lstuser = lst;
+    _lstTempUser = lst;
+  }
+
+  void searchUser(String value) {
+    if (value.length > 1) {
+      _lstTempUser = _lstuser
+          .where((element) => element.name
+              .toString()
+              .toLowerCase()
+              .contains(value.toLowerCase()))
+          .toList();
+    } else {
+      _lstTempUser = _lstuser;
+    }
+    notifyListeners();
   }
 
   void setloading(bool load) {

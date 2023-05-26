@@ -8,6 +8,7 @@ import 'package:screenshot/screenshot.dart';
 
 class TeacherCHRViewModel with ChangeNotifier {
   var _lstTeacherChr = <TeacherChr>[];
+  var _lstTempTeacherChr = <TeacherChr>[];
   bool _isloading = false;
   UserError? _userError;
   int selectedIndex = -1;
@@ -22,6 +23,7 @@ class TeacherCHRViewModel with ChangeNotifier {
   ScreenshotController _screenshotController = ScreenshotController();
 
   List<TeacherChr> get lstTeacherChr => _lstTeacherChr;
+  List<TeacherChr> get lstTempTeacherChr => _lstTempTeacherChr;
   bool get isloading => _isloading;
   UserError? get userError => _userError;
   ScreenshotController get screenshotController => _screenshotController;
@@ -35,6 +37,44 @@ class TeacherCHRViewModel with ChangeNotifier {
   }
   setListTeacherChr(List<TeacherChr> lst) {
     _lstTeacherChr = lst;
+    _lstTempTeacherChr = lst;
+  }
+
+  void searchChr(String value) {
+    if (value.length > 1) {
+      if (selectedFilter == 1) {
+        _lstTempTeacherChr = _lstTeacherChr
+            .where((element) => element.date
+                .toString()
+                .toLowerCase()
+                .contains(value.toLowerCase()))
+            .toList();
+      } else if (selectedFilter == 2) {
+        _lstTempTeacherChr = _lstTeacherChr
+            .where((element) => element.courseName
+                .toString()
+                .toLowerCase()
+                .contains(value.toLowerCase()))
+            .toList();
+      } else if (selectedFilter == 3) {
+        _lstTempTeacherChr = _lstTeacherChr
+            .where((element) => element.discipline
+                .toString()
+                .toLowerCase()
+                .contains(value.toLowerCase()))
+            .toList();
+      } else if (selectedFilter == 4) {
+        _lstTempTeacherChr = _lstTeacherChr
+            .where((element) => element.teacherName
+                .toString()
+                .toLowerCase()
+                .contains(value.toLowerCase()))
+            .toList();
+      }
+    } else {
+      _lstTempTeacherChr = _lstTeacherChr;
+    }
+    notifyListeners();
   }
 
   setIsChrTable() {

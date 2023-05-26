@@ -29,14 +29,14 @@ Widget chrTable(BuildContext context, TeacherCHRViewModel provider,
             DataColumn(label: text_medium('Status', color: containerColor))
           ],
           rows: isShortReport == true
-              ? provider.lstTeacherChr
+              ? provider.lstTempTeacherChr
                   .where((element) => element.status == 'Not Held')
                   .toList()
                   .asMap()
                   .map((k, v) => MapEntry(k, rowData(v, k)))
                   .values
                   .toList()
-              : provider.lstTeacherChr
+              : provider.lstTempTeacherChr
                   .asMap()
                   .map((k, v) => MapEntry(k, rowData(v, k)))
                   .values

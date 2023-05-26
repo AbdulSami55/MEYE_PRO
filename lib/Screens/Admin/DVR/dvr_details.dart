@@ -73,7 +73,7 @@ class DVRDetails extends StatelessWidget {
                       color: Colors.black,
                     ),
                     onChanged: (value) {
-                      // SearchMutation(value);
+                      dvrViewModel.searchDvr(value);
                     },
                     decoration: BoxDecoration(
                       color: backgroundColorLight,
@@ -113,7 +113,7 @@ class DVRDetails extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.zero,
         shrinkWrap: true,
-        itemCount: dvrViewModel.lstDVR.length,
+        itemCount: dvrViewModel.lstTempDVR.length,
         itemBuilder: ((context, index) => InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: ((context) {
@@ -164,11 +164,11 @@ class DVRDetails extends StatelessWidget {
                               height: MediaQuery.of(context).size.height * 0.05,
                             ),
                             Text(
-                              'Name: ${dvrViewModel.lstDVR[index].name}',
+                              'Name: ${dvrViewModel.lstTempDVR[index].name}',
                               style: GoogleFonts.bebasNeue(fontSize: 24),
                             ),
                             Text(
-                              'IP: ${dvrViewModel.lstDVR[index].ip}\nPassword: ${dvrViewModel.lstDVR[index].password}\nChannel: ${dvrViewModel.lstDVR[index].channel}',
+                              'IP: ${dvrViewModel.lstTempDVR[index].ip}\nPassword: ${dvrViewModel.lstTempDVR[index].password}\nChannel: ${dvrViewModel.lstTempDVR[index].channel}',
                               style: GoogleFonts.bebasNeue(
                                   fontSize: 24, color: Colors.grey[500]),
                             ),
@@ -183,13 +183,15 @@ class DVRDetails extends StatelessWidget {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  host.text = dvrViewModel.lstDVR[index].host!;
-                                  ip.text = dvrViewModel.lstDVR[index].ip!;
+                                  host.text =
+                                      dvrViewModel.lstTempDVR[index].host!;
+                                  ip.text = dvrViewModel.lstTempDVR[index].ip!;
                                   channel.text =
-                                      dvrViewModel.lstDVR[index].channel!;
+                                      dvrViewModel.lstTempDVR[index].channel!;
                                   pass.text =
-                                      dvrViewModel.lstDVR[index].password!;
-                                  name.text = dvrViewModel.lstDVR[index].name
+                                      dvrViewModel.lstTempDVR[index].password!;
+                                  name.text = dvrViewModel
+                                      .lstTempDVR[index].name
                                       .toString();
                                   update_dvr(
                                       context,
@@ -197,7 +199,7 @@ class DVRDetails extends StatelessWidget {
                                       ip,
                                       channel,
                                       pass,
-                                      dvrViewModel.lstDVR[index].id!,
+                                      dvrViewModel.lstTempDVR[index].id!,
                                       dvrViewModel,
                                       name);
                                 },
@@ -207,20 +209,22 @@ class DVRDetails extends StatelessWidget {
                                 )),
                             IconButton(
                               onPressed: () {
-                                host.text = dvrViewModel.lstDVR[index].host!;
-                                ip.text = dvrViewModel.lstDVR[index].ip!;
+                                host.text =
+                                    dvrViewModel.lstTempDVR[index].host!;
+                                ip.text = dvrViewModel.lstTempDVR[index].ip!;
                                 channel.text =
-                                    dvrViewModel.lstDVR[index].channel!;
+                                    dvrViewModel.lstTempDVR[index].channel!;
                                 pass.text =
-                                    dvrViewModel.lstDVR[index].password!;
-                                name.text = dvrViewModel.lstDVR[index].name!;
+                                    dvrViewModel.lstTempDVR[index].password!;
+                                name.text =
+                                    dvrViewModel.lstTempDVR[index].name!;
                                 delete_dvr(
                                     context,
                                     host,
                                     ip,
                                     channel,
                                     pass,
-                                    dvrViewModel.lstDVR[index].id!,
+                                    dvrViewModel.lstTempDVR[index].id!,
                                     name,
                                     dvrViewModel);
                               },

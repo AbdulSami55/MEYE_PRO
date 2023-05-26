@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:live_streaming/utilities/constants.dart';
+import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
 
 import '../../../view_models/Teacher/teacher_chr.dart';
 
-Padding searchbar(BuildContext context) {
+Padding searchbar(
+  BuildContext context,
+) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0),
     child: Row(
@@ -18,7 +21,9 @@ Padding searchbar(BuildContext context) {
             style: const TextStyle(
               color: Colors.black,
             ),
-            onChanged: (value) {},
+            onChanged: (value) {
+              context.read<TeacherCHRViewModel>().searchChr(value);
+            },
             decoration: BoxDecoration(
               color: backgroundColorLight,
               borderRadius: BorderRadius.circular(15),
@@ -71,6 +76,9 @@ Padding searchbar(BuildContext context) {
                                       context
                                           .read<TeacherCHRViewModel>()
                                           .setSelectedFilter(1);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                              snack_bar("Date Selected", true));
                                       Navigator.pop(context);
                                     },
                                     child: Row(
@@ -83,7 +91,15 @@ Padding searchbar(BuildContext context) {
                             const Divider(),
                             Center(
                                 child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      context
+                                          .read<TeacherCHRViewModel>()
+                                          .setSelectedFilter(2);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snack_bar(
+                                              "Course Selected", true));
+                                      Navigator.pop(context);
+                                    },
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -94,12 +110,20 @@ Padding searchbar(BuildContext context) {
                             const Divider(),
                             Center(
                                 child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      context
+                                          .read<TeacherCHRViewModel>()
+                                          .setSelectedFilter(3);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snack_bar(
+                                              "Discipline Selected", true));
+                                      Navigator.pop(context);
+                                    },
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        text_medium("Section"),
+                                        text_medium("Discipline"),
                                       ],
                                     ))),
                             const Divider(),
@@ -108,7 +132,10 @@ Padding searchbar(BuildContext context) {
                                     onTap: () {
                                       context
                                           .read<TeacherCHRViewModel>()
-                                          .setSelectedFilter(0);
+                                          .setSelectedFilter(4);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snack_bar(
+                                              "Teacher Selected", true));
                                       Navigator.pop(context);
                                     },
                                     child: Row(

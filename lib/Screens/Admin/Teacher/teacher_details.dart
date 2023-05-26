@@ -32,7 +32,7 @@ class TeacherDetails extends StatelessWidget {
             ? appbar("Teacher Details", bgColor: backgroundColor)
             : const SliverToBoxAdapter(
                 child: Padding(padding: EdgeInsets.zero)),
-        searchBar(isTeacher: true),
+        searchBar(isTeacher: true, userViewModel: userViewModel),
         SliverToBoxAdapter(
           child: _ui(userViewModel, context),
         ),
@@ -50,18 +50,19 @@ class TeacherDetails extends StatelessWidget {
     return ListView.builder(
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
-        itemCount: userViewModel.lstuser.length,
+        itemCount: userViewModel.lstTempUser.length,
         itemBuilder: (context, index) => InkWell(
               onTap: () => isSchedule == true
-                  ? schedulebottomSheet(context, userViewModel.lstuser[index])
+                  ? schedulebottomSheet(
+                      context, userViewModel.lstTempUser[index])
                   : isRuleSetting != null
                       ? context.push(routesRuleSetting,
-                          extra: userViewModel.lstuser[index])
-                      : bottomSheet(context, userViewModel.lstuser[index]),
+                          extra: userViewModel.lstTempUser[index])
+                      : bottomSheet(context, userViewModel.lstTempUser[index]),
               child: Column(
                 children: [
                   ListTile(
-                    leading: userViewModel.lstuser[index].image == null
+                    leading: userViewModel.lstTempUser[index].image == null
                         ? const CircleAvatar(
                             radius: 33,
                             backgroundImage:
@@ -70,9 +71,9 @@ class TeacherDetails extends StatelessWidget {
                         : CircleAvatar(
                             radius: 33,
                             backgroundImage: NetworkImage(
-                                "$getuserimage${userViewModel.lstuser[index].role}/${userViewModel.lstuser[index].image}")),
+                                "$getuserimage${userViewModel.lstTempUser[index].role}/${userViewModel.lstTempUser[index].image}")),
                     title: text_medium(
-                        userViewModel.lstuser[index].name.toString()),
+                        userViewModel.lstTempUser[index].name.toString()),
                   ),
                   const Divider()
                 ],
