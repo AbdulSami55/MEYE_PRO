@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Screens/Director/SwitchMode/activity_table.dart';
 import 'package:live_streaming/Screens/Director/SwitchMode/table.dart';
 import 'package:live_streaming/Screens/Director/SwitchMode/card.dart';
@@ -181,7 +184,7 @@ class DirectorDashboardScreen extends StatelessWidget {
                               child: activityTable(context, provider,
                                   isShortReport: true),
                             )
-                          : allTeacher(provider, isShortReport: true)
+                          : allTeacher(provider, isShortReport: true),
             ],
           );
   }
