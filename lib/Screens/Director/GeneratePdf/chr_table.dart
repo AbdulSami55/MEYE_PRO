@@ -4,7 +4,7 @@ import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-pw.Document generatePdfFromTable(TeacherCHRViewModel provider,
+pw.Document generatePdfFromChrTable(TeacherCHRViewModel provider,
     {bool? isShortReport}) {
   final pdf = pw.Document();
 
@@ -12,10 +12,11 @@ pw.Document generatePdfFromTable(TeacherCHRViewModel provider,
     'Sr. No',
     'Teacher',
     'Course',
+    'Discipline',
+    'Venue',
     'Date',
-    'Sit',
-    'Stand',
-    'Mobile',
+    'TimeIn',
+    'TimeOut',
     'Status',
   ];
 
@@ -32,10 +33,11 @@ pw.Document generatePdfFromTable(TeacherCHRViewModel provider,
       '${index + 1}',
       rowData.teacherName.toString(),
       rowData.courseName.toString(),
+      rowData.discipline.toString(),
+      rowData.venue.toString(),
       rowData.date.toString(),
-      rowData.sit.toString(),
-      rowData.stand.toString(),
-      rowData.mobile.toString(),
+      rowData.totalTimeIn.toString(),
+      rowData.totalTimeOut.toString(),
       rowData.status.toString(),
     ];
   });

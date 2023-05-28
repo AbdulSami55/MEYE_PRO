@@ -6,8 +6,6 @@ import 'package:live_streaming/view_models/signin_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/components/apploading.dart';
 import 'package:live_streaming/widget/components/errormessage.dart';
-import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
-import 'package:live_streaming/widget/teachertopbar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:live_streaming/widget/textcomponents/small_text.dart';

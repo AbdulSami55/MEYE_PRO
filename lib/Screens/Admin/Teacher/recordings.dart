@@ -62,10 +62,12 @@ class VideoPlay extends StatelessWidget {
                                           .setSelectedVideo(teacherRecordings);
                                     },
                                     child: ListTile(
-                                      leading: const Icon(
-                                        Icons.play_arrow,
-                                        color: primaryColor,
-                                        size: 50,
+                                      leading: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        child: Image.network(
+                                          '$baseUrl/api/get-video-thumbnail/${teacherRecordings.thumbnail}',
+                                        ),
                                       ),
                                       title: text_medium(
                                           "${teacherRecordings.date.toString().split(' ')[0]}\n${teacherRecordings.fileName.split(',')[2]}"),

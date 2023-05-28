@@ -1,4 +1,7 @@
 // ignore_for_file: must_be_immutable, use_build_context_synchronously
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Teacher/teacher_chr.dart';
 import 'package:live_streaming/Screens/Student/components/text.dart';
@@ -6,8 +9,15 @@ import 'package:live_streaming/Screens/Teacher/components/card_text.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
+import 'package:live_streaming/widget/mybutton.dart';
+import 'package:live_streaming/widget/progress_indicator.dart';
+import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class TeacherCHRDetails extends StatelessWidget {
   TeacherCHRDetails({super.key, required this.provider});
@@ -268,56 +278,57 @@ class TeacherCHRDetails extends StatelessWidget {
             ),
           ),
         ),
-        // SliverToBoxAdapter(
-        //   child: Padding(
-        //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        //       child: mybutton(() async {
-        //         showLoaderDialog(context, "Generating..");
-        //         await provider.screenshotController
-        //             .capture(delay: const Duration(milliseconds: 10))
-        //             .then((capturedImage) async {
-        //           await getPdf(context, capturedImage, provider);
-        //         }).catchError((onError) {
-        //           ScaffoldMessenger.of(context)
-        //               .showSnackBar(snack_bar("Something went wrong.", false));
-        //         });
-        //         Navigator.pop(context);
-        //       }, "Generate PDF", Icons.picture_as_pdf)),
-        // )
+        SliverToBoxAdapter(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: mybutton(() async {
+                showLoaderDialog(context, "Generating..");
+                await provider.screenshotController
+                    .capture(delay: const Duration(milliseconds: 10))
+                    .then((capturedImage) async {
+                  await getPdf(context, capturedImage, provider);
+                }).catchError((onError) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(snack_bar("Something went wrong.", false));
+                });
+                Navigator.pop(context);
+              }, "Generate PDF", Icons.picture_as_pdf)),
+        )
       ]),
     );
   }
 
-  // Future getPdf(BuildContext context, Uint8List? screenShot,
-  //     TeacherCHRViewModel provider) async {
-  //   if (screenShot != null) {
-  //     pw.Document pdf = pw.Document();
-  //     pdf.addPage(
-  //       pw.Page(
-  //         pageFormat: PdfPageFormat.a4,
-  //         build: (context) {
-  //           return pw.Expanded(
-  //             child:
-  //                 pw.Image(pw.MemoryImage(screenShot), fit: pw.BoxFit.contain),
-  //           );
-  //         },
-  //       ),
-  //     );
-  //     List<int> bytes = await pdf.save();
-  //     final path = (await getExternalStorageDirectory())!.path;
-  //     File pdfFile = File(
-  //         "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${context.read<SignInViewModel>().user.name} ${provider.lstTeacherChr[provider.selectedIndex].status} ${provider.lstTeacherChr[provider.selectedIndex].discipline}.pdf");
+  Future getPdf(BuildContext context, Uint8List? screenShot,
+      TeacherCHRViewModel provider) async {
+    if (screenShot != null) {
+      pw.Document pdf = pw.Document();
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (context) {
+            return pw.Expanded(
+              child:
+                  pw.Image(pw.MemoryImage(screenShot), fit: pw.BoxFit.contain),
+            );
+          },
+        ),
+      );
+      List<int> bytes = await pdf.save();
+      final path = (await getExternalStorageDirectory())!.path;
+      DateTime dateTime = DateTime.now();
+      File pdfFile = File(
+          "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${dateTime.toString()}.pdf");
 
-  //     await pdfFile.writeAsBytes(bytes, flush: true);
-  //     await OpenFile.open(
-  //         "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${context.read<SignInViewModel>().user.name} ${provider.lstTeacherChr[provider.selectedIndex].status} ${provider.lstTeacherChr[provider.selectedIndex].discipline}.pdf");
-  //     ScaffoldMessenger.of(context)
-  //         .showSnackBar(snack_bar("PDF Generated", true));
-  //   } else {
-  //     ScaffoldMessenger.of(context)
-  //         .showSnackBar(snack_bar("Something went wrong", false));
-  //   }
-  // }
+      await pdfFile.writeAsBytes(bytes, flush: true);
+      await OpenFile.open(
+          "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${dateTime.toString()}.pdf");
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snack_bar("PDF Generated", true));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snack_bar("Something went wrong", false));
+    }
+  }
 
   Row cardRow(String title1, String subtitle1) {
     return Row(

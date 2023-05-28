@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Model/Admin/user.dart';
+import 'package:live_streaming/Screens/Admin/Schedule/Swapping/schedule.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_recordings.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_schedule.dart';
 import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
@@ -150,9 +151,19 @@ class TeacherDetails extends StatelessWidget {
                 ),
               ),
               const Divider(),
-              ListTile(
-                leading: const Icon(Icons.swap_horiz),
-                title: text_medium('Swapping'),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => SwappingSchedule(
+                                user: user,
+                              ))));
+                },
+                child: ListTile(
+                  leading: const Icon(Icons.swap_horiz),
+                  title: text_medium('Swapping'),
+                ),
               ),
             ],
           );

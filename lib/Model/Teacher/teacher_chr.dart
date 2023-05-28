@@ -27,7 +27,8 @@ class TeacherChr {
       required this.image,
       required this.sit,
       required this.stand,
-      required this.mobile});
+      required this.mobile,
+      required this.venue});
 
   int id;
   String courseName;
@@ -41,9 +42,11 @@ class TeacherChr {
   String date;
   String teacherName;
   String image;
+  String venue;
   int sit;
   int stand;
   int mobile;
+
   List<TeacherChrActivityDetail> teacherChrActivityDetails;
 
   factory TeacherChr.fromMap(Map<String, dynamic> json) => TeacherChr(
@@ -64,7 +67,8 @@ class TeacherChr {
           json["teacherCHRActivityDetails"]
               .map((x) => TeacherChrActivityDetail.fromMap(x))),
       teacherName: json['teacherName'],
-      image: json['image'] ?? '');
+      image: json['image'] ?? '',
+      venue: json['venue']);
 
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -80,7 +84,8 @@ class TeacherChr {
         "teacherCHRActivityDetails":
             List<dynamic>.from(teacherChrActivityDetails.map((x) => x.toMap())),
         'teacherName': teacherName,
-        'image': image
+        'image': image,
+        'venue': venue
       };
 }
 

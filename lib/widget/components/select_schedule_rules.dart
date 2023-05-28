@@ -1,22 +1,18 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:live_streaming/Model/Admin/preschedule.dart';
-import 'package:live_streaming/Model/Admin/timetable.dart';
+import 'package:live_streaming/Model/Admin/rules_timeTable.dart';
 import 'package:live_streaming/utilities/constants.dart';
-import 'package:live_streaming/view_models/Admin/preschedule_view_model.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/widget/components/apploading.dart';
 import 'package:live_streaming/widget/components/errormessage.dart';
-import 'package:live_streaming/widget/progress_indicator.dart';
-import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:provider/provider.dart';
 
-Widget selectScheduleTable(
+Widget selectScheduleRulesTable(
     BuildContext context, TimetableViewModel timetableViewModel,
-    {String? discipline, String? venue, String? daytime}) {
+    {bool? isRule, String? discipline, String? venue, String? daytime}) {
   timetableViewModel.emptylst();
   if (timetableViewModel.loading) {
     return Row(
@@ -30,7 +26,7 @@ Widget selectScheduleTable(
     );
   } else if (timetableViewModel.userError != null) {
     return ErrorMessage(timetableViewModel.userError!.message.toString());
-  } else if (timetableViewModel.lsttimetable.isEmpty) {
+  } else if (timetableViewModel.lstrulestimetable.isEmpty) {
     return large_text("No Schedule Set");
   }
   List<String> daysHeader = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
@@ -47,6 +43,17 @@ Widget selectScheduleTable(
     color: backgroundColorLight,
     child: Column(
       children: [
+        Builder(builder: (context) {
+          return CheckboxListTile(
+              title: text_medium("Select All"),
+              value: timetableViewModel.selectAll,
+              onChanged: (val) {
+                timetableViewModel.setSelectAll(val!);
+              });
+        }),
+        const SizedBox(
+          height: 10,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,33 +89,41 @@ Widget selectScheduleTable(
                   ),
                   Row(
                     children: [
-                      const SizedBox(
-                        width: 20,
-                      ),
                       Column(
                         children: timeTable
-                            .map((e) => timetableViewModel.lsttimetable
+                            .map((e) => timetableViewModel.lstrulestimetable
                                         .where((element) =>
                                             element.starttime.toString() ==
                                             e['start'])
                                         .isNotEmpty &&
-                                    timetableViewModel.lsttimetable
+                                    timetableViewModel.lstrulestimetable
                                         .where((element) =>
                                             element.endtime.toString() ==
                                             e['end'])
                                         .isNotEmpty
                                 ? ScheduleConditions(
-                                    timetableViewModel.lsttimetable
+                                    timetableViewModel.lstrulestimetable
                                         .where((element) =>
                                             element.starttime.toString() ==
                                             e['start'])
                                         .toList(),
                                     context,
+                                    isRule,
                                     discipline ?? "",
                                     venue ?? "",
                                     daytime ?? "")
-                                : rowSchedule("", "", "", "", "", [], context,
-                                    discipline, venue ?? "", daytime ?? ""))
+                                : rowSchedule(
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    [],
+                                    context,
+                                    discipline,
+                                    isRule,
+                                    venue ?? "",
+                                    daytime ?? ""))
                             .toList(),
                       ),
                     ],
@@ -123,8 +138,8 @@ Widget selectScheduleTable(
   );
 }
 
-Widget ScheduleConditions(List<TimeTable> timeTable, BuildContext context,
-    String discipline, String venue, String daytime) {
+Widget ScheduleConditions(List<RulesTimeTable> timeTable, BuildContext context,
+    bool? isRule, String discipline, String venue, String daytime) {
   String getScheduleText(String day) {
     final matchingTimetable = timeTable.where((e) => e.day == day);
 
@@ -150,6 +165,7 @@ Widget ScheduleConditions(List<TimeTable> timeTable, BuildContext context,
     timeTable,
     context,
     discipline,
+    isRule,
     venue,
     daytime,
   );
@@ -179,101 +195,82 @@ Row rowSchedule(
     String wedData,
     String thuData,
     String friData,
-    List<TimeTable> timeTable,
+    List<RulesTimeTable> timeTable,
     BuildContext context,
     String? discipline,
+    bool? isRule,
     String venue,
     String daytime) {
   List<String> days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   List data = [mondata, tueData, wedData, thuData, friData];
-
-  return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: days
-          .asMap()
-          .map((key, value) => MapEntry(
-              key,
-              discipline == data[key].split('\n')[0]
-                  ? rowData(
-                      data[key],
-                      timeTable
-                              .where((element) => element.day == value)
-                              .isNotEmpty
-                          ? timeTable
-                              .where((element) => element.day == value)
-                              .first
-                          : null,
-                      context,
-                      discipline ?? "",
-                      venue,
-                      daytime)
-                  : rowData(
-                      "", null, context, discipline ?? "", venue, daytime)))
-          .values
-          .toList());
+  if (isRule == true) {
+    return Row(
+      children: [
+        const SizedBox(
+          width: 20,
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: days
+                .asMap()
+                .map((key, value) => MapEntry(
+                    key,
+                    rowData(
+                        data[key],
+                        timeTable
+                                .where((element) => element.day == value)
+                                .isNotEmpty
+                            ? timeTable
+                                .where((element) => element.day == value)
+                                .first
+                            : null,
+                        context,
+                        isRule,
+                        discipline ?? "",
+                        venue,
+                        daytime)))
+                .values
+                .toList()),
+      ],
+    );
+  } else {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: days
+            .asMap()
+            .map((key, value) => MapEntry(
+                key,
+                discipline == data[key].split('\n')[0]
+                    ? rowData(
+                        data[key],
+                        timeTable
+                                .where((element) => element.day == value)
+                                .isNotEmpty
+                            ? timeTable
+                                .where((element) => element.day == value)
+                                .first
+                            : null,
+                        context,
+                        isRule,
+                        discipline ?? "",
+                        venue,
+                        daytime)
+                    : rowData("", null, context, isRule, discipline ?? "",
+                        venue, daytime)))
+            .values
+            .toList());
+  }
 }
 
-Widget rowData(String data, TimeTable? timeTable, BuildContext context,
-    String discipline, String venue, String daytime) {
+Widget rowData(String data, RulesTimeTable? timeTable, BuildContext context,
+    bool? isRule, String discipline, String venue, String daytime) {
   return Consumer<TimetableViewModel>(
     builder: (context, provider, child) {
+      timeTable != null ? provider.setListTempTimeTable(timeTable) : null;
       return InkWell(
           onTap: () {
             if (data != "") {
-              showDialog(
-                  context: context,
-                  builder: ((context) => ChangeNotifierProvider(
-                        create: (_) => PreScheduleViewModel(),
-                        child: Consumer<PreScheduleViewModel>(
-                            builder: (context, provider, child) => AlertDialog(
-                                  content: text_medium("Are You Sure?"),
-                                  title: text_medium("Warning!",
-                                      color: shadowColorDark, font: 14),
-                                  actions: [
-                                    OutlinedButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text("No")),
-                                    ElevatedButton(
-                                        onPressed: () async {
-                                          showLoaderDialog(
-                                              context, "Loading..");
-
-                                          PreSchedule schedule = PreSchedule(
-                                              id: 0,
-                                              status: false,
-                                              timeTableId: timeTable!.id,
-                                              venueName: venue,
-                                              starttime: daytime.split(',')[1],
-                                              endtime: daytime.split(',')[2],
-                                              day: daytime.split(',')[0],
-                                              date: daytime.split(',')[3]);
-
-                                          await provider.insertdata(schedule);
-
-                                          if (provider.userError != null) {
-                                            Navigator.pop(context);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(snack_bar(
-                                                    provider.userError!.message
-                                                        .toString(),
-                                                    false));
-                                            Navigator.pop(context);
-                                          } else {
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                            Navigator.pop(context);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(snack_bar(
-                                                    "Class PreScheduled",
-                                                    true));
-                                          }
-                                        },
-                                        child: const Text("Yes")),
-                                  ],
-                                )),
-                      )));
+              provider.updateValue(timeTable!);
             }
           },
           child: Container(

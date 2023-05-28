@@ -22,7 +22,7 @@ const INVALID_FORMAT = 102;
 const UNKNOWN_ERROR = 103;
 //------------------------------------URLS---------------------
 
-const String baseUrl = 'http://192.168.0.104:8000';
+const String baseUrl = 'http://192.168.0.108:8000';
 const String addadvrurl = '$baseUrl/api/add-dvr';
 const String getdvrurl = '$baseUrl/api/dvr-details';
 const String addcameraurl = '$baseUrl/api/add-camera';
@@ -60,6 +60,8 @@ const String getCourseAttendanceurl = '$baseUrl/api/get-course-attendance';
 const String getTeacherCHRurl = '$baseUrl/api/get-teacher-chr';
 const String getAllTeacherCHRurl = '$baseUrl/api/get-all-teacher-chr';
 const String addRulesurl = '$baseUrl/api/add-rules';
+const String getSwappingUserDataurl = '$baseUrl/api/get-swapping-teacher-data';
+const String addswappingurl = '$baseUrl/api/add-swapping';
 //----------------------------------------------------Routes-----------------------------------
 
 const String routesStudentDashboard = '/StudentDashboard';

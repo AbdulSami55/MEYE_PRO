@@ -6,7 +6,6 @@ import 'package:live_streaming/Model/Admin/timetable.dart';
 import 'package:live_streaming/repo/Admin/rules_services.dart';
 import 'package:live_streaming/repo/Admin/timetable_services.dart';
 import 'package:live_streaming/view_models/Admin/Profile/rule_setting_view_model.dart';
-import 'package:live_streaming/view_models/Admin/rules_view_model.dart';
 import '../../Model/user_error.dart';
 import '../../repo/api_status.dart';
 
@@ -162,7 +161,6 @@ class TimetableViewModel extends ChangeNotifier {
   getRulesData(String teacherName) async {
     setloading(true);
     var response = await RulesServices().getRulesTimeTable(teacherName);
-    print(response);
     if (response is Success) {
       setRulesData(response.response as RulesData);
     }

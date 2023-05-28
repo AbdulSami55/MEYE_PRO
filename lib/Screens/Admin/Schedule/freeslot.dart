@@ -322,6 +322,7 @@ class FreeSlotView extends StatelessWidget {
     List<Venue> vwedlst = [];
     List<Venue> vthulst = [];
     List<Venue> vfrilst = [];
+
     String v = "";
     monlst.add(v);
     tuelst.add(v);
@@ -344,23 +345,46 @@ class FreeSlotView extends StatelessWidget {
 
     for (TimeTable t in rescheduleviewmodel.lsttimetable) {
       if (t.starttime.toString() == time) {
-        if (t.day == "Monday") {
-          Venue v = vmonlst.where((element) => element.name == t.venue).first;
-          monlst.remove(v.name);
-          v = vmonlst.where((element) => element.name == t.venue).first;
-          monlst.remove(v.name);
-        } else if (t.day == "Tuesday") {
-          Venue v = vtuelst.where((element) => element.name == t.venue).first;
-          tuelst.remove(v.name);
-        } else if (t.day == "Wednesday") {
-          Venue v = vwedlst.where((element) => element.name == t.venue).first;
-          wedlst.remove(v.name);
-        } else if (t.day == "Thursday") {
-          Venue v = vthulst.where((element) => element.name == t.venue).first;
-          thulst.remove(v.name);
-        } else if (t.day == "Friday") {
-          Venue v = vfrilst.where((element) => element.name == t.venue).first;
-          frilst.remove(v.name);
+        if (t.day == "Monday"&& monlst.isNotEmpty) {
+          if (t.discipline == discipline) {
+            monlst = [];
+            vmonlst = [];
+          } else {
+            Venue v = vmonlst.where((element) => element.name == t.venue).first;
+            monlst.remove(v.name);
+          }
+        } else if (t.day == "Tuesday"&& tuelst.isNotEmpty) {
+          if (t.discipline == discipline) {
+            tuelst = [];
+            vtuelst = [];
+          } else {
+            Venue v = vtuelst.where((element) => element.name == t.venue).first;
+            tuelst.remove(v.name);
+          }
+        } else if (t.day == "Wednesday"&& wedlst.isNotEmpty) {
+          if (t.discipline == discipline) {
+            wedlst = [];
+            vwedlst = [];
+          } else {
+            Venue v = vwedlst.where((element) => element.name == t.venue).first;
+            wedlst.remove(v.name);
+          }
+        } else if (t.day == "Thursday"&& thulst.isNotEmpty) {
+          if (t.discipline == discipline) {
+            thulst = [];
+            vthulst = [];
+          } else {
+            Venue v = vthulst.where((element) => element.name == t.venue).first;
+            thulst.remove(v.name);
+          }
+        } else if (t.day == "Friday"&& frilst.isNotEmpty) {
+          if (t.discipline == discipline) {
+            frilst = [];
+            vfrilst = [];
+          } else {
+            Venue v = vfrilst.where((element) => element.name == t.venue).first;
+            frilst.remove(v.name);
+          }
         }
       }
     }

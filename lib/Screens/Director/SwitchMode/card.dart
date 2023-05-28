@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:live_streaming/Screens/Teacher/components/card_text.dart';
@@ -20,8 +22,7 @@ ListView allTeacher(TeacherCHRViewModel provider, {bool? isShortReport}) {
       }));
 }
 
-Padding mainBody(
-    TeacherCHRViewModel provider, int index, BuildContext context) {
+Widget mainBody(TeacherCHRViewModel provider, int index, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: InkWell(

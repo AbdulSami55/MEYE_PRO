@@ -4,7 +4,9 @@ import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Admin/User/user_view_model.dart';
 
 SliverToBoxAdapter searchBar(
-    {required bool isTeacher, UserViewModel? userViewModel}) {
+    {required bool isTeacher,
+    UserViewModel? userViewModel,
+    bool? isSwappingTeacherDetails}) {
   return SliverToBoxAdapter(
     child: Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),

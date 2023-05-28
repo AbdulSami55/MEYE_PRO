@@ -10,6 +10,7 @@ import 'package:live_streaming/widget/components/appbar.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
+import 'package:live_streaming/widget/textcomponents/small_text.dart';
 import 'package:live_streaming/widget/topbar.dart';
 import 'package:provider/provider.dart';
 import '../../../utilities/constants.dart';
@@ -124,32 +125,39 @@ class TeacherRecordingView extends StatelessWidget {
                 return Column(
                   children: [
                     InkWell(
-                      onTap: () {
-                        teacherRecordingsViewModel.setPlayer(
-                            '$getvideo${teacherRecordings.fileName}');
-                        teacherRecordingsViewModel
-                            .setSelectedVideo(teacherRecordings);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => VideoPlay(
-                                      teacherRecordingsViewModel:
-                                          teacherRecordingsViewModel,
-                                    ))));
-                      },
-                      child: ListTile(
-                        leading: const Icon(
-                          Icons.play_arrow,
-                          color: primaryColor,
-                          size: 50,
-                        ),
-                        title: text_medium(
-                            "${teacherRecordings.date.toString().split(' ')[0]}\n${teacherRecordings.fileName.split(',')[2]}"),
-                        subtitle: Text(
-                            "Course Name: ${teacherRecordings.courseName}\nSection : ${teacherRecordings.discipline}"),
-                      ),
-                    ),
-                    const Divider()
+                        onTap: () {
+                          teacherRecordingsViewModel.setPlayer(
+                              '$getvideo${teacherRecordings.fileName}');
+                          teacherRecordingsViewModel
+                              .setSelectedVideo(teacherRecordings);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => VideoPlay(
+                                        teacherRecordingsViewModel:
+                                            teacherRecordingsViewModel,
+                                      ))));
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                  '$baseUrl/api/get-video-thumbnail/${teacherRecordings.thumbnail}'),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            text_medium(
+                                "${teacherRecordings.courseName} ${teacherRecordings.date.toString().split(' ')[0]}"),
+                            textSmall(
+                                "${teacherRecordings.discipline} ${teacherRecordings.fileName.split(',')[2].split('.')[0]}"),
+                            const SizedBox(
+                              height: 20,
+                            )
+                          ],
+                        )),
                   ],
                 );
               })),

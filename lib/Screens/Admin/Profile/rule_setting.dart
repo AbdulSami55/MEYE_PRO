@@ -9,7 +9,7 @@ import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Admin/Profile/rule_setting_view_model.dart';
 import 'package:live_streaming/view_models/Admin/timetable.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
-import 'package:live_streaming/widget/components/select_schedule.dart';
+import 'package:live_streaming/widget/components/select_schedule_rules.dart';
 import 'package:live_streaming/widget/mybutton.dart';
 import 'package:live_streaming/widget/progress_indicator.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
@@ -64,7 +64,7 @@ class RuleSetting extends StatelessWidget {
                           child: Consumer<TimetableViewModel>(
                               builder: (context, provider, child) {
                             timetableViewModel = provider;
-                            return selectScheduleTable(context, provider,
+                            return selectScheduleRulesTable(context, provider,
                                 isRule: true);
                           }),
                         ),

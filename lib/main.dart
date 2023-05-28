@@ -11,6 +11,7 @@ import 'package:live_streaming/view_models/Admin/DVR/dvr_view_model.dart';
 import 'package:live_streaming/view_models/Admin/Profile/rule_setting_view_model.dart';
 import 'package:live_streaming/view_models/Admin/reschedule_view_model.dart';
 import 'package:live_streaming/view_models/Admin/User/user_view_model.dart';
+import 'package:live_streaming/view_models/Admin/swapping_view_model.dart';
 import 'package:live_streaming/view_models/Admin/venue_view_model.dart';
 import 'package:live_streaming/view_models/Teacher/attendance.dart';
 import 'package:live_streaming/view_models/handle_bottom_nav.dart';
@@ -86,7 +87,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ChangeNotifierProvider(create: (_) => RuleSettingViewModel()),
         ChangeNotifierProvider(create: (_) => BottomNavViewModel()),
         ChangeNotifierProvider(create: (_) => SignInViewModel()),
-        ChangeNotifierProvider(create: (_) => AttendanceViewModel())
+        ChangeNotifierProvider(create: (_) => AttendanceViewModel()),
+        ChangeNotifierProvider(create: (_) => SwappingViewModel())
       ],
       child: MaterialApp.router(
         routerConfig: router,
