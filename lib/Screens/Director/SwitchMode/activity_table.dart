@@ -1,10 +1,11 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, implementation_imports
 
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Teacher/teacher_chr.dart';
+import 'package:live_streaming/Screens/Director/GeneratePdf/activity_table.dart';
 import 'package:live_streaming/Screens/Director/GeneratePdf/chr_table.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
@@ -15,6 +16,7 @@ import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:live_streaming/widget/textcomponents/small_text.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/src/widgets/document.dart';
 
 Widget activityTable(BuildContext context, TeacherCHRViewModel provider,
     {bool? isShortReport}) {
@@ -37,6 +39,9 @@ Widget activityTable(BuildContext context, TeacherCHRViewModel provider,
                 DataColumn(
                     label: text_medium('Teacher', color: containerColor)),
                 DataColumn(label: text_medium('Course', color: containerColor)),
+                DataColumn(
+                    label: text_medium('Discipline', color: containerColor)),
+                DataColumn(label: text_medium('Venue', color: containerColor)),
                 DataColumn(label: text_medium('Date', color: containerColor)),
                 DataColumn(label: text_medium('Sit', color: containerColor)),
                 DataColumn(label: text_medium('Stand', color: containerColor)),
@@ -85,6 +90,8 @@ DataRow rowData(TeacherChr v, int k) {
         DataCell(textSmall("${k + 1}")),
         DataCell(textSmall(v.teacherName.toString())),
         DataCell(textSmall(v.courseName.toString())),
+        DataCell(textSmall(v.discipline.toString())),
+        DataCell(textSmall(v.venue.toString())),
         DataCell(textSmall(v.date.toString())),
         DataCell(textSmall(v.sit.toString())),
         DataCell(textSmall(v.stand.toString())),
@@ -101,9 +108,16 @@ BoxDecoration myBoxDecoration = BoxDecoration(
   color: Colors.white,
 );
 
-Future getPdf(BuildContext context, Uint8List? screenShot,
-    TeacherCHRViewModel provider) async {
-  final pdf = generatePdfFromTable(provider);
+Future getPdf(
+    BuildContext context, Uint8List? screenShot, TeacherCHRViewModel provider,
+    {bool? isChr}) async {
+  Document pdf;
+  if (isChr == null) {
+    pdf = generatePdfFromTable(provider);
+  } else {
+    pdf = generatePdfFromChrTable(provider);
+  }
+
   DateTime dateTime = DateTime.now();
   List<int> bytes = await pdf.save();
   final path = (await getExternalStorageDirectory())!.path;

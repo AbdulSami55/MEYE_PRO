@@ -7,20 +7,20 @@ String recordingsToJson(List<Recordings> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Recordings {
-  Recordings({
-    required this.courseCode,
-    required this.courseName,
-    required this.teacherName,
-    required this.discipline,
-    required this.venue,
-    required this.day,
-    required this.startTime,
-    required this.endTime,
-    required this.date,
-    required this.status,
-    required this.slot,
-    required this.fileName,
-  });
+  Recordings(
+      {required this.courseCode,
+      required this.courseName,
+      required this.teacherName,
+      required this.discipline,
+      required this.venue,
+      required this.day,
+      required this.startTime,
+      required this.endTime,
+      required this.date,
+      required this.status,
+      required this.slot,
+      required this.fileName,
+      required this.thumbnail});
 
   String courseCode;
   String courseName;
@@ -34,21 +34,22 @@ class Recordings {
   String status;
   int slot;
   String fileName;
+  String thumbnail;
 
   factory Recordings.fromJson(Map<String, dynamic> json) => Recordings(
-        courseCode: json["courseCode"],
-        courseName: json["courseName"],
-        teacherName: json["teacherName"],
-        discipline: json["discipline"],
-        venue: json["venue"],
-        day: json["day"],
-        startTime: json["startTime"],
-        endTime: json["endTime"],
-        date: DateTime.parse(json["date"]),
-        status: json["status"],
-        slot: json["slot"],
-        fileName: json["fileName"],
-      );
+      courseCode: json["courseCode"],
+      courseName: json["courseName"],
+      teacherName: json["teacherName"],
+      discipline: json["discipline"],
+      venue: json["venue"],
+      day: json["day"],
+      startTime: json["startTime"],
+      endTime: json["endTime"],
+      date: DateTime.parse(json["date"]),
+      status: json["status"],
+      slot: json["slot"],
+      fileName: json["fileName"],
+      thumbnail: json['thumbnail']);
 
   Map<String, dynamic> toJson() => {
         "courseCode": courseCode,
@@ -64,5 +65,6 @@ class Recordings {
         "status": status,
         "slot": slot,
         "fileName": fileName,
+        'thumbnail': thumbnail
       };
 }
