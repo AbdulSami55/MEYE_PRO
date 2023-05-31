@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_streaming/Screens/Teacher/attendance.dart';
 import 'package:live_streaming/Screens/Teacher/home_screen.dart';
@@ -59,12 +60,116 @@ class TeacherBottomNav extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () async {
-                      XFile? img = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      if (img != null) {
-                        providerAttendance.markAttendance(File(img.path));
-                        provider.setTeacherSelectValue(1);
-                      }
+                      showGeneralDialog(
+                        context: context,
+                        barrierLabel: "Barrier",
+                        barrierDismissible: true,
+                        barrierColor: Colors.black.withOpacity(0.5),
+                        transitionDuration: const Duration(milliseconds: 400),
+                        pageBuilder: (_, __, ___) {
+                          return Center(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 32, horizontal: 24),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.95),
+                                borderRadius: BorderRadius.circular(40),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    offset: const Offset(0, 30),
+                                    blurRadius: 60,
+                                  ),
+                                  const BoxShadow(
+                                    color: Colors.black45,
+                                    offset: Offset(0, 30),
+                                    blurRadius: 60,
+                                  ),
+                                ],
+                              ),
+                              child: Scaffold(
+                                backgroundColor: Colors.transparent,
+                                body: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Center(
+                                      child: Text("Select Type",
+                                          style: GoogleFonts.bebasNeue(
+                                              fontSize: 40)),
+                                    ),
+                                    const SizedBox(height: 30),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        InkWell(
+                                            onTap: () async {
+                                              XFile? img = await ImagePicker()
+                                                  .pickImage(
+                                                      source:
+                                                          ImageSource.gallery);
+                                              if (img != null) {
+                                                providerAttendance
+                                                    .markAttendance(
+                                                        File(img.path));
+                                                provider
+                                                    .setTeacherSelectValue(1);
+                                              }
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Icon(
+                                              CupertinoIcons.photo,
+                                              size: 50,
+                                            )),
+                                        InkWell(
+                                            onTap: () async {
+                                              XFile? img = await ImagePicker()
+                                                  .pickImage(
+                                                      source:
+                                                          ImageSource.camera);
+                                              if (img != null) {
+                                                providerAttendance
+                                                    .markAttendance(
+                                                        File(img.path));
+                                                provider
+                                                    .setTeacherSelectValue(1);
+                                              }
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 20.0),
+                                              child: Icon(
+                                                CupertinoIcons.photo_camera,
+                                                size: 50,
+                                              ),
+                                            ))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        transitionBuilder: (_, anim, __, child) {
+                          Tween<Offset> tween;
+
+                          tween = Tween(
+                              begin: const Offset(0, -1), end: Offset.zero);
+
+                          return SlideTransition(
+                            position: tween.animate(
+                              CurvedAnimation(
+                                  parent: anim, curve: Curves.easeInOut),
+                            ),
+                            child: child,
+                          );
+                        },
+                      );
                     },
                     child: Opacity(
                         opacity: provider.teacherSelectedValue == 1 ? 1 : 0.5,

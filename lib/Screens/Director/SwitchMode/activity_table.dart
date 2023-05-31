@@ -121,11 +121,9 @@ Future getPdf(
   DateTime dateTime = DateTime.now();
   List<int> bytes = await pdf.save();
   final path = (await getExternalStorageDirectory())!.path;
-  File pdfFile = File(
-      "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${dateTime.toString()}.pdf");
+  File pdfFile = File("$path/${dateTime.toString()}.pdf");
 
   await pdfFile.writeAsBytes(bytes, flush: true);
-  await OpenFile.open(
-      "$path/${provider.lstTeacherChr[provider.selectedIndex].date} ${dateTime.toString()}.pdf");
+  await OpenFile.open("$path/${dateTime.toString()}.pdf");
   ScaffoldMessenger.of(context).showSnackBar(snack_bar("PDF Generated", true));
 }

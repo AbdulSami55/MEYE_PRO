@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/teacher_details.dart';
+import 'package:live_streaming/Screens/Admin/recording_details.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:provider/provider.dart';
 import '../../../view_models/Admin/DVR/dvr_view_model.dart';
@@ -88,7 +89,7 @@ class DVRDetails extends StatelessWidget {
               ),
             ]),
             TeacherDetails(),
-            TeacherDetails(),
+            const RecordingDetails(),
           ]),
         ),
       ),

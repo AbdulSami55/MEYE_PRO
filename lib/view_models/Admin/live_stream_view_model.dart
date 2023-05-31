@@ -20,11 +20,11 @@ class LiveStreamViewModel with ChangeNotifier {
   startVideo() async {
     setLoading(true);
 
-    String myUrl = 'http://192.168.0.117:8080/video';
+    String myUrl = 'http://192.168.43.26:8080/video';
     VlcPlayerController vlcPlayerController = VlcPlayerController.network(myUrl,
         autoPlay: true, options: VlcPlayerOptions());
     _vlcPlayer.add(vlcPlayerController);
-    myUrl = 'http://192.168.0.108:8080/video';
+    myUrl = 'http://192.168.43.1:8080/video';
     vlcPlayerController = VlcPlayerController.network(myUrl,
         autoPlay: true, options: VlcPlayerOptions());
     _vlcPlayer.add(vlcPlayerController);

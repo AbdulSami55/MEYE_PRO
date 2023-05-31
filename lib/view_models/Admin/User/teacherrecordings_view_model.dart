@@ -25,8 +25,12 @@ class TeacherRecordingsViewModel with ChangeNotifier {
 
   Recordings get selectedVideo => _selectedVideo;
 
-  TeacherRecordingsViewModel(String teacherName) {
-    getData(teacherName);
+  TeacherRecordingsViewModel(String teacherName, {bool? isRecording}) {
+    if (isRecording == null) {
+      getData(teacherName);
+    } else {
+      getRecordingsData();
+    }
   }
   setloading(bool loading) {
     _isloading = loading;
@@ -101,6 +105,20 @@ class TeacherRecordingsViewModel with ChangeNotifier {
   getData(String teacherName) async {
     setloading(true);
     var response = await TeacherRecordingServies.getRecordings(teacherName);
+    if (response is Success) {
+      setTeacherRecordings(response.response as List<Recordings>);
+    }
+    if (response is Failure) {
+      UserError userError =
+          UserError(code: response.code, message: response.errorResponse);
+      setUserError(userError);
+    }
+    setloading(false);
+  }
+
+  getRecordingsData() async {
+    setloading(true);
+    var response = await TeacherRecordingServies.getAllRecordings();
     if (response is Success) {
       setTeacherRecordings(response.response as List<Recordings>);
     }

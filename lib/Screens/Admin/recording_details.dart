@@ -1,71 +1,47 @@
-// ignore_for_file: must_be_immutable, non_constant_identifier_names
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/recordings.dart';
-import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/recordings.dart';
 import 'package:live_streaming/view_models/Admin/User/teacherrecordings_view_model.dart';
 import 'package:live_streaming/widget/components/appbar.dart';
+import 'package:live_streaming/widget/components/search_bar.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:live_streaming/widget/textcomponents/small_text.dart';
-import 'package:live_streaming/widget/topbar.dart';
 import 'package:provider/provider.dart';
 import '../../../utilities/constants.dart';
+import '../../../view_models/Admin/User/user_view_model.dart';
 import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 
-class TeacherRecordingView extends StatelessWidget {
-  TeacherRecordingView({super.key, required this.user});
-  User user;
+class RecordingDetails extends StatelessWidget {
+  const RecordingDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColorLight,
-      body: CustomScrollView(
-        slivers: [
-          appbar("Teacher Recordings", isGreen: true),
-          SliverToBoxAdapter(
+      backgroundColor: backgroundColor,
+      body: CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+        SliverToBoxAdapter(
+          child: ChangeNotifierProvider(
+            create: ((context) =>
+                TeacherRecordingsViewModel('', isRecording: true)),
             child: Container(
-              color: primaryColor,
-              child: Container(
-                decoration: const BoxDecoration(
-                    color: backgroundColorLight,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(32.0),
-                        topRight: Radius.circular(32.0))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    topBar(
-                      context,
-                      "$getuserimage${user.role}/${user.image}",
-                      user.name.toString(),
-                    ),
-                    ChangeNotifierProvider(
-                      create: ((context) =>
-                          TeacherRecordingsViewModel(user.name!)),
-                      child: Container(
-                        color: backgroundColorLight,
-                        child: Consumer<TeacherRecordingsViewModel>(
-                            builder: (context, provider, child) {
-                          return _recordings(
-                            context,
-                            provider,
-                          );
-                        }),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              color: backgroundColorLight,
+              child: Consumer<TeacherRecordingsViewModel>(
+                  builder: (context, provider, child) {
+                return _recordings(
+                  context,
+                  provider,
+                );
+              }),
             ),
-          )
-        ],
-      ),
+          ),
+        ),
+      ]),
     );
   }
 
@@ -110,7 +86,7 @@ class TeacherRecordingView extends StatelessWidget {
       );
     }
     return Container(
-      color: backgroundColorLight,
+      color: backgroundColor,
       child: Column(
         children: [
           searchbar(context),
@@ -168,7 +144,7 @@ class TeacherRecordingView extends StatelessWidget {
 
   Padding searchbar(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
       child: Row(
         children: [
           SizedBox(
@@ -182,7 +158,7 @@ class TeacherRecordingView extends StatelessWidget {
                     .setFilter(value);
               },
               decoration: BoxDecoration(
-                color: backgroundColor,
+                color: backgroundColorLight,
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
@@ -331,7 +307,7 @@ class TeacherRecordingView extends StatelessWidget {
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 8.0, top: 2.0),
                 child: Container(
                     decoration: BoxDecoration(
                         color: backgroundColor2,
@@ -348,5 +324,4 @@ class TeacherRecordingView extends StatelessWidget {
       ),
     );
   }
-
 }
