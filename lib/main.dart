@@ -77,7 +77,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    var title = 'MEYE PRO';
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DVRViewModel()),
@@ -95,7 +94,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primarySwatch: Colors.green, primaryColor: Colors.green[400]),
-        title: title,
+        title: 'MEYE PRO',
       ),
     );
   }
