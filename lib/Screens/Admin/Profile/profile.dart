@@ -54,8 +54,8 @@ class Profile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        large_text("Admin12"),
-                        text_medium("Admin12@gmail.com"),
+                        large_text("Admin"),
+                        text_medium("Admin@gmail.com"),
                       ],
                     )
                   ],
@@ -110,7 +110,12 @@ class Profile extends StatelessWidget {
                         thickness: 1,
                         height: 0,
                       ),
-                      profile_list_tile(context, "FAQ's", Icons.assignment),
+                      InkWell(
+                          onTap: () {
+                            context.push(routesDemo);
+                          },
+                          child: profile_list_tile(
+                              context, "Demo", Icons.assignment)),
                       const Divider(
                         thickness: 1,
                         height: 0,

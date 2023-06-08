@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Student/course_attendance.dart';
 import 'package:live_streaming/utilities/constants.dart';

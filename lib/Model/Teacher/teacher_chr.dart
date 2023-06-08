@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final teacherChr = teacherChrFromMap(jsonString);
-
 import 'dart:convert';
 
 List<TeacherChr> teacherChrFromMap(String str) =>
@@ -27,7 +23,6 @@ class TeacherChr {
       required this.image,
       required this.sit,
       required this.stand,
-      required this.mobile,
       required this.venue});
 
   int id;
@@ -43,9 +38,8 @@ class TeacherChr {
   String teacherName;
   String image;
   String venue;
-  int sit;
-  int stand;
-  int mobile;
+  String sit;
+  String stand;
 
   List<TeacherChrActivityDetail> teacherChrActivityDetails;
 
@@ -60,9 +54,8 @@ class TeacherChr {
       totalTimeOut: json["totalTimeOut"],
       status: json["status"],
       date: json["date"],
-      sit: int.parse(json['sit']),
-      stand: int.parse(json['stand']),
-      mobile: int.parse(json['mobile']),
+      sit: json['sit'],
+      stand: json['stand'],
       teacherChrActivityDetails: List<TeacherChrActivityDetail>.from(
           json["teacherCHRActivityDetails"]
               .map((x) => TeacherChrActivityDetail.fromMap(x))),
@@ -95,14 +88,12 @@ class TeacherChrActivityDetail {
     required this.timeout,
     required this.sit,
     required this.stand,
-    required this.mobile,
   });
 
   DateTime? timein;
   DateTime? timeout;
-  int? sit;
-  int? stand;
-  int? mobile;
+  String? sit;
+  String? stand;
 
   factory TeacherChrActivityDetail.fromMap(Map<String, dynamic> json) =>
       TeacherChrActivityDetail(
@@ -111,7 +102,6 @@ class TeacherChrActivityDetail {
             json["timeout"] == null ? null : DateTime.parse(json["timeout"]),
         sit: json["sit"],
         stand: json["stand"],
-        mobile: json["mobile"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -119,6 +109,5 @@ class TeacherChrActivityDetail {
         "timeout": timeout?.toIso8601String(),
         "sit": sit,
         "stand": stand,
-        "mobile": mobile,
       };
 }

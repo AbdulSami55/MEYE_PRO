@@ -110,6 +110,7 @@ class TeacherCHRDetails extends StatelessWidget {
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
                                     crossAxisAlignment:
@@ -125,6 +126,13 @@ class TeacherCHRDetails extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
+                                      cardRow(
+                                        'Time: ',
+                                        "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
                                       provider.isChr
                                           ? cardRow('Time In: ',
                                               "${teacherChr.totalTimeIn} Min")
@@ -134,12 +142,10 @@ class TeacherCHRDetails extends StatelessWidget {
                                         height: 10,
                                       ),
                                       provider.isChr
-                                          ? cardRow(
-                                              'Time: ',
-                                              "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
-                                            )
-                                          : cardRow('Mobile: ',
-                                              "${teacherChr.mobile} Min"),
+                                          ? cardRow('Time Out: ',
+                                              teacherChr.totalTimeOut)
+                                          : cardRow(
+                                              'Stand: ', teacherChr.stand),
                                     ],
                                   ),
                                   const SizedBox(
@@ -157,20 +163,10 @@ class TeacherCHRDetails extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      provider.isChr
-                                          ? cardRow('Time Out: ',
-                                              "${teacherChr.totalTimeOut} Min")
-                                          : cardRow('Stand: ',
-                                              "${teacherChr.stand} Min"),
+                                      cardRow('Venue: ', teacherChr.venue),
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      provider.isChr
-                                          ? cardRow("", "")
-                                          : cardRow(
-                                              'Time: ',
-                                              "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
-                                            ),
                                     ],
                                   )
                                 ],
@@ -331,11 +327,6 @@ class TeacherCHRDetails extends StatelessWidget {
   }
 
   Row cardRow(String title1, String subtitle1) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        cardText(title1, subtitle1),
-      ],
-    );
+    return cardText(title1, subtitle1);
   }
 }

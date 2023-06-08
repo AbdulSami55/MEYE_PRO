@@ -17,7 +17,6 @@ pw.Document generatePdfFromTable(TeacherCHRViewModel provider,
     'Date',
     'Sit',
     'Stand',
-    'Mobile',
     'Status',
   ];
 
@@ -39,7 +38,6 @@ pw.Document generatePdfFromTable(TeacherCHRViewModel provider,
       rowData.date.toString(),
       rowData.sit.toString(),
       rowData.stand.toString(),
-      rowData.mobile.toString(),
       rowData.status.toString(),
     ];
   });

@@ -15,8 +15,8 @@ SliverAppBar stdteacherappbar(BuildContext context,
     foregroundColor:
         appBarColor != null ? backgroundColorLight : shadowColorDark,
     actions: [
-      Column(
-        children: const [
+      const Column(
+        children: [
           SizedBox(
             height: 13,
           ),

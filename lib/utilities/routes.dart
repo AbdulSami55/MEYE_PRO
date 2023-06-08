@@ -4,6 +4,7 @@ import 'package:live_streaming/Model/Admin/user.dart';
 import 'package:live_streaming/Screens/Admin/Profile/AssignCourse/student_list.dart';
 import 'package:live_streaming/Screens/Admin/Profile/add_user.dart';
 import 'package:live_streaming/Screens/Admin/Profile/AssignCourse/assign_course.dart';
+import 'package:live_streaming/Screens/Admin/Profile/demo.dart';
 import 'package:live_streaming/Screens/Admin/Profile/profile.dart';
 import 'package:live_streaming/Screens/Admin/Profile/rule_setting.dart';
 import 'package:live_streaming/Screens/Admin/Schedule/freeslot.dart';
@@ -117,6 +118,8 @@ final GoRouter router = GoRouter(
                   state.extra as TeacherCHRViewModel;
               return TeacherCHRDetails(provider: teacherCHRViewModel);
             })),
+        GoRoute(
+            path: 'Demo', builder: ((context, state) => const DemoScreen())),
       ],
     ),
   ],

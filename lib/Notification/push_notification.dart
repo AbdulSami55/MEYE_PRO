@@ -24,13 +24,11 @@ class PushNotificationService {
 
   showNotification(RemoteMessage message) async {
     var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
+        'your channel id', 'your channel name',
         playSound: true, importance: Importance.max, priority: Priority.high);
-    var iOSPlatformChannelSpecifics =
-        const IOSNotificationDetails(presentSound: false);
-    var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics);
+
+    var platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.show(
       0,

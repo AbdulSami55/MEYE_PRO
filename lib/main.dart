@@ -30,9 +30,8 @@ initialize() async {
   WidgetsFlutterBinding.ensureInitialized();
   var initializationSettingsAndroid =
       const AndroidInitializationSettings('mipmap/app_icon');
-  var initializationSettingsIOS = const IOSInitializationSettings();
-  var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  var initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   flutterLocalNotificationsPlugin.initialize(initializationSettings);
   await Firebase.initializeApp(

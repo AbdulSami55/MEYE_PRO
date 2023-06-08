@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, implementation_imports
+// ignore_for_file: use_build_context_synchronously, implementation_imports, deprecated_member_use
 
 import 'dart:io';
 
@@ -45,7 +45,6 @@ Widget activityTable(BuildContext context, TeacherCHRViewModel provider,
                 DataColumn(label: text_medium('Date', color: containerColor)),
                 DataColumn(label: text_medium('Sit', color: containerColor)),
                 DataColumn(label: text_medium('Stand', color: containerColor)),
-                DataColumn(label: text_medium('Mobile', color: containerColor)),
                 DataColumn(label: text_medium('Status', color: containerColor))
               ],
               rows: isShortReport == true
@@ -95,7 +94,6 @@ DataRow rowData(TeacherChr v, int k) {
         DataCell(textSmall(v.date.toString())),
         DataCell(textSmall(v.sit.toString())),
         DataCell(textSmall(v.stand.toString())),
-        DataCell(textSmall(v.mobile.toString())),
         DataCell(textSmall(v.status.toString()))
       ]);
 }

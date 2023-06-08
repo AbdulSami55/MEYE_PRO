@@ -54,13 +54,14 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                         decoration: const BoxDecoration(
                           color: containerColor,
                         ),
-                        width: MediaQuery.of(context).size.width * 0.9,
+                        width: MediaQuery.of(context).size.width * 0.95,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Column(
                                     crossAxisAlignment:
@@ -76,6 +77,13 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
+                                      cardRow(
+                                        'Time: ',
+                                        "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
                                       provider.isTeacherChr
                                           ? cardRow('Time In: ',
                                               "${teacherChr.totalTimeIn} Min")
@@ -85,24 +93,10 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                         height: 10,
                                       ),
                                       provider.isTeacherChr
-                                          ? cardRow(
-                                              'Time: ',
-                                              "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
-                                            )
-                                          : cardRow('Mobile: ',
-                                              "${teacherChr.mobile} Min"),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      provider.isTeacherChr
-                                          ? cardRow(
-                                              '',
-                                              "",
-                                            )
-                                          : cardRow(
-                                              'Time: ',
-                                              "${teacherChr.startTime.split(".")[0]}-${teacherChr.endTime.split('.')[0]}",
-                                            )
+                                          ? cardRow('Time Out: ',
+                                              "${teacherChr.totalTimeOut} Min")
+                                          : cardRow('Stand: ',
+                                              "${teacherChr.stand} Min"),
                                     ],
                                   ),
                                   const SizedBox(
@@ -117,14 +111,6 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                         height: 10,
                                       ),
                                       cardRow('Day: ', teacherChr.day),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      provider.isTeacherChr
-                                          ? cardRow('Time Out: ',
-                                              "${teacherChr.totalTimeOut} Min")
-                                          : cardRow('Stand: ',
-                                              "${teacherChr.stand} Min"),
                                       const SizedBox(
                                         height: 10,
                                       ),

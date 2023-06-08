@@ -5,15 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Admin/recordings.dart';
 import 'package:live_streaming/Screens/Admin/Teacher/recordings.dart';
 import 'package:live_streaming/view_models/Admin/User/teacherrecordings_view_model.dart';
-import 'package:live_streaming/widget/components/appbar.dart';
-import 'package:live_streaming/widget/components/search_bar.dart';
 import 'package:live_streaming/widget/snack_bar.dart';
 import 'package:live_streaming/widget/textcomponents/large_text.dart';
 import 'package:live_streaming/widget/textcomponents/medium_text.dart';
 import 'package:live_streaming/widget/textcomponents/small_text.dart';
 import 'package:provider/provider.dart';
 import '../../../utilities/constants.dart';
-import '../../../view_models/Admin/User/user_view_model.dart';
 import '../../../widget/components/apploading.dart';
 import '../../../widget/components/errormessage.dart';
 

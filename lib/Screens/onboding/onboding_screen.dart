@@ -64,10 +64,10 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
-                    SizedBox(
+                    const SizedBox(
                       width: 260,
                       child: Column(
-                        children: const [
+                        children: [
                           Text(
                             "MEYE PRO WITH \nTIMETABLE",
                             style: TextStyle(
