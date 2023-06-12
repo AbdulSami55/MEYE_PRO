@@ -2,6 +2,8 @@
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:live_streaming/Screens/Admin/home.dart';
 import 'package:live_streaming/Screens/onboding/components/sign_in_dialog.dart';
 import 'package:rive/rive.dart';
 import 'components/animated_btn.dart';
@@ -16,13 +18,38 @@ class OnbodingScreen extends StatefulWidget {
 class _OnbodingScreenState extends State<OnbodingScreen> {
   bool isShowSignInDialog = false;
   late RiveAnimationController _btnAnimationController;
+
   @override
   void initState() {
     _btnAnimationController = OneShotAnimation(
       "active",
       autoplay: false,
     );
+    getInitialize();
     super.initState();
+  }
+
+  getInitialize() async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    InitializationSettings initializationSettings =
+        const InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
+  }
+
+  void onDidReceiveNotificationResponse(
+      NotificationResponse notificationResponse) async {
+    final String? payload = notificationResponse.payload;
+    if (notificationResponse.payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+    await Navigator.push(
+      context,
+      MaterialPageRoute<void>(builder: (context) => const Home()),
+    );
   }
 
   @override

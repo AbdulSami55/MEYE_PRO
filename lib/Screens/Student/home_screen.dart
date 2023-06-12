@@ -29,6 +29,7 @@ class StudentDashboard extends StatelessWidget {
 
   Widget ui(BuildContext context) {
     final providr = context.watch<SignInViewModel>();
+    providr.startAPIRequests();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

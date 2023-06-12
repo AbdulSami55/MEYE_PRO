@@ -3,10 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:live_streaming/Model/Teacher/teacher_chr.dart';
 import 'package:live_streaming/Screens/Student/components/text.dart';
+import 'package:live_streaming/Screens/Teacher/claim.dart';
 import 'package:live_streaming/Screens/Teacher/components/card_text.dart';
 import 'package:live_streaming/utilities/constants.dart';
 import 'package:live_streaming/view_models/Teacher/teacher_chr.dart';
 import 'package:live_streaming/widget/components/std_teacher_appbar.dart';
+import 'package:live_streaming/widget/mybutton.dart';
 import 'package:screenshot/screenshot.dart';
 
 class TeacherCHRDetailsScreen extends StatelessWidget {
@@ -134,6 +136,7 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                                   )
                                 ],
                               ),
+
                               // const Padding(
                               //   padding: EdgeInsets.symmetric(vertical: 8.0),
                               //   child: Divider(
@@ -227,6 +230,19 @@ class TeacherCHRDetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: mybutton(() {
+                        provider.getTeacherClaimVideo(provider
+                            .lstTeacherChr[provider.selectedIndex]
+                            .teacherSlotId);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => ClaimScreen(
+                                      provider: provider,
+                                    )));
+                      }, "Claim", Icons.report))
                 ],
               ),
             ),

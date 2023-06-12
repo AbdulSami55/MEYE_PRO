@@ -1,10 +1,12 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, prefer_typing_uninitialized_variables
 import 'package:flutter/cupertino.dart';
+import 'package:live_streaming/Model/Teacher/claim_teacher.dart';
 import 'package:live_streaming/Model/Teacher/teacher_chr.dart';
 import 'package:live_streaming/Model/user_error.dart';
 import 'package:live_streaming/repo/Teacher/teacher_chr.dart';
 import 'package:live_streaming/repo/api_status.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:video_player/video_player.dart';
 
 class TeacherCHRViewModel with ChangeNotifier {
   var _lstTeacherChr = <TeacherChr>[];
@@ -18,15 +20,23 @@ class TeacherCHRViewModel with ChangeNotifier {
   bool isChrTable = false;
   bool isActivtyTable = false;
   String isTeacherTableSwitch = "";
+  var _lstClaim = <ClaimTeacher>[];
+  var _videoController;
+  var _selectedVideo;
+  List<ClaimTeacher> tempTeacherClaimVideo = [];
+  Future<void>? _initializeVideoPlayerFuture;
+  bool isshow = false;
 
   int selectedFilter = 0;
   ScreenshotController _screenshotController = ScreenshotController();
-
+  VideoPlayerController get videoController => _videoController;
   List<TeacherChr> get lstTeacherChr => _lstTeacherChr;
   List<TeacherChr> get lstTempTeacherChr => _lstTempTeacherChr;
   bool get isloading => _isloading;
   UserError? get userError => _userError;
   ScreenshotController get screenshotController => _screenshotController;
+  List<ClaimTeacher> get lstClaim => _lstClaim;
+  ClaimTeacher get selectedVideo => _selectedVideo;
 
   TeacherCHRViewModel(String teacherName, {bool? isDirector}) {
     if (isDirector == null) {
@@ -35,6 +45,35 @@ class TeacherCHRViewModel with ChangeNotifier {
       getAllTeacherCHR();
     }
   }
+
+  setLstClaim(List<ClaimTeacher> lst) {
+    tempTeacherClaimVideo = lst;
+    _lstClaim = lst;
+  }
+
+  setSelectedVideo(ClaimTeacher recordings) {
+    _selectedVideo = recordings;
+
+    notifyListeners();
+  }
+
+  setPlayer(String path) async {
+    setloading(true);
+    if (_videoController != null) {
+      _videoController.dispose();
+    }
+
+    _videoController = VideoPlayerController.network(path);
+    _initializeVideoPlayerFuture = videoController.initialize();
+    _initializeVideoPlayerFuture?.then((value) => setloading(false));
+    _videoController.play();
+  }
+
+  setIsShow() {
+    isshow = !isshow;
+    notifyListeners();
+  }
+
   setListTeacherChr(List<TeacherChr> lst) {
     _lstTeacherChr = lst;
     _lstTempTeacherChr = lst;
@@ -128,6 +167,22 @@ class TeacherCHRViewModel with ChangeNotifier {
     var response = await TeacherCHRServies.getTeacherCHR(teacherName);
     if (response is Success) {
       setListTeacherChr(response.response as List<TeacherChr>);
+    }
+    if (response is Failure) {
+      UserError userError =
+          UserError(code: response.code, message: response.errorResponse);
+      setUserError(userError);
+    }
+    setloading(false);
+  }
+
+  getTeacherClaimVideo(int teacherSlotId) async {
+    setloading(true);
+    _lstClaim = [];
+    _userError = null;
+    var response = await TeacherCHRServies.getTeacherClaim(teacherSlotId);
+    if (response is Success) {
+      setLstClaim(response.response as List<ClaimTeacher>);
     }
     if (response is Failure) {
       UserError userError =

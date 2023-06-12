@@ -111,25 +111,28 @@ class RecordingDetails extends StatelessWidget {
                                             teacherRecordingsViewModel,
                                       ))));
                         },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: Image.network(
-                                  '$baseUrl/api/get-video-thumbnail/${teacherRecordings.thumbnail}'),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            text_medium(
-                                "${teacherRecordings.courseName} ${teacherRecordings.date.toString().split(' ')[0]}"),
-                            textSmall(
-                                "${teacherRecordings.discipline} ${teacherRecordings.fileName.split(',')[2].split('.')[0]}"),
-                            const SizedBox(
-                              height: 20,
-                            )
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.network(
+                                    '$baseUrl/api/get-video-thumbnail/${teacherRecordings.thumbnail}'),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              text_medium(
+                                  "${teacherRecordings.courseName} ${teacherRecordings.date.toString().split(' ')[0]}"),
+                              textSmall(
+                                  "${teacherRecordings.discipline} ${teacherRecordings.fileName.split(',')[2].split('.')[0]}"),
+                              const SizedBox(
+                                height: 20,
+                              )
+                            ],
+                          ),
                         )),
                   ],
                 );
